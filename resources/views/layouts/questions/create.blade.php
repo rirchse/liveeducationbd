@@ -1,6 +1,10 @@
 @extends('dashboard')
 @section('stylesheets')
 <link href="/assets/summernote/summernote.min.css" rel="stylesheet">
+<style>
+   span:has(> input[name="correct[]"]){padding:5px}
+    input[name="correct[]"]{width:20px; height: 20px;}
+</style>
 @endsection
 @section('title', 'Add New Question')
 @section('content')
@@ -96,7 +100,7 @@
                 </div>
                 <div class="col-md-12">
                     <hr>
-                    <label for="">FILTERS:</label>
+                    <label for="">FILTERS: <button type="button" onclick="resetFields()">Reset</button></label>
                 </div>
                 <div class="col-md-12 no-padding" id="filters">
                     @foreach($filters as $filter)
@@ -792,12 +796,16 @@ function resetFields()
     let filters = document.getElementsByName('filter[]');
     for(let x = 3; filters.length > x; x++)
     {
-        let childs = filters[x].nextElementSibling.firstElementChild.firstElementChild.firstElementChild.children;
-        for(let y = 0; y < childs.length; y++)
-        {
-            childs[y].remove();
-        }
+        filters[x].value = [];
     }
+
+    let labelFields = document.getElementsByClassName('label-filters');
+    for(let l = 0; labelFields.length > l; l++)
+    {
+        labelFields[l].value = [];
+    }
+
+    $(function (){ $('.select2').select2() });
 }
 
 </script>
