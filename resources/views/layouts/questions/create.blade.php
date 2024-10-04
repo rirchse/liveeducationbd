@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-md-12">
                     <hr>
-                    <label for="">FILTERS: <button type="button" onclick="resetFields()">Reset</button></label>
+                    <label for="">FILTERS: </label>
                 </div>
                 <div class="col-md-12 no-padding" id="filters">
                     @foreach($filters as $filter)
