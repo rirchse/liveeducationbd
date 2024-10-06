@@ -1,5 +1,5 @@
 <!-- Footer -->
-      <footer class="col-md-12" id="footer" style="background:#000; padding:5px; bottom: 0;max-height:50px; position:fixed; bottom:0;color:#ddd">
+      <footer class="col-md-12" id="footer" style="background:#000; padding:5px; color:#ddd">
         <div class="copyright">
           <ul class="icons">
             <!-- <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li> -->

@@ -31,15 +31,60 @@ $source = New SourceCtrl;
         <form action="{{route('paper.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="box-body">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Course</label>
+                        <select name="course_id" id="course_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($courses as $val)
+                            <option value="{{$val->id}}">{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($batches as $val)
+                            <option value="{{$val->id}}">{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}">{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="banner">Banner</label>
+                        <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="header">Header</label>
                         <textarea class="form-control editor" name="header" id="header" rows="5" required></textarea>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="details">Details</label>
+                        <textarea class="form-control" name="details" id="details" rows="4"></textarea>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Question Paper No.</label>
                         <input type="text" class="form-control" name="name" id="name" required>
                     </div>
                 </div>
@@ -52,13 +97,13 @@ $source = New SourceCtrl;
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="mark">Mark (For Correct Answer)</label>
-                        <input type="number" class="form-control" name="mark" id="mark" required >
+                        <input type="number" class="form-control" name="mark" id="mark" required step="0.01">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="minus">Mark (Negative for wrong Answer)</label>
-                        <input type="number" class="form-control" name="minus" id="minus" >
+                        <input type="number" class="form-control" name="minus" id="minus" step="0.01">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -125,38 +170,24 @@ $source = New SourceCtrl;
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" name="status" id="status" >
-                            <option value="">Select One</option>
-                            <option value="Unpublished">Unpublished</option>
-                            <option value="Published">Published</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                    </div>
-                {{-- </div>
-                <div class="col-md-4"> --}}
-                    <div class="form-group">
-                        <label for="open">Publish Time</label>
-                        <input type="time" class="form-control" name="open" id="open" >
-                    </div>
-                {{-- </div>
-                <div class="col-md-4"> --}}
-                    <div class="form-group">
-                        <label for="close">Close Time</label>
-                        <input type="time" class="form-control" name="close" id="close" >
-                    </div>
-                </div>
-                {{-- <div class="clearfix"></div> --}}
-                <div class="col-md-6">
-                    <div class="form-group">
                         <label for="max">Questions Limit</label>
                         <input type="number" class="form-control" name="max" id="max" >
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="details">Details</label>
-                        <textarea class="form-control" name="details" id="details" rows="4"></textarea>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" name="status" id="status" onchange="Status(this)">
+                                <option value="">Select One</option>
+                                <option value="Unpublished">Unpublished</option>
+                                <option value="Published">Published</option>
+                                <option value="Scheduled">Scheduled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 no-padding hide">
+                        
                     </div>
                 </div>
             </div> <!-- /.box body -->
@@ -173,6 +204,25 @@ $source = New SourceCtrl;
 @section('scripts')
 <script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
+
+    // on upload show image
+    function showImg(e)
+    {
+        if(e.parentNode.firstElementChild.tagName == 'IMG')
+        {
+            e.parentNode.firstElementChild.src = window.URL.createObjectURL(e.files[0]);
+        }
+        else
+        {
+            let img = document.createElement('img');
+            img.src = window.URL.createObjectURL(e.files[0]);
+            img.setAttribute('style', 'width:100%;max-width:400px; margin-top:15px');
+            img.alt = '';
+            e.parentNode.appendChild(img);
+        }
+        
+    }
+
     function getsubcats(elm){
 
         var catid = elm.options[elm.options.selectedIndex].value;
@@ -221,5 +271,33 @@ $source = New SourceCtrl;
             alert('Form Header is required');
         }
     }
+
+    function Status(e){
+        let timer = e.parentNode.parentNode.nextElementSibling;
+        if(e.options[e.selectedIndex].value == 'Scheduled')
+        {
+            timer.classList.remove('hide');
+            timer.innerHTML = '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label for="open">Publish Time</label>'+
+                                '<input type="time" class="form-control" name="open" id="open" >'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label for="close">Close Time</label>'+
+                                '<input type="time" class="form-control" name="close" id="close" >'+
+                            '</div>'+
+                        '</div>';
+        }
+        else
+        {
+            timer.innerHTML = '';
+            timer.classList.add('hide');
+        }
+    }
+
+    // select 2
+    $(function (){ $('.select2').select2() });
 </script>
 @endsection

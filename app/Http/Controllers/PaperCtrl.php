@@ -8,6 +8,9 @@ use App\Models\SubFilter;
 use App\Models\Role;
 use App\Models\Label;
 use App\Models\Paper;
+use App\Models\Course;
+use App\Models\Batch;
+use App\Models\Department;
 use Auth;
 use Image;
 use Toastr;
@@ -40,8 +43,10 @@ class PaperCtrl extends Controller
      */
     public function create()
     {
-        $filters = Paper::where('status', 'Active')->get();
-        return view('layouts.papers.create', compact('filters'));
+        $courses = Course::where('status', 'Active')->get();
+        $batches = Batch::where('status', 'Active')->get();
+        $departments = Department::where('status', 'Active')->get();
+        return view('layouts.papers.create', compact('courses', 'batches', 'departments'));
     }
 
     /**
@@ -54,20 +59,20 @@ class PaperCtrl extends Controller
     {
         $source = new SourceCtrl;
         $validator = Validator::make($request->all(), [
-            // 'question_id' => 'required|numeric',
-            // 'file'   => 'required|mimes:jpeg,jpg,png,pdf|max:1000',
+            'header' => 'required|numeric',
+            'banner' => 'mimes:jpeg,jpg,png,pdf|max:1000',
         ]);
 
-        if($validator->fails()){
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => 'File upload failed',
-                    'errors' => $validator->getMessageBag()->toArray()
-                ],
-                201
-            );
-        }
+        // if($validator->fails()){
+        //     return response()->json(
+        //         [
+        //             'success' => false,
+        //             'message' => 'File upload failed',
+        //             'errors' => $validator->getMessageBag()->toArray()
+        //         ],
+        //         201
+        //     );
+        // }
         
         $data = $request->all();
         // dd($data);
@@ -75,6 +80,11 @@ class PaperCtrl extends Controller
         if(isset($data['_token']))
         {
             unset($data['_token']);
+        }
+
+        if(isset($data['banner']))
+        {
+            $data['banner'] = $source->uploadImage($data['banner'], 'papers/');
         }
 
         try{
@@ -203,8 +213,9 @@ class PaperCtrl extends Controller
     public function addToPaper(Request $request)
     {
         $data = $request->all();
+        // dd($data);
         $ids = [];
-        $ids = implode(',', $request->question);
+        $ids = explode(',', $data['question']);
         if(!is_null(Session::get('_paper')))
         {
             $paper = Session::get('_paper');

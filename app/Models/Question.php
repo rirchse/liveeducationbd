@@ -55,4 +55,9 @@ class Question extends Model
     {
         return $this->hasMany(AnswerFile::class, 'question_id');
     }
+
+    public function papers()
+    {
+        return $this->belongsToMany(Paper::class);
+    }
 }

@@ -13,6 +13,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
   .hide{display: none}
   .filter{padding-left: 10px;}
   .filter .item{list-style: none;font-weight: bold;padding-bottom: 25px}
+  .filter li:last-child{padding:0}
   .filter .item a{display: inline-block;font-size: 15px;color: #000}
   .filter .item .drop-down{position: absolute; right: 20px}
   .filter-group{clear:top;padding-left: 10px;}
@@ -22,9 +23,13 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
   .panel-heading{background:none}
   .paper_panel{padding: 15px}
   .paper_panel label{border:1px solid #ddd; display: block;padding:10px; margin-bottom:0}
-  @media screen and (min-width:769px) {
-    .filter-parent{max-width: 300px;max-height: 600px;}
-    .sticky{position: fixed;top:10px;overflow:auto;}
+  @media screen and (min-width:480px) {
+    .filter-parent{max-width:300px; max-height: 600px; overflow:auto;}
+    .sticky{position: fixed;top:10px;}
+  }
+  @media screen and (max-width:481px){
+    .filter-parent{width:100%}
+    .sticky{position: relative;}
   }
 </style>
 <!-- Content Header (Page header) -->
@@ -138,9 +143,10 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
           </div>
         </div>
       </div>
-        <div class="col-md-3" style="padding-left: 0">
-          <div class="box filter-parent" id="filter-parent">
-            <div class="panel">
+      <div class="col-md-3" style="padding-left: 0">
+        <div class="box filter-parent" id="filter-parent" style="max-width: 300px;">
+          <div class="box-body">
+            <div class="panel" style="margin-bottom:0;box-shadow:none">
               <div class="panel-heading" style="border-bottom:1px solid #ddd">
                 <h4> <i class="fa fa-sliders"> </i> Filter</h4>
               </div>
@@ -171,6 +177,8 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
                 </ul>
               </div>
             </div>
+          </div><!-- /.box body -->
+          <div class="box-footer">
             @if(!is_null(Session::get('_paper')))
             @php
             $paper = Session::get('_paper');
@@ -188,19 +196,18 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
                 <a class="btn btn-default btn-sm pull-left" href="#"><i class="fa fa-check"></i> Done</a>
                 <button type="button" class="btn btn-success btn-sm pull-right" onclick="addToPaper(this)" value="{{$paper->id}}"><i class="fa fa-plus"></i> Add To Paper</button>
               </div>
-              <div class="clearfix"></div>
             </div>
             @endif
-            <div class="clearfix"></div>
           </div>
-        </div>
-        <div class="col-md-9 no-padding">
-          <div class="box" id="question_area">
-              @include('layouts.questions.paginate')
-          </div><!-- /.box -->
-        </div>
-
-        <div id="loading" class="loading hide"><img src="/img/logo_animation.png" alt=""></div>
+        </div><!--/.box for fitler -->
+      </div>
+      <div class="col-md-9 no-padding">
+        <div class="box" id="question_area">
+            @include('layouts.questions.paginate')
+        </div><!-- /.box -->
+      </div>
+      
+      <div id="loading" class="loading hide"><img src="/img/logo_animation.png" alt=""></div>
 
 <script>
   function getDepartments(e)
@@ -488,16 +495,30 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
     let questions = document.getElementsByClassName('check');
 
     let ids = [];
-    questions.forEach(e => {
-      if(e.checked == true){
-        ids.push(e.value);  
+    for(let q = 0; q < questions.length; q++)
+    {
+      if(questions[q].checked == true){
+        ids.push(questions[q].value);  
       }  
-    });
+    }
+
+    let formData = new FormData();
+    formData.append('question', ids);
+    // console.log(...formData);
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
 
     $.ajax({
       url: '{{route("paper.addtopaper")}}',
       type: 'POST',
-      data: {question: ids},
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
       success: function(data){
         console.log(data);
       },

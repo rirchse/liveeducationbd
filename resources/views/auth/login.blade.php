@@ -3,10 +3,10 @@
 @section('content')
 {{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style>
-    .checkbox{padding-left: 25px}
+  .checkbox{padding-left: 25px}
 </style>
 
-<div class="main-wrapper" stlye="width:100%;">
+<div class="main-wrapper" style="width:100%;">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="sign-up-form">
@@ -19,7 +19,7 @@
           <p class="login-box-msg">
           <img src="/img/logo.png?v=3008" alt=""><br><br>Login to start your session</p>
 
-          <form action="{{ route('login.post') }}" method="POST">
+          <form action="{{ route('login.post') }}" method="POST" style="margin-bottom:15px">
             @csrf
             <div class="form-group">
               <label for="email">Email Address</label>
@@ -38,7 +38,7 @@
             <div class="row">
               <div class="col-xs-12">
                 {{-- @include('/partials.google_recaptcha') --}}
-                <br>
+                {{-- <br> --}}
               </div>
               {{-- <div class="col-xs-8">
                 <div class="checkbox icheck">
@@ -49,8 +49,8 @@
                 </div>
               </div> --}}
               <!-- /.col -->
-              <div class="col-xs-4">
-                <button type="submit" class="btn btn-info btn-submit">Login</button>
+              <div class="col-xs-12">
+                <button type="submit" class="btn btn-info btn-submit btn-block">Login</button>
               </div>
               <!-- /.col -->
             </div>

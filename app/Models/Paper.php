@@ -8,6 +8,6 @@ class Paper extends Model
 {
     public function questions()
     {
-        return $this->belongsToMany(Paper::class);
+        return $this->belongsToMany(Question::class);
     }
 }

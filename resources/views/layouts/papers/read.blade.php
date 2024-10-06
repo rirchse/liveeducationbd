@@ -1,8 +1,16 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = New SourceCtrl;
+@endphp
+
 @extends('dashboard')
 @section('title', 'Question Paper')
 @section('content')
 <style>
-  .mcqitems{list-style: none}
+  .mcqitems{list-style: none; padding-left: 10px}
+  .mcqitems li{padding: 10px}
+  .banner{margin-top:15px}
+  .banner img{width:100%}
 </style>
   <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -10,7 +18,7 @@
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Question Paper</a></li>
         <li class="active">Details</li>
-      </ol>    
+      </ol>
     </section>
 
     <!-- Main content -->
@@ -34,17 +42,21 @@
       <div class="col-md-12">
       <div class="box">
         <div class="col-md-12">
-          <div class="header" style="text-align:center">{!! $paper->header !!}</div>
-            <div class="col-md-6">
+          <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
+          <div class="header" style="text-align:center">{!! $paper->header !!} </div>
+            <div class="col-md-12">
+              @foreach($paper->questions as $key => $value)
               <div class="panel">
-                <div class="panel-">head</div>
-                <ul class="mcqitems panel-body">
-                  <li>a) aaa</li>
-                  <li>b) bbb</li>
-                  <li>c) bbb</li>
-                  <li>d) bbb</li>
+                {{-- <div class="panel-heading"> --}}
+                  <div style="display: inline; font-weight:bold;float:left; padding-right:15px">প্রশ্ন নং- {{$key+1}}. </div> <div style="display: inline">{!! $value->title !!}</div>
+                {{-- </div> --}}
+                <ul class="mcqitems">
+                  @foreach($value->mcqitems as $k => $val)
+                  <li><span><input type="radio" name="correct"></span><span> {{$source->mcqlist()[$paper->format][$k]}} </span>{{$val->item}}</li>
+                  @endforeach
                 </ul>
               </div>
+              @endforeach
             </div>
           </div>
           <div class="clearfix"></div>

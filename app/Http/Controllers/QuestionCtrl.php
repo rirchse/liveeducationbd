@@ -61,8 +61,8 @@ class QuestionCtrl extends Controller
 
         $questions = Question::orderBy('id', 'DESC')
         ->where('type', 'MCQ')
-        // ->where('created_at', 'like', '%'.date('Y-m-d').'%')
-        ->paginate(10);
+        ->where('created_at', 'like', '%'.date('Y-m-d').'%')
+        ->paginate(25);
 
         return view('layouts.questions.view', compact('courses', 'departments', 'semesters', 'subjects', 'chapters', 'cat', 'questions', 'filters'));
     }
@@ -124,7 +124,7 @@ class QuestionCtrl extends Controller
             });
         }
 
-        $questions = $questions->paginate(10);
+        $questions = $questions->paginate(25);
 
         $cat = [
             'course_id' => isset($data['course_id']) ? $data['course_id'] : null,

@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('answer-file', 'AnswerFileCtrl');
 	Route::resource('label', 'LabelCtrl');
 	Route::resource('paper', 'PaperCtrl');
+	Route::resource('batch', 'BatchCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()

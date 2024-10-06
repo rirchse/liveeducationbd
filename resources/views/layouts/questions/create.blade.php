@@ -147,6 +147,7 @@
                 </div>
             </div> <!-- /.box body -->
             <div class="box-footer">
+                <button type="button" onclick="msgHide()">scroll test</button>
                 <button type="btnSubmit" class="btn btn-primary pull-right" id="btnSubmit"><i class="fa fa-save"></i> Save</button>
             </div>
         </form>
@@ -684,7 +685,7 @@ function submitMCQ(e)
                 {
                     access = true;
                     resubmitForm();
-                    console.log('No, questions has not');
+                    // console.log('No, questions has not');
                 }
                 // console.log(data);
             },
@@ -760,12 +761,8 @@ function submitMCQ(e)
                 console.log(data);
             }
         });
-
-        // console.log('question submitted');
         access = false;
     }
-
-    // console.log('form-submit completed');
     
 }
 
@@ -784,8 +781,7 @@ function msgHide()
     let submit = document.getElementById('btnSubmit');
     submit.removeAttribute('disabled');
 
-    document.getElementById("mcq_form").scrollIntoView({ behavior: "smooth" });
-
+    console.log(document.getElementById("mcq_form").scrollIntoView());
 }
 
 function resetFields()
@@ -806,6 +802,8 @@ function resetFields()
     }
 
     $(function (){ $('.select2').select2() });
+
+    // document.getElementById("mcq_form").scrollIntoView({ behavior: "smooth" });
 }
 
 </script>
