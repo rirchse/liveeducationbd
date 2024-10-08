@@ -147,7 +147,7 @@
                 </div>
             </div> <!-- /.box body -->
             <div class="box-footer">
-                <button type="button" onclick="msgHide()">scroll test</button>
+                {{-- <button type="button" onclick="msgHide()">scroll test</button> --}}
                 <button type="btnSubmit" class="btn btn-primary pull-right" id="btnSubmit"><i class="fa fa-save"></i> Save</button>
             </div>
         </form>
