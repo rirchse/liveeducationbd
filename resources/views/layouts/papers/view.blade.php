@@ -45,6 +45,9 @@ $source = New SourceCtrl;
         <div class="col-md-12">
           <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
+          <div class="col-md-12 indication">
+            <p>"{!! $paper->details !!}"</p><br>
+          </div>
             <div class="col-md-12">
               @foreach($paper->questions as $key => $value)
               <div class="panel">

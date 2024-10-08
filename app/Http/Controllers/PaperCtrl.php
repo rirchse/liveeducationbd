@@ -59,7 +59,7 @@ class PaperCtrl extends Controller
     {
         $source = new SourceCtrl;
         $validator = Validator::make($request->all(), [
-            'header' => 'required|numeric',
+            'header' => 'required',
             'banner' => 'mimes:jpeg,jpg,png,pdf|max:1000',
         ]);
 
@@ -155,7 +155,8 @@ class PaperCtrl extends Controller
     {
         $source = new SourceCtrl;
         $validator = Validator::make($request->all(), [
-            // 'file'   => 'required|mimes:jpeg,jpg,png,pdf|max:1000',
+            'header' => 'required',
+            'banner'   => 'nullable|image|mimes:jpeg,jpg,png,pdf|max:1000',
         ]);
 
         if($validator->fails()){
@@ -168,6 +169,9 @@ class PaperCtrl extends Controller
                 201
             );
         }
+
+        $paper = Paper::find($id);
+        $xbanner = public_path($paper->banner);
         
         $data = $request->all();
 
@@ -175,13 +179,24 @@ class PaperCtrl extends Controller
         {
             unset($data['_token']);
         }
+
         if(isset($data['_method']))
         {
             unset($data['_method']);
         }
 
+        if(isset($data['banner']))
+        {
+            $data['banner'] = $source->uploadImage($data['banner'], 'papers/');
+        }
+
         try{
             Paper::where('id', $id)->update($data);
+
+            if(File::exists($xbanner))
+            {
+                File::delete($xbanner);
+            }
         }
         catch(\E $e)
         {
