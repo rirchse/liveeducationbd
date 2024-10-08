@@ -1,68 +1,128 @@
 @php
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
+$value = $paper;
 @endphp
 
 @extends('dashboard')
-@section('title', 'Question Paper')
+@section('title', 'Question Paper Details')
 @section('content')
-<style>
-  .mcqitems{list-style: none; padding-left: 10px}
-  .mcqitems li{padding: 10px}
-  .banner{margin-top:15px}
-  .banner img{width:100%}
-</style>
   <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Question Paper</h1>
+      <h1>Question Paper Details</h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Question Paper</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Question Papers</a></li>
         <li class="active">Details</li>
-      </ol>
+      </ol>    
     </section>
 
     <!-- Main content -->
   <section class="content">
     <div class="row"><!-- left column -->
-      <div class="col-md-12"><!-- general form elements -->
+      <div class="col-md-8"><!-- general form elements -->
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h4 class="box-title" style="display: inline">Question Paper</h4>
-            <div class="text-right toolbar-icon pull-right" style="display: inline">
-              <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
-              <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
-              <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
-              <a href="{{route('paper.edit', $paper->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a>
-            </div>
+            <h4 class="box-title">Question Paper Information</h4>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-      <div class="box">
-        <div class="col-md-12">
-          <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
-          <div class="header" style="text-align:center">{!! $paper->header !!} </div>
-            <div class="col-md-12">
-              @foreach($paper->questions as $key => $value)
-              <div class="panel">
-                {{-- <div class="panel-heading"> --}}
-                  <div style="display: inline; font-weight:bold;float:left; padding-right:15px">প্রশ্ন নং- {{$key+1}}. </div> <div style="display: inline">{!! $value->title !!}</div>
-                {{-- </div> --}}
-                <ul class="mcqitems">
-                  @foreach($value->mcqitems as $k => $val)
-                  <li><span><input type="radio" name="correct"></span><span> {{$source->mcqlist()[$paper->format][$k]}} </span>{{$val->item}}</li>
-                  @endforeach
-                </ul>
-              </div>
-              @endforeach
-            </div>
+          <div class="col-md-12 text-right toolbar-icon">
+            <a href="{{route('paper.create')}}" title="Add New" class="label label-info"><i class="fa fa-plus"></i></a>
+            <a href="{{route('paper.view', $value->id)}}" title="View" class="label label-primary"><i class="fa fa-file-text"></i></a>
+            <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
+            <a href="{{route('paper.edit', $value->id)}}" class="label label-warning" title="Edit this"><i class="fa fa-gear"></i></a>
+          </div>
+          <div class="col-md-12">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th style="width: 200px;">Question Paper No.:</th>
+                  <td>{{$value->name}}</td>
+                </tr>
+                <tr>
+                  <th>Course:</th>
+                  <td>{{$value->course ? $value->course->name : ''}}</td>
+                </tr>
+                <tr>
+                  <th>Batch:</th>
+                  <td>{{$value->batch ? $value->batch->name : ''}}</td>
+                </tr>
+                <tr>
+                  <th>Department:</th>
+                  <td>{{$value->department ? $value->department->name : ''}}</td>
+                </tr>
+                <tr>
+                <tr>
+                  <th>Banner:</th>
+                  <td><img src="{{$value->banner}}" alt="" style="widows: 100%"></td>
+                </tr>
+                <tr>
+                  <th>Header:</th>
+                  <td>{!!$value->header !!}</td>
+                </tr>
+                <tr>
+                  <th>Details:</th>
+                  <td>{{$value->details}}</td>
+                </tr>
+                <tr>
+                  <th>Max Questions Entry:</th>
+                  <td>{{$value->max}}</td>
+                </tr>
+                <tr>
+                  <th>Status:</th>
+                  <td>
+                    <span class="label label-warning">{{$value->status}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>List Format:</th>
+                  <td>{{$value->format}}</td>
+                </tr>
+                <tr>
+                  <th>Time (in Minutes):</th>
+                  <td>{{$value->time}} </td>
+                </tr>
+                <tr>
+                  <th>Mark (For Correct Answer):</th>
+                  <td>{{$value->mark}} </td>
+                </tr>
+                <tr>
+                  <th>Mark (Negative for wrong Answer):</th>
+                  <td>{{$value->minus}} </td>
+                </tr>
+                <tr>
+                  <th>Student Can View Result After Exam?:</th>
+                  <td>{{$value->result_view}} </td>
+                </tr>
+                <tr>
+                  <th>How many times can a student take the exam?:</th>
+                  <td>{{$value->exam_limit}} </td>
+                </tr>
+                <tr>
+                  <th>Show Random Questions?:</th>
+                  <td>{{$value->random}} </td>
+                </tr>
+                <tr>
+                  <th>Display Question?:</th>
+                  <td>{{$value->display}} </td>
+                </tr>
+                <tr>
+                  <th>Who can exam?:</th>
+                  <td>{{$value->permit}} </td>
+                </tr>
+                <tr>
+                  <th>Record Created On:</th>
+                  <td>{{$source->dtformat($value->created_at)}} </td>
+                </tr>
+                <tr>
+                  <th>Record Updated On:</th>
+                  <td>{{$source->dtformat($value->updated_at)}} </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="clearfix"></div>
-        </div><!--/.col -->
-      </div><!-- /.col -->
-    </div><!-- /.row -->
+        </div>
+      </div><!-- /.box -->
+    </div><!--/.col (left) -->
   </section><!-- /.content -->
    
 @endsection

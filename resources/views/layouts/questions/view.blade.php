@@ -9,6 +9,8 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
 @section('title', 'View Questions')
 @section('content')
 <style>
+  ::-webkit-scrollbar{width: 5px;}
+  ::-webkit-scrollbar-thumb{background-color: #ddd}
   ul.list li{padding: 10px 0; list-style: none;}
   .hide{display: none}
   .filter{padding-left: 10px;}
@@ -24,7 +26,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
   .paper_panel{padding: 15px}
   .paper_panel label{border:1px solid #ddd; display: block;padding:10px; margin-bottom:0}
   @media screen and (min-width:480px) {
-    .filter-parent{max-width:300px; max-height: 600px; overflow:auto;}
+    .filter-parent{max-width:400px; max-height: 600px; overflow:auto;}
     .sticky{position: fixed;top:10px;}
   }
   @media screen and (max-width:481px){
@@ -143,11 +145,30 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
           </div>
         </div>
       </div>
-      <div class="col-md-3" style="padding-left: 0">
-        <div class="box filter-parent" id="filter-parent" style="max-width: 300px;">
+      <div class="col-md-4" style="padding-left: 0">
+        <div class="box filter-parent" id="filter-parent">
+          @if(!is_null(Session::get('_paper')))
+          @php
+          $paper = Session::get('_paper');
+          @endphp
+          <div class="box-header">
+            <div class="paper_panel">
+              <div class="form-group">
+                <div class="input-group">
+                  <label class="label-default">{{$paper->name}}</label>
+                  <span class="input-group-addon" style="font-weight: bold"><span id="qcount">{{count($paper->questions)}}</span>/<span id="maxq">{{$paper->max}}</span></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <a class="btn btn-default btn-sm pull-left" href="{{route('paper.view', $paper->id)}}"><i class="fa fa-check"></i> Done</a>
+                <button type="button" class="btn btn-success btn-sm pull-right" onclick="addToPaper(this)" value="{{$paper->id}}"><i class="fa fa-plus"></i> Add To Paper</button>
+              </div>
+            </div>
+          </div>
+          @endif
           <div class="box-body">
             <div class="panel" style="margin-bottom:0;box-shadow:none">
-              <div class="panel-heading" style="border-bottom:1px solid #ddd">
+              <div class="panel-heading" style="border-bottom:1px solid #ddd; border-top:1px solid #ddd">
                 <h4> <i class="fa fa-sliders"> </i> Filter</h4>
               </div>
               <div class="panel-body">
@@ -178,36 +199,19 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
               </div>
             </div>
           </div><!-- /.box body -->
-          <div class="box-footer">
-            @if(!is_null(Session::get('_paper')))
-            @php
-            $paper = Session::get('_paper');
-            @endphp
-            <div class="paper_panel">
-              <div class="form-group">
-                <div class="input-group">
-                  <label class="label-default">{{$paper->name}}</label>
-                  <span class="input-group-addon" style="font-weight: bold">
-                    (0)
-                  </span>
-                </div>
-              </div>
-              <div class="form-group">
-                <a class="btn btn-default btn-sm pull-left" href="#"><i class="fa fa-check"></i> Done</a>
-                <button type="button" class="btn btn-success btn-sm pull-right" onclick="addToPaper(this)" value="{{$paper->id}}"><i class="fa fa-plus"></i> Add To Paper</button>
-              </div>
-            </div>
-            @endif
-          </div>
         </div><!--/.box for fitler -->
       </div>
-      <div class="col-md-9 no-padding">
+      <div class="col-md-8 no-padding">
         <div class="box" id="question_area">
             @include('layouts.questions.paginate')
         </div><!-- /.box -->
       </div>
       
-      <div id="loading" class="loading hide"><img src="/img/logo_animation.png" alt=""></div>
+      <div id="loading" class="loading hide">
+        <img src="/img/logo_animation.png" alt="">
+      </div>
+
+      {{-- <div class="alert hi/de" style="background:#fff;right:0">///</div> --}}
 
 <script>
   function getDepartments(e)
@@ -396,6 +400,9 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
   {
     let sub = e.parentNode.nextElementSibling;
     sub.classList.toggle('hide');
+
+    e.firstElementChild.classList.toggle('fa-chevron-down');
+    e.firstElementChild.classList.toggle('fa-chevron-up');
   }
   //make full width the layout
   document.body.classList.add('sidebar-collapse');
@@ -488,18 +495,43 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
     item.remove();
   }
 
+  function count(e)
+  {
+    let maxq = document.getElementById('maxq');
+    if(e.checked == true)
+    {
+      if(Number(maxq.innerHTML) != 0 && Number(qcount.innerHTML) >= Number(maxq.innerHTML))
+      {
+        alert('Question Enry Max Limit Over!');
+        e.checked = false;
+      }
+      else
+      {
+        qcount.innerHTML = Number(qcount.innerHTML) + 1;
+      }
+    }
+    else
+    {
+      qcount.innerHTML = Number(qcount.innerHTML) - 1;
+    }
+  }
+
   // add question to paper
   function addToPaper(e)
   {
-    // let paper = document.getElementById('paper');
+    //loading image view
+    loading.classList.remove('hide');
+
+    let qcount = document.getElementById('qcount');
     let questions = document.getElementsByClassName('check');
 
     let ids = [];
     for(let q = 0; q < questions.length; q++)
     {
-      if(questions[q].checked == true){
-        ids.push(questions[q].value);  
-      }  
+      if(questions[q].checked == true)
+      {
+        ids.push(questions[q].value);
+      }
     }
 
     let formData = new FormData();
@@ -521,6 +553,8 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
       processData: false,
       success: function(data){
         console.log(data);
+        // qcount.innerHTML = data.qcount.attached.length;
+        loading.classList.add('hide');
       },
       error: function(data){
         console.log(data);

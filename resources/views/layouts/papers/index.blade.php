@@ -6,6 +6,9 @@ $source = New SourceCtrl;
 @extends('dashboard')
 @section('title', 'View All Question Papers')
 @section('content')
+<style>
+  .tools{text-align: right;}
+</style>
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>All Question Papers</h1>
@@ -19,6 +22,45 @@ $source = New SourceCtrl;
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body">
+          <form action="">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">Group</label>
+                <select name="group_id" id="group_id" class="form-control">
+                  <option value="">Select One</option>
+                  <option value="">Group 1</option>
+                  <option value="">Group 2</option>
+                  <option value="">Group 3</option>
+                  <option value="">Group 4</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">Batch</label>
+                <select name="batch_id" id="batch_id" class="form-control">
+                  <option value="">Select One</option>
+                  <option value="">Batch 1</option>
+                  <option value="">Batch 2</option>
+                  <option value="">Batch 3</option>
+                  <option value="">Batch 4</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">Question Paper No.</label>
+                <input type="text" name="name" id="name" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-2"><br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <div class="box">
         <div class="box-header">
           <h3 class="box-title">List of Question Papers</h3>
@@ -37,52 +79,24 @@ $source = New SourceCtrl;
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table id="example1" class="table table-bordered table-hover">
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Time</th>
-                  <th>Mark</th>
-                  <th>Result View</th>
-                  <th>Exam Limit</th>
-                  <th>Display Questions</th>
-                  <th>Question Limit</th>
-                  <th>Status</th>
-                  <th>Open Time</th>
-                  <th>Close Time</th>
-                  <th width="120">Action</th>
-                </tr>
-                @foreach($papers as $value)
-                <tr>
-                  <td>{{$value->id}}</td>
-                  <td>{{$value->name}}</td>
-                  <td>{{$value->time}}</td>
-                  <td>{{$value->mark}}</td>
-                  <td>{{$value->result_view}}</td>
-                  <td>{{$value->exam_limit}}</td>
-                  <td>{{$value->display}}</td>
-                  <td>{{$value->max}}</td>
-                  <td>
-                    <span class="label label-primary">{{$value->status}}</span>
-                  </td>
-                  <td>{{$value->open}}</td>
-                  <td>{{$value->close}}</td>
-                  <td>
-                    <a href="{{route('paper.show', $value->id)}}" class="btn btn-sm label-info" title="Details"><i class="fa fa-file-text"></i></a>
-                    <a href="{{route('paper.edit',$value->id)}}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-gear"></i></a>
-                    {{-- <form style="display: inline" action="{{route('paper.destroy', $value->id)}}" method="POST">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one?')"><i class="fa fa-trash"></i></button></form> --}}
-                  </td>
-                </tr>
-                @endforeach
-              </table>
+              <br>
+              @foreach($papers as $key => $value)
+              <a href="{{route('paper.view', $value->id)}}">
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>({{$key+1}}) : <b> {{$value->name}}</b></h4>
+                      <div class="clearfix"></div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              @endforeach
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
               <div class="pagination-sm no-margin pull-right">
-                {{-- {{$values->links()}} --}}
+                {{$papers->links()}}
               </div>
             </div>
           </div>

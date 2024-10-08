@@ -3,6 +3,22 @@ use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $correct = '';
 $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
+
+$xqs = [];
+if(!is_null(Session::get('_paper')))
+{
+  $paper = Session::get('_paper');
+  $xqs = $paper->questions()->pluck('id')->toArray();
+}
+// function qexist($id)
+// {
+//   dd($xqs);
+//   if(in_array($id, $xqs))
+//   {
+//     return 'checked';
+//   }
+//   return null;
+// }
 @endphp
 <style>
 .panel .panel-heading{background-color:#fff}
@@ -32,7 +48,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
     <div class="panel panel-default">
       <div class="panel-heading">
         <label style="display: block; font-size:16px">
-          <input type="checkbox" class="check" value="{{$value->id}}">
+          <input type="checkbox" class="check" value="{{$value->id}}" onclick="count(this)" {{in_array($value->id, $xqs) ? 'checked':''}}>
           <span style="float: left; color:#a00"> প্রশ্ন নং- {{$key + $questions->firstItem()}} : &nbsp; </span>{!!$value->title!!}</label>
       </div>
       <div class="panel-body">

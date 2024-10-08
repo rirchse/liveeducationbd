@@ -35,16 +35,95 @@ $value = $paper;
             @csrf
             @method('PUT')
             <div class="box-body">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Course</label>
+                        <select name="course_id" id="course_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($courses as $val)
+                            <option value="{{$val->id}}" {{$value->course_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($batches as $val)
+                            <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="header">Header</label>
                         <textarea class="form-control editor" name="header" id="header" rows="5" required>{{$value->header}}</textarea>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="details">Details</label>
+                        <textarea class="form-control" name="details" id="details" rows="4">{{$value->details}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="banner">Banner</label>
+                        <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
+                    </div>
+                    <img src="{{$value->banner}}" alt="" style="max-width:600px"><hr>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Question Paper No.</label>
                         <input type="text" class="form-control" name="name" id="name" required value="{{$value->name}}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="max">Questions Limit</label>
+                        <input type="number" class="form-control" name="max" id="max" value="{{$value->max}}" >
+                    </div>
+                </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" name="status" id="status" onchange="Status(this)">
+                                <option value="">Select One</option>
+                                <option value="Unpublished" {{$value->status == 'Unpublished'? 'selected':''}}>Unpublished</option>
+                                <option value="Published" {{$value->status == 'Published'? 'selected':''}}>Published</option>
+                                <option value="Scheduled" {{$value->status == 'Scheduled'? 'selected':''}}>Scheduled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 no-padding hide">
+                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="format">MCQ List Format</label>
+                        <select class="form-control" name="format" id="format" >
+                            <option value="">Select One</option>
+                            @foreach($source->mcqlist() as $key => $val)
+                            <option value="{{$key}}" {{$value->format == $key? 'selected': ''}}>{{implode(', ', $val)}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -112,55 +191,10 @@ $value = $paper;
                         <select class="form-control" name="permit" id="permit" >
                             <option value="">Select One</option>
                             <option value="Every One" {{$value->permit == 'Every One'? 'selected': ''}}>Every One</option>
-                            <option value="Authenticated" {{$value->permit == 'Authenticated'? 'selected': ''}}>Authenticated</option>
+                            <option value="Group 1" {{$value->permit == 'Group 2'? 'selected': ''}}>Group 2</option>
+                            <option value="Group 1" {{$value->permit == 'Group 3'? 'selected': ''}}>Group 3</option>
+                            <option value="Group 1" {{$value->permit == 'Group 4'? 'selected': ''}}>Group 4</option>
                         </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="format">MCQ List Format</label>
-                        <select class="form-control" name="format" id="format" >
-                            <option value="">Select One</option>
-                            @foreach($source->mcqlist() as $key => $val)
-                            <option value="{{$key}}" {{$value->format == $key? 'selected': ''}}>{{implode(', ', $val)}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" name="status" id="status" >
-                            <option value="">Select One</option>
-                            <option value="Unpublished" {{$value->status == 'Unpublished'? 'selected': ''}}>Unpublished</option>
-                            <option value="Published" {{$value->status == 'Published'? 'selected': ''}}>Published</option>
-                            <option value="Completed" {{$value->status == 'Completed'? 'selected': ''}}>Completed</option>
-                        </select>
-                    </div>
-                {{-- </div>
-                <div class="col-md-4"> --}}
-                    <div class="form-group">
-                        <label for="open">Publish Time</label>
-                        <input type="time" class="form-control" name="open" id="open" value="{{$value->open}}">
-                    </div>
-                {{-- </div>
-                <div class="col-md-4"> --}}
-                    <div class="form-group">
-                        <label for="close">Close Time</label>
-                        <input type="time" class="form-control" name="close" id="close" value="{{$value->close}}" >
-                    </div>
-                </div>
-                {{-- <div class="clearfix"></div> --}}
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="max">Questions Limit</label>
-                        <input type="number" class="form-control" name="max" id="max" value="{{$value->max}}" >
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="details">Details</label>
-                        <textarea class="form-control" name="details" id="details" rows="4">{{$value->details}}</textarea>
                     </div>
                 </div>
             </div> <!-- /.box body -->
@@ -177,6 +211,34 @@ $value = $paper;
 @section('scripts')
 <script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
+function Status(e){
+        let timer = e.parentNode.parentNode.nextElementSibling;
+        if(e.options[e.selectedIndex].value == 'Scheduled')
+        {
+            timer.classList.remove('hide');
+            timer.innerHTML = '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label for="open">Publish Time</label>'+
+                                '<input type="time" class="form-control" name="open" id="open" >'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label for="close">Close Time</label>'+
+                                '<input type="time" class="form-control" name="close" id="close" >'+
+                            '</div>'+
+                        '</div>';
+        }
+        else
+        {
+            timer.innerHTML = '';
+            timer.classList.add('hide');
+        }
+    }
+
+    // onload call to the status change
+    Status(document.getElementById('status'));
+
     function getsubcats(elm){
 
         var catid = elm.options[elm.options.selectedIndex].value;

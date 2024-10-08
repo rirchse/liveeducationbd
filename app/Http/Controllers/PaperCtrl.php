@@ -32,7 +32,7 @@ class PaperCtrl extends Controller
     public function index()
     {
         $papers = Paper::orderBy('id','DESC')
-        ->get();
+        ->paginate(25);
         return view('layouts.papers.index', compact('papers'));
     }
 
@@ -87,6 +87,11 @@ class PaperCtrl extends Controller
             $data['banner'] = $source->uploadImage($data['banner'], 'papers/');
         }
 
+        if(!isset($data['format']))
+        {
+            $data['format'] = 0;
+        }
+
         try{
             Paper::insert($data);
         }
@@ -114,6 +119,16 @@ class PaperCtrl extends Controller
         return view('layouts.papers.read', compact('paper'));
     }
 
+    public function view($id)
+    {
+        if(!is_null(Session::get('_paper')))
+        {
+            Session::forget('_paper');
+        }
+        $paper = Paper::find($id);
+        return view('layouts.papers.view', compact('paper'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -122,8 +137,11 @@ class PaperCtrl extends Controller
      */
     public function edit($id)
     {
+        $courses = Course::where('status', 'Active')->get();
+        $batches = Batch::where('status', 'Active')->get();
+        $departments = Department::where('status', 'Active')->get();
         $paper = Paper::find($id);
-        return view('layouts.papers.edit', compact('paper'));
+        return view('layouts.papers.edit', compact('paper', 'courses', 'batches', 'departments'));
     }
 
     /**
@@ -203,7 +221,8 @@ class PaperCtrl extends Controller
     public function addQuestion($id)
     {
         $paper = Paper::find($id);
-        if($paper){
+        if($paper)
+        {
             Session::put('_paper', $paper);
             return redirect()->route('question.view');
         }
@@ -213,17 +232,19 @@ class PaperCtrl extends Controller
     public function addToPaper(Request $request)
     {
         $data = $request->all();
-        // dd($data);
-        $ids = [];
         $ids = explode(',', $data['question']);
         if(!is_null(Session::get('_paper')))
         {
             $paper = Session::get('_paper');
-            $paper->questions()->sync($ids);
+            $qcount = $paper->questions()->sync($ids);
+
+            $paper = Paper::find($paper->id);
+            Session::put('_paper', $paper);
 
             return response()->json([
                 'success' => true,
-                'message' => 'The question added to the paper'
+                'message' => 'The question added to the paper',
+                'qcount' => $qcount
             ]);
         }
 

@@ -99,6 +99,7 @@ Route::middleware(['auth'])->group(function()
 	{
 		Route::get('paper/add-question/{paper_id}', 'addQuestion')->name('paper.add.question');
 		Route::post('paper/add_to_paper', 'addToPaper')->name('paper.addtopaper');
+		Route::get('/paper/view/{id}', 'view')->name('paper.view');
 	});
 	
 });

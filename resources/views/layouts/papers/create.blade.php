@@ -66,12 +66,6 @@ $source = New SourceCtrl;
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="banner">Banner</label>
-                        <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
                         <label for="header">Header</label>
                         <textarea class="form-control editor" name="header" id="header" rows="5" required></textarea>
                     </div>
@@ -82,6 +76,12 @@ $source = New SourceCtrl;
                         <textarea class="form-control" name="details" id="details" rows="4"></textarea>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="banner">Banner</label>
+                        <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="name">Question Paper No.</label>
@@ -89,6 +89,40 @@ $source = New SourceCtrl;
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="max">Questions Limit</label>
+                        <input type="number" class="form-control" name="max" id="max" >
+                    </div>
+                </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" name="status" id="status" onchange="Status(this)">
+                                <option value="">Select One</option>
+                                <option value="Unpublished">Unpublished</option>
+                                <option value="Published">Published</option>
+                                <option value="Scheduled">Scheduled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 no-padding hide">
+                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="format">MCQ List Format</label>
+                        <select class="form-control" name="format" id="format" >
+                            <option value="">Select One</option>
+                            @foreach($source->mcqlist() as $key => $val)
+                            <option value="{{$key}}">{{implode(', ', $val)}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                {{-- <div class="col-md-6">
                     <div class="form-group">
                         <label for="time">Time (in minute)</label>
                         <input type="number" class="form-control" name="time" id="time" required >
@@ -156,40 +190,7 @@ $source = New SourceCtrl;
                             <option value="Yes">Authenticated</option>
                         </select>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="format">MCQ List Format</label>
-                        <select class="form-control" name="format" id="format" >
-                            <option value="">Select One</option>
-                            @foreach($source->mcqlist() as $key => $val)
-                            <option value="{{$key}}">{{implode(', ', $val)}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="max">Questions Limit</label>
-                        <input type="number" class="form-control" name="max" id="max" >
-                    </div>
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select class="form-control" name="status" id="status" onchange="Status(this)">
-                                <option value="">Select One</option>
-                                <option value="Unpublished">Unpublished</option>
-                                <option value="Published">Published</option>
-                                <option value="Scheduled">Scheduled</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-12 no-padding hide">
-                        
-                    </div>
-                </div>
+                </div> --}}
             </div> <!-- /.box body -->
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary pull-right" onclick="formCheck(this)"><i class="fa fa-save"></i> Save</button>
