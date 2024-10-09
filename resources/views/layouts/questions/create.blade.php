@@ -108,11 +108,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">{{$filter->name}}</label>
-                                <select name="filter[]" id="" class="form-control select2" multiple>
-                                    @foreach($filter->subfilter as $val)
-                                    <option value="{{$val->id}}">{{$val->name}}</option>
-                                    @endforeach
-                                </select>
+                                <div class="input-group">
+                                    <select name="filter[]" id="" class="form-control select2" multiple>
+                                        @foreach($filter->subfilter as $val)
+                                        <option value="{{$val->id}}">{{$val->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="input-group-addon">
+                                        <input type="checkbox">
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     @endif
@@ -147,8 +152,8 @@
                 </div>
             </div> <!-- /.box body -->
             <div class="box-footer">
-                {{-- <button type="button" onclick="msgHide()">scroll test</button> --}}
-                <button type="btnSubmit" class="btn btn-primary pull-right" id="btnSubmit"><i class="fa fa-save"></i> Save</button>
+                {{-- <button type="button" onclick="resetFields()">Reset Fields</button> --}}
+                <button type="btnSubmit" class="btn btn-primary pull-right" id="btnSubmit" onclick="formValidation()"><i class="fa fa-save"></i> Save</button>
             </div>
         </form>
     </div> <!-- /.box -->
@@ -437,7 +442,12 @@ function getFilters(e)
                 filtersHtml += '<div class="col-md-6">'+
                     '<div class="form-group">'+
                         '<label for="">'+val.name+'</label>'+
-                        '<select name="filter[]" id="'+val.id+'" class="form-control select2" multiple>'+options+'</select>'+
+                        '<div class="input-group">'+
+                            '<select name="filter[]" id="'+val.id+'" class="form-control select2" multiple>'+options+'</select>'+
+                            '<span class="input-group-addon">'+
+                                '<input type="checkbox">'+
+                            '</span>'+
+                        '</div>'+
                     '</div>'+
                 '</div>';
 
@@ -617,6 +627,16 @@ function selectType(e)
     });
 }
 
+function formValidation()
+{
+    let title = document.getElementById('title');
+
+    if(title.value == ''){
+        alert('Question title field is required.');
+    }
+    title.focus();
+}
+
 // ------------------ store data to database ----------------
 
 let access = false;
@@ -790,9 +810,12 @@ function resetFields()
     label.innerHTML = '';
 
     let filters = document.getElementsByName('filter[]');
-    for(let x = 3; filters.length > x; x++)
+    for(let x = 0; filters.length > x; x++)
     {
-        filters[x].value = [];
+        if(filters[x].nextElementSibling.nextElementSibling.firstElementChild.checked == false)
+        {
+            filters[x].value = [];
+        }
     }
 
     let labelFields = document.getElementsByClassName('label-filters');
@@ -802,8 +825,6 @@ function resetFields()
     }
 
     $(function (){ $('.select2').select2() });
-
-    // document.getElementById("mcq_form").scrollIntoView({ behavior: "smooth" });
 }
 
 </script>
