@@ -26,7 +26,7 @@ $value = $paper;
           </div>
           <div class="col-md-12 text-right toolbar-icon">
             <a href="{{route('paper.create')}}" title="Add New" class="label label-info"><i class="fa fa-plus"></i></a>
-            <a href="{{route('paper.view', $value->id)}}" title="View" class="label label-primary"><i class="fa fa-file-text"></i></a>
+            <a href="{{route('paper.view', $value->id)}}" title="View" class="label label-primary"><i class="fa fa-th"></i></a>
             <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
             <a href="{{route('paper.edit', $value->id)}}" class="label label-warning" title="Edit this"><i class="fa fa-gear"></i></a>
           </div>
@@ -65,6 +65,10 @@ $value = $paper;
                 <tr>
                   <th>Max Questions Entry:</th>
                   <td>{{$value->max}}</td>
+                </tr>
+                <tr>
+                  <th>Question Count:</th>
+                  <td>{{count($value->questions->select('id'))}}</td>
                 </tr>
                 <tr>
                   <th>Status:</th>

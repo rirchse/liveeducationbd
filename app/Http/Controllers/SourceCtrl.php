@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Image;
 use File;
+use Mail;
 
 class SourceCtrl extends Controller
 {
@@ -32,22 +33,6 @@ class SourceCtrl extends Controller
     return '';
   }
 
-  public function balance($data)
-  {
-    if($data)
-    {
-      if($data > 0)
-      {
-        return '<span style="color:green">Adv: '.$data.'</span>';
-      }
-      elseif($data < 0)
-      {
-        return '<span style="color:red">Due: '.$data.'</span>';
-      }
-    }
-    return 0;
-  }
-
   public function mcqlist()
   {
     return [
@@ -67,5 +52,32 @@ class SourceCtrl extends Controller
       ['i.', 'ii.', 'iii.', 'iv.', 'v.'],
       ['(i)', '(ii)', '(iii)', '(iv)', '(v)'],
     ];
+  }
+
+  public function sendMail(array $data)
+  {
+    $data1 = [
+      'email_from' => 'noreply@liveeducationbd.com',
+      'from_name' => 'Live Education BD'
+    ];
+
+    $data = array_merge($data, $data1);
+
+    Mail::send('mail.default', $data, function($message) use ($data)
+    {
+      $message->to($data['email_to'])->subject($data['subject']);
+      $message->from($data['email_from'], $data['from_name']);
+    });
+  }
+
+  public function host()
+  {    
+    $protocol = isset($_SERVER['HTTPS'])?'https://':'http://';
+    $host = $protocol.$_SERVER['HTTP_HOST'];
+    if(empty($_SERVER['HTTP_HOST']))
+    {
+        $host = 'http://liveeducationbd.com';
+    }
+    return $host;
   }
 }

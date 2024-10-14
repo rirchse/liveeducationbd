@@ -31,7 +31,7 @@ $source = New SourceCtrl;
         <form action="{{route('paper.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="box-body">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Course</label>
                         <select name="course_id" id="course_id" class="form-control select2">
@@ -42,7 +42,7 @@ $source = New SourceCtrl;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Batch</label>
                         <select name="batch_id" id="batch_id" class="form-control select2">
@@ -53,12 +53,23 @@ $source = New SourceCtrl;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Department</label>
                         <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
                             @foreach($departments as $val)
+                            <option value="{{$val->id}}">{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Group</label>
+                        <select name="group_id" id="group_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($groups as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
                             @endforeach
                         </select>

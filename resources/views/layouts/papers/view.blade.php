@@ -32,7 +32,7 @@ $source = New SourceCtrl;
               <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
               <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
               <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
-              <a href="{{route('paper.show', $paper->id)}}" class="label label-primary" title="Show"><i class="fa fa-file-text"></i></a>
+              <a href="{{route('paper.show', $paper->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a>
               <a href="{{route('paper.edit', $paper->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a>
             </div>
           </div>
@@ -45,9 +45,11 @@ $source = New SourceCtrl;
         <div class="col-md-12">
           <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
+          @if($paper->details)
           <div class="col-md-12 indication">
             <p>"{!! $paper->details !!}"</p><br>
           </div>
+          @endif
             <div class="col-md-12">
               @foreach($paper->questions as $key => $value)
               <div class="panel">

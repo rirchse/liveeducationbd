@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,13 @@ Route::get('/login', function()
 })->name('login');
 
 Route::post('/login', [LoginController::class, 'loginPost'])->name('login.post');
-Route::get('/signup', 'HomeCtrl@signup');
+Route::controller(RegisterController::class)->group(function()
+{
+	Route::get('/signup', 'signup')->name('register');
+	Route::post('/signup', 'signupPost')->name('register.post');
+	Route::get('/account_verify/{code}', 'verify')->name('email.verify');
+	// Route::get('/verification', '')
+});
 
 Route::middleware(['auth'])->group(function()
 {
@@ -60,6 +67,8 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('label', 'LabelCtrl');
 	Route::resource('paper', 'PaperCtrl');
 	Route::resource('batch', 'BatchCtrl');
+	Route::resource('group', 'GroupCtrl');
+	Route::resource('student', 'StudentCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()

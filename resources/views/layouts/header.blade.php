@@ -153,25 +153,39 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{route('course.index')}}"><i class="fa fa-file-text"></i> View Courses</a></li>
-            <li><a href="{{route('batch.index')}}"><i class="fa fa-th"></i> View Batches</a></li>
             <li><a href="{{route('department.index')}}"><i class="fa fa-sitemap"></i> View Departments</a></li>
             <li><a href="{{route('semester.index')}}"><i class="fa fa-tree"></i> View Semesters</a></li>
             <li><a href="{{route('subject.index')}}"><i class="fa fa-book"></i> View Subjects</a></li>
             <li><a href="{{route('chapter.index')}}"><i class="fa fa-bookmark"></i> View Chapters</a></li>
+            <li><a href="{{route('batch.index')}}"><i class="fa fa-th"></i> View Batches</a></li>
+            <li><a href="{{route('group.index')}}"><i class="fa fa-object-group"></i> View Groups</a></li>
           </ul>
         </li>
 
         <li class="treeview">
           <a href="#">
             <i class="fa fa-users"></i>
-            <span>Users</span>
+            <span>Students</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{route('student.create')}}"><i class="fa fa-circle-o"></i> Add Student</a></li>
+            <li><a href="{{route('student.index')}}"><i class="fa fa-circle-o"></i> View Students</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-graduation-cap"></i>
+            <span>Teacher</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-circle-o"></i> View Teachers</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> View Students</a></li>
           </ul>
         </li>
 

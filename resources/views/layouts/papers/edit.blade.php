@@ -35,7 +35,7 @@ $value = $paper;
             @csrf
             @method('PUT')
             <div class="box-body">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Course</label>
                         <select name="course_id" id="course_id" class="form-control select2">
@@ -46,7 +46,7 @@ $value = $paper;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Batch</label>
                         <select name="batch_id" id="batch_id" class="form-control select2">
@@ -57,13 +57,24 @@ $value = $paper;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Department</label>
                         <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
                             @foreach($departments as $val)
                             <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Group</label>
+                        <select name="group_id" id="group_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($groups as $val)
+                            <option value="{{$val->id}}" {{$value->group_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -191,9 +202,18 @@ $value = $paper;
                         <select class="form-control" name="permit" id="permit" >
                             <option value="">Select One</option>
                             <option value="Every One" {{$value->permit == 'Every One'? 'selected': ''}}>Every One</option>
-                            <option value="Group 1" {{$value->permit == 'Group 2'? 'selected': ''}}>Group 2</option>
-                            <option value="Group 1" {{$value->permit == 'Group 3'? 'selected': ''}}>Group 3</option>
-                            <option value="Group 1" {{$value->permit == 'Group 4'? 'selected': ''}}>Group 4</option>
+                            <option value="Batch" {{$value->permit == 'Batch'? 'selected': ''}}>Batch</option>
+                            <option value="Group" {{$value->permit == 'Group'? 'selected': ''}}>Group</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="permit">Paid exam?</label>
+                        <select class="form-control" name="permit" id="permit" >
+                            <option value="">Select One</option>
+                            <option value="Yes" {{$value->permit == 'Yes'? 'selected': ''}}>Yes</option>
+                            <option value="No" {{$value->permit == 'No'? 'selected': ''}}>No</option>
                         </select>
                     </div>
                 </div>

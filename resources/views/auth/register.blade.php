@@ -1,77 +1,109 @@
-@extends('layouts.app')
-
+@extends('login')
+@section('title', 'Register')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+{{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
+<style>
+  .checkbox{padding-left: 25px}
+</style>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="main-wrapper" style="width:100%;margin-bottom:50px">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="sign-up-form">
+        <div class="login-box" style="margin-top:10px">
+        <div class="login-logo">
+          <h2>{{config('app.name', 'App Name')}} Register</h2>
         </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+          {{-- <p class="login-box-msg">
+            <img src="/img/logo.png?v=3008" alt=""><br><br>Login to start your session</p> --}}
+
+          <form action="{{ route('register.post') }}" method="POST" style="margin-bottom:15px">
+            @csrf
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <div class="input-group">
+                <input type="text" name="name" class='form-control' required />
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <div class="input-group">
+                <input type="email" name="email" class='form-control' required />
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="mobile">Mobile</label>
+              <div class="input-group">
+                <input type="text" name="contact" class='form-control' required placeholder="010 00 000 000" />
+                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-group">
+                <input type="password" name="password" class="form-control" required>
+                <span class="input-group-addon" onclick="showPassword(this)"><i class="fa fa-eye-slash"></i></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                {{-- @include('/partials.google_recaptcha') --}}
+                {{-- <br> --}}
+              </div>
+              {{-- <div class="col-xs-8">
+                <div class="checkbox icheck">
+                  <label class="">
+                    <input type="checkbox" class="checkbox"> Remember Me
+                  </label>
+                  <div class="clearfix"></div>
+                </div>
+              </div> --}}
+              <!-- /.col -->
+              <div class="col-xs-12">
+                <button type="submit" class="btn btn-info btn-submit btn-block">Submit</button>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+
+          <!-- <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Login using
+              Facebook</a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Login using
+              Google+</a>
+          </div> -->
+          <!-- /.social-auth-links -->
+
+          {{-- <a href="{{route('login')}}" class="text-primary">Already have an account?</a> --}}
+        </div><!-- /.login-box-body -->
+      </div><!-- /.login-box -->
+      </div>
+      
     </div>
+  </div>
 </div>
+
+<script>
+  function showPassword(e)
+  {
+    let elm = e.previousElementSibling;
+    if(elm.type == 'password')
+    {
+      elm.setAttribute('type', 'text');
+      e.firstChild.classList.add('fa-eye');
+      e.firstChild.classList.remove('fa-eye-slash');
+    }
+    else 
+    {
+      elm.setAttribute('type', 'password');
+      e.firstChild.classList.add('fa-eye-slash');
+      e.firstChild.classList.remove('fa-eye');
+    }
+  }
+</script>
 @endsection

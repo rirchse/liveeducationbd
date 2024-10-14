@@ -4,15 +4,15 @@ $source = New SourceCtrl;
 @endphp
 
 @extends('dashboard')
-@section('title', 'View All Batch')
+@section('title', 'View All Group')
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>All Batch</h1>
+  <h1>All Group</h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
     {{-- <li><a href="#">Tables</a></li> --}}
-    <li class="active">All Batch</li>
+    <li class="active">All Group</li>
   </ol>
 </section>
 <!-- Main content -->
@@ -21,16 +21,16 @@ $source = New SourceCtrl;
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header">
-          <h3 class="box-title">List of Batch</h3>
+          <h3 class="box-title">List of Group</h3>
               <div class="box-tools">
-                <a href="{{route('batch.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a>
-                <div class="input-group input-group-sm" style="float:right; width: 150px;margin-left:15px">
+                <a href="{{route('group.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a>
+                {{-- <div class="input-group input-group-sm" style="float:right; width: 150px;margin-left:15px">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                   </div>
-                </div>
+                </div> --}}
               </div>
             </div>
             <!-- /.box-header -->
@@ -45,7 +45,7 @@ $source = New SourceCtrl;
                   <th>Status</th>
                   <th width="110">Action</th>
                 </tr>
-                @foreach($batches as $value)
+                @foreach($groups as $value)
                 <tr>
                   <td>{{$value->id}}</td>
                   <td>{{$value->name}}</td>
@@ -60,9 +60,9 @@ $source = New SourceCtrl;
                     @endif
                   </td>
                   <td>
-                    {{-- <a href="{{route('course.show',$value->id)}}" class="label label-info" title="course Details"><i class="fa fa-file-text"></i></a> --}}
-                    <a href="{{route('batch.edit', $value->id)}}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
-                    <form style="display: inline" action="{{route('batch.destroy', $value->id)}}" method="POST">
+                    {{-- <a href="{{route('group.show',$value->id)}}" class="label label-info" title="Details"><i class="fa fa-file-text"></i></a> --}}
+                    <a href="{{route('group.edit', $value->id)}}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
+                    <form style="display: inline" action="{{route('group.destroy', $value->id)}}" method="POST">
                       @csrf
                       @method('DELETE')
                       <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one?')"><i class="fa fa-trash"></i></button></form>

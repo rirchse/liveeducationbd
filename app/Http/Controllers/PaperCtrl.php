@@ -11,6 +11,7 @@ use App\Models\Paper;
 use App\Models\Course;
 use App\Models\Batch;
 use App\Models\Department;
+use App\Models\Group;
 use Auth;
 use Image;
 use Toastr;
@@ -46,7 +47,8 @@ class PaperCtrl extends Controller
         $courses = Course::where('status', 'Active')->get();
         $batches = Batch::where('status', 'Active')->get();
         $departments = Department::where('status', 'Active')->get();
-        return view('layouts.papers.create', compact('courses', 'batches', 'departments'));
+        $groups = Group::where('status', 'Active')->get();
+        return view('layouts.papers.create', compact('courses', 'batches', 'departments', 'groups'));
     }
 
     /**
@@ -140,8 +142,9 @@ class PaperCtrl extends Controller
         $courses = Course::where('status', 'Active')->get();
         $batches = Batch::where('status', 'Active')->get();
         $departments = Department::where('status', 'Active')->get();
+        $groups = Group::where('status', 'Active')->get();
         $paper = Paper::find($id);
-        return view('layouts.papers.edit', compact('paper', 'courses', 'batches', 'departments'));
+        return view('layouts.papers.edit', compact('paper', 'courses', 'batches', 'departments', 'groups'));
     }
 
     /**

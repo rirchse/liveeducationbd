@@ -14,10 +14,6 @@ use App\Models\Filter;
 
 class HomeCtrl extends Controller
 {
-    public function signup(Request $request)
-    {
-        return view('home');
-    }
     /**
      * Create a new controller instance.
      *
