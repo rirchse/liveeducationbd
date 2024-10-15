@@ -140,6 +140,8 @@
           <ul class="treeview-menu">
             <li><a href="{{route('paper.create')}}"><i class="fa fa-pencil"></i> Create Question Paper</a></li>
             <li><a href="{{route('paper.index')}}"><i class="fa fa-list"></i> View Question Papers</a></li>
+            <li><a href="{{route('batch.index')}}"><i class="fa fa-th"></i> View Batches</a></li>
+            <li><a href="{{route('group.index')}}"><i class="fa fa-object-group"></i> View Groups</a></li>
           </ul>
         </li>
        
@@ -157,8 +159,6 @@
             <li><a href="{{route('semester.index')}}"><i class="fa fa-tree"></i> View Semesters</a></li>
             <li><a href="{{route('subject.index')}}"><i class="fa fa-book"></i> View Subjects</a></li>
             <li><a href="{{route('chapter.index')}}"><i class="fa fa-bookmark"></i> View Chapters</a></li>
-            <li><a href="{{route('batch.index')}}"><i class="fa fa-th"></i> View Batches</a></li>
-            <li><a href="{{route('group.index')}}"><i class="fa fa-object-group"></i> View Groups</a></li>
           </ul>
         </li>
 
