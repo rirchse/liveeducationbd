@@ -160,8 +160,8 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
                 </div>
               </div>
               <div class="form-group">
-                <a class="btn btn-default btn-sm pull-left" href="{{route('paper.view', $paper->id)}}"><i class="fa fa-check"></i> Done</a>
-                <button type="button" class="btn btn-success btn-sm pull-right" onclick="addToPaper(this)" value="{{$paper->id}}"><i class="fa fa-plus"></i> Add To Paper</button>
+                <a class="btn btn-info pull-right" href="{{route('paper.view', $paper->id)}}"><i class="fa fa-check"></i> Done</a>
+                {{-- <button type="button" class="btn btn-success btn-sm pull-right" onclick="addToPaper(this)" value="{{$paper->id}}"><i class="fa fa-plus"></i> Add To Paper</button> --}}
               </div>
             </div>
           </div>
@@ -508,34 +508,38 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
       else
       {
         qcount.innerHTML = Number(qcount.innerHTML) + 1;
+        addToPaper(e, 'add');
       }
     }
     else
     {
       qcount.innerHTML = Number(qcount.innerHTML) - 1;
+      addToPaper(e, 'remove');
     }
   }
 
   // add question to paper
-  function addToPaper(e)
+  function addToPaper(e, action)
   {
+    let ids = e.value;
     //loading image view
-    loading.classList.remove('hide');
+    // loading.classList.remove('hide');
 
     let qcount = document.getElementById('qcount');
     let questions = document.getElementsByClassName('check');
 
-    let ids = [];
-    for(let q = 0; q < questions.length; q++)
-    {
-      if(questions[q].checked == true)
-      {
-        ids.push(questions[q].value);
-      }
-    }
+    // let ids = [];
+    // for(let q = 0; q < questions.length; q++)
+    // {
+    //   if(questions[q].checked == true)
+    //   {
+    //     ids.push(questions[q].value);
+    //   }
+    // }
 
     let formData = new FormData();
     formData.append('question', ids);
+    formData.append('action', action);
     // console.log(...formData);
 
     $.ajaxSetup({
@@ -552,9 +556,9 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
       contentType: false,
       processData: false,
       success: function(data){
-        console.log(data);
+        // console.log(data);
         // qcount.innerHTML = data.qcount.attached.length;
-        loading.classList.add('hide');
+        // loading.classList.add('hide');
       },
       error: function(data){
         console.log(data);

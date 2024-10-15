@@ -254,7 +254,14 @@ class PaperCtrl extends Controller
         if(!is_null(Session::get('_paper')))
         {
             $paper = Session::get('_paper');
-            $qcount = $paper->questions()->sync($ids);
+            if($data['action'] == 'add')
+            {
+                $qcount = $paper->questions()->attach($ids);
+            }
+            else
+            {
+                $qcount = $paper->questions()->detach($ids);
+            }
 
             $paper = Paper::find($paper->id);
             Session::put('_paper', $paper);

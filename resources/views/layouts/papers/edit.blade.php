@@ -146,13 +146,13 @@ $value = $paper;
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="mark">Mark (For Correct Answer)</label>
-                        <input type="number" class="form-control" name="mark" id="mark" required value="{{$value->mark}}">
+                        <input type="number" class="form-control" name="mark" id="mark" required value="{{$value->mark}}" step="0.01">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="minus">Mark (Negative for wrong Answer)</label>
-                        <input type="number" class="form-control" name="minus" id="minus" value="{{$value->minus}}">
+                        <input type="number" class="form-control" name="minus" id="minus" value="{{$value->minus}}" step="0.01">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -214,6 +214,16 @@ $value = $paper;
                             <option value="">Select One</option>
                             <option value="Yes" {{$value->permit == 'Yes'? 'selected': ''}}>Yes</option>
                             <option value="No" {{$value->permit == 'No'? 'selected': ''}}>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email">Send Result to the Email?</label>
+                        <select class="form-control" name="email" id="email" >
+                            <option value="">Select One</option>
+                            <option value="Yes" {{$value->email == 'Yes'? 'selected': ''}}>Yes</option>
+                            <option value="No" {{$value->email == 'No'? 'selected': ''}}>No</option>
                         </select>
                     </div>
                 </div>
