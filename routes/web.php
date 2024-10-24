@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\StudentLogin;
+use App\Http\Controllers\Students\StudentHomeCtrl;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,30 @@ Route::controller(RegisterController::class)->group(function()
 	Route::post('/signup', 'signupPost')->name('register.post');
 	Route::get('/account_verify/{code}', 'verify')->name('email.verify');
 	// Route::get('/verification', '')
+});
+Route::get('students', function(){
+	return '<p style="text-align:center;margin-top:20%">Welcome to Student Panel</p>';
+})->name('students');
+Route::controller(StudentLogin::class)->group(function()
+{
+	Route::get('students/login', 'login')->name('students.login');
+	Route::post('students/login', 'loginPost')->name('students.login.post');
+	Route::post('students/logout', 'logout')->name('students.logout');
+});
+
+Route::middleware('auth:student')->group(function()
+{
+	Route::controller(StudentHomeCtrl::class)->group(function()
+	{
+		Route::get('students/home', 'home')->name('students.home');
+		Route::get('students/exam', 'exam')->name('students.exam');
+		Route::get('students/exam/{id}', 'examShow')->name('students.exam.show');
+		Route::get('students/course', 'course')->name('students.course');
+		Route::get('students/course/{id}', 'courseShow')->name('students.course.show');
+		Route::post('students/course-apply', 'applyCourse')->name('students.course.apply');
+		Route::get('students/my-course', 'myCourse')->name('students.my-course');
+
+	});
 });
 
 Route::middleware(['auth'])->group(function()
@@ -109,6 +135,15 @@ Route::middleware(['auth'])->group(function()
 		Route::get('paper/add-question/{paper_id}', 'addQuestion')->name('paper.add.question');
 		Route::post('paper/add_to_paper', 'addToPaper')->name('paper.addtopaper');
 		Route::get('/paper/view/{id}', 'view')->name('paper.view');
+	});
+
+	Route::controller(StudentCtrl::class)->group(function()
+	{
+		Route::get('add-students/{id}/{name}', 'addStudent')->name('students.add');
+		Route::post('add-student-object', 'addStudentObject')->name('students.add.object');
+		Route::get('add-student-complete', 'addStudentComplete')->name('students.add.complete');
+		Route::get('student/view/{id}/{name}', 'view')->name('student.view');
+		Route::get('student/remove/{id}/{name}/{obj}', 'remove')->name('student.remove');
 	});
 	
 });

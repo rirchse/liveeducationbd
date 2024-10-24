@@ -41,17 +41,17 @@ $source = New SourceCtrl;
                 <tr>
                   <th>Id</th>
                   <th>Name</th>
-                  <th>Details</th>
+                  <th>Students</th>
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th>Status</th>
-                  <th width="110">Action</th>
+                  <th width="130">Action</th>
                 </tr>
                 @foreach($courses as $course)
                 <tr>
                   <td>{{$course->id}}</td>
                   <td>{{$course->name}}</td>
-                  <td>{{$course->details}}</td>
+                  <td><a href="{{route('student.view', [$course->id, 'course'])}}" class="btn btn-info">{{$course->students()->count()}}</a></td>
                   <td>{{$source->dtformat($course->created_at)}}</td>
                   <td>{{$source->dtformat($course->updated_at)}}</td>
                   <td>
@@ -63,6 +63,7 @@ $source = New SourceCtrl;
                   </td>
                   <td>
                     {{-- <a href="{{route('course.show',$course->id)}}" class="label label-info" title="course Details"><i class="fa fa-file-text"></i></a> --}}
+                    <a href="{{route('students.add', [$course->id, 'Course'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a>
                     <a href="{{route('course.edit',$course->id)}}" class="btn btn-warning btn-sm" title="Edit this course"><i class="fa fa-edit"></i></a>
                     <form style="display: inline" action="{{route('course.destroy', $course->id)}}" method="POST">
                       @csrf

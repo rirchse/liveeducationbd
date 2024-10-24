@@ -498,23 +498,26 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
   function count(e)
   {
     let maxq = document.getElementById('maxq');
-    if(e.checked == true)
+    if(maxq)
     {
-      if(Number(maxq.innerHTML) != 0 && Number(qcount.innerHTML) >= Number(maxq.innerHTML))
+      if(e.checked == true)
       {
-        alert('Question Enry Max Limit Over!');
-        e.checked = false;
+        if(Number(maxq.innerHTML) != 0 && Number(qcount.innerHTML) >= Number(maxq.innerHTML))
+        {
+          alert('Question Enry Max Limit Over!');
+          e.checked = false;
+        }
+        else
+        {
+          qcount.innerHTML = Number(qcount.innerHTML) + 1;
+          addToPaper(e, 'add');
+        }
       }
       else
       {
-        qcount.innerHTML = Number(qcount.innerHTML) + 1;
-        addToPaper(e, 'add');
+        qcount.innerHTML = Number(qcount.innerHTML) - 1;
+        addToPaper(e, 'remove');
       }
-    }
-    else
-    {
-      qcount.innerHTML = Number(qcount.innerHTML) - 1;
-      addToPaper(e, 'remove');
     }
   }
 
@@ -525,8 +528,8 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
     //loading image view
     // loading.classList.remove('hide');
 
-    let qcount = document.getElementById('qcount');
-    let questions = document.getElementsByClassName('check');
+    // let qcount = document.getElementById('qcount');
+    // let questions = document.getElementsByClassName('check');
 
     // let ids = [];
     // for(let q = 0; q < questions.length; q++)

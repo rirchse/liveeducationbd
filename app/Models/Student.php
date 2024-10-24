@@ -6,18 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    // public function courses()
-    // {
-    //     return $this->belongsToMany(Course::class);
-    // }
+    protected $guard = 'student';
 
-    // public function departments()
-    // {
-    //     return $this->belongsToMany(Department::class);
-    // }
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
 
-    // public function papers()
-    // {
-    //     return $this->belongsToMany(Paper::class);
-    // }
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class);
+    }
+
+    public function batches()
+    {
+        return $this->belongsToMany(Batch::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
 }

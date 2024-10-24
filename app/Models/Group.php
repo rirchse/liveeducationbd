@@ -20,4 +20,9 @@ class Group extends Model
     // {
     //     return $this->belongsToMany(Paper::class);
     // }
+    
+    public function students()
+    {
+        return $this->belongsToMany(Student::class);
+    }
 }

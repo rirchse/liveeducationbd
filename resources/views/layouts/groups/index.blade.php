@@ -40,16 +40,18 @@ $source = New SourceCtrl;
                   <th>Id</th>
                   <th>Name</th>
                   <th>Details</th>
+                  <th>Students</th>
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th>Status</th>
-                  <th width="110">Action</th>
+                  <th width="130">Action</th>
                 </tr>
                 @foreach($groups as $value)
                 <tr>
                   <td>{{$value->id}}</td>
                   <td>{{$value->name}}</td>
                   <td>{{$value->details}}</td>
+                  <td><a href="{{route('student.view', [$value->id, 'group'])}}" class="btn btn-info">{{$value->students()->count()}}</a></td>
                   <td>{{$source->dtformat($value->created_at)}}</td>
                   <td>{{$source->dtformat($value->updated_at)}}</td>
                   <td>
@@ -61,6 +63,7 @@ $source = New SourceCtrl;
                   </td>
                   <td>
                     {{-- <a href="{{route('group.show',$value->id)}}" class="label label-info" title="Details"><i class="fa fa-file-text"></i></a> --}}
+                    <a href="{{route('students.add', [$value->id, 'Group'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a>
                     <a href="{{route('group.edit', $value->id)}}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
                     <form style="display: inline" action="{{route('group.destroy', $value->id)}}" method="POST">
                       @csrf

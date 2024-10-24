@@ -1,17 +1,22 @@
 @php
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
-function check($id)
-{
-  $xids = [];
-  if(!is_null(Session::get('_object'))){
-    $xids = Session::get('_object')['xids'];
-  }
-  if(in_array($id, $xids))
-  {
-    return 'checked';
-  }
-}
+$xids = $object->students()->pluck('id')->toArray();
+
+// $object = $object;
+// function check($id)
+// {
+//   global $object;
+//   $xids = [];
+//   if(!is_null($object)){
+//     $xids = $object->students()->pluck('id')->toArray();
+//   }
+//   if(in_array($id, $xids))
+//   {
+//     return 'checked';
+//   }
+// }
+// dd($object->students()->pluck('id')->toArray());
 @endphp
 
 @extends('dashboard')
@@ -19,16 +24,16 @@ function check($id)
 @section('content')
 
 <style>
-  .object{position: fixed;right: 0; bottom: 0; max-width: 300px}
+  .object{position: fixed; right: 0; bottom: 0; max-width: 300px}
 </style>
 
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>Students Accounts</h1>
+    <h1>Students</h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Students</a></li>
       {{-- <li><a href="#">Tables</a></li> --}}
-      <li class="active">Students Accounts</li>
+      <li class="active">Students</li>
     </ol>
   </section>
 
@@ -38,9 +43,10 @@ function check($id)
       <div class="col-xs-12">
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">List of Students</h3>
+            <h3 class="box-title">List of Students ({{$students->total()}})</h3>
             <div class="box-tools">
-              <a href="{{route('student.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a>
+              {{-- <a href="{{route('student.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a> --}}
+              <a href="{{route($name.'.index')}}" class="btn btn-sm btn-info"><i class="fa fa-arrow-left"></i> Back</a>
               {{-- <div class="input-group input-group-sm" style="width: 150px;">
                 <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
@@ -55,13 +61,13 @@ function check($id)
             <table id="example1" class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th style="width:32px">#</th>
+                  {{-- <th style="width:32px">#</th> --}}
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Contact</th>
-                  <th>Status</th>
-                  <th>Created On</th>
+                  {{-- <th>Status</th>
+                  <th>Created On</th> --}}
                   <th width="110">Action</th>
                 </tr>
               </thead>
@@ -69,31 +75,22 @@ function check($id)
               @foreach($students as $value)
 
               <tr>
-                <td><input type="checkbox" onchange="check(this)" value="{{$value->id}}" {{check($value->id)}}/></td>
+                {{-- <td><input type="checkbox" onchange="check(this)" value="{{$value->id}}" {{in_array($value->id, $xids) ? 'checked' : ''}}/></td> --}}
                 <td>{{$value->id}}</td>
                 <td>{{$value->name}}</td>
                 <td>{{$value->email}}</td>
                 <td>{{$value->contact}}</td>
-                <td>
+                {{-- <td>
                   @if($value->status == "Active")
                   <span class="label label-success">{{$value->status}}</span>
                   @else
                   <span class="label label-warning">{{$value->status}}</span>
                   @endif
                 </td>
-                <td>{{ $source->dtformat($value->created_at) }}</td>
+                <td>{{ $source->dtformat($value->created_at) }}</td> --}}
                 <td>
-                  <a href="{{route('student.show', $value->id)}}" class="btn btn-info" title="User Details"><i class="fa fa-file-text"></i></a>
-                  <a href="{{route('student.edit', $value->id)}}" class="btn btn-warning" title="Edit this User"><i class="fa fa-edit"></i></a>
-                  @if($value->status == 1)
-                  {{-- <a href="/admin/user_login/{{$value->email}}" class="label label-success" title="Login to this account" target="_blank"><i class="fa fa-search-plus"></i></a> --}}
-                  @endif
-                  @if($value->status == 0)
-                  {{-- <a href="/admin/resend_email_verification/{{$value->id}}" class="label label-primary" onclick="return confirm('Are you sure you want to resend email verification to this user?')" title="Resend verification email."><i class="fa fa-envelope-o"></i></a> --}}
-                  @endif
-                  @if($value->status == 3)
-                  {{-- <a href="/admin/user/{{$value->id}}/restore" class="label label-success" title="Restore the account" onclick="return confirm('Are you sure you want to restore the account?')"><i class="fa fa-undo"></i></a> --}}
-                  @endif
+                  {{-- <a href="{{route('student.show', $value->id)}}" class="btn btn-info" title="User Details"><i class="fa fa-file-text"></i></a> --}}
+                  <a href="{{route('student.remove', [$value->id, $name, $object->id])}}" class="btn btn-danger" title="Remove"><i class="fa fa-times" onclick="return confirm('Are you sure you want to remove this student?')"></i></a>
                 </td>
               </tr>
 

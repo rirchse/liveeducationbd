@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Course;
+use App\Models\Batch;
+use App\Models\Group;
 use App\Models\Role;
 use App\Models\RoleUser;
 use Auth;
@@ -29,6 +32,27 @@ class StudentCtrl extends Controller
     {
         $students = Student::orderBy('id','DESC')->paginate(25);
         return view('layouts.students.index', compact('students'));
+    }
+
+    public function view($id, $name)
+    {
+        $object = $students = [];
+        if($name == 'group')
+        {
+            $object = Group::find($id);
+        }
+        elseif($name == 'batch')
+        {
+            $object = Batch::find($id);
+        }
+        elseif($name == 'course')
+        {
+            $object = Course::find($id);
+        }
+
+        $students = $object->students()->paginate(25);
+
+        return view('layouts.students.view', compact('object', 'students', 'name'));
     }
 
     /**
@@ -243,5 +267,131 @@ class StudentCtrl extends Controller
             Session::flash('success', 'Password successfully updated.');
             return redirect('/change_password');
         }
+    }
+    
+    public function addStudent($id, $name)
+    {
+        if($id && $name)
+        {
+            $object = [];
+            if($name == 'Group')
+            {
+                $object = Group::find($id);
+            }
+            elseif($name == 'Batch')
+            {
+                $object = Batch::find($id);
+            }
+            elseif($name == 'Course')
+            {
+                $object = Course::find($id);
+            }
+
+            if(!is_null($object))
+            {
+                Session::put('_object', [
+                    'id' => $id,
+                    'type' => $name,
+                    'name' => $object->name,
+                    'counter' => $object->students()->count(),
+                    'xids' => $object->students()->pluck('id')->toArray()
+                ]);
+
+                Session::flash('success', 'Add students to the '.$name);
+                return redirect()->route('student.index');
+            }
+        }
+
+        Session::flash('error', 'Invalid Request');
+        return back();
+    }
+
+    public function remove($id, $name, $objid)
+    {
+        $student = Student::find($id);
+        if($name == 'group')
+        {
+            $student->groups()->detach($objid);
+        }
+        elseif($name == 'batch')
+        {
+            $student->batches()->detach($objid);
+        }
+        elseif($name == 'course')
+        {
+            $student->courses()->detach($objid);
+        }
+
+        Session::flash('success', 'The student successfully removed from '.$name);
+        return back();
+    }
+
+    public function addStudentObject(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|numeric',
+            'action' => 'required|string',
+        ]);
+
+        $data = $request->all();
+        if(!is_null(Session::get('_object')))
+        {
+            $msg = '';
+            $student = Student::find($data['id']);
+            $object = Session::get('_object');
+            if($object['type'] == 'Group')
+            {
+                if($data['action'] == 'add')
+                {
+                    $student->groups()->attach($object['id']);
+                    $msg = 'A student added';
+                }
+                elseif($data['action'] == 'remove')
+                {
+                    $student->groups()->detach($object['id']);
+                    $msg = 'A student removed';
+                }
+            }
+            elseif($object['type'] == 'Batch')
+            {
+                if($data['action'] == 'add')
+                {
+                    $student->batches()->attach($object['id']);
+                    $msg = 'A student added';
+                }
+                elseif($data['action'] == 'remove')
+                {
+                    $student->batches()->detach($object['id']);
+                    $msg = 'A student removed';
+                }
+            }
+
+            $this->addStudent($object['id'], $object['type']);
+            // dd($object);
+
+            return response()->json([
+                'success' => true,
+                'message' => $msg
+            ]);
+        }
+        dd($data);
+    }
+
+    public function addStudentComplete()
+    {
+        if(!is_null(Session::get('_object')))
+        {
+            $object = Session::get('_object');
+            Session::forget('_object');
+            if($object['type'] == 'Batch')
+            {
+                return redirect()->route('batch.index');
+            }
+            elseif($object['type'] == 'Group')
+            {
+                return redirect()->route('group.index');
+            }
+        }
+        return back();
     }
 }

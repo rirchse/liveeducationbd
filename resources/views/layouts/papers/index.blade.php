@@ -84,8 +84,9 @@ $source = New SourceCtrl;
               <a href="{{route('paper.view', $value->id)}}">
                 <div class="col-md-6">
                   <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel-heading input-group">
                         <h4>({{$key+1}}) : <b> {{$value->name}}</b></h4>
+                        <span class="input-group-addon" title="Questions">{{$value->questions->count()}}</span>
                       <div class="clearfix"></div>
                     </div>
                   </div>
