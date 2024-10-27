@@ -9,6 +9,7 @@ $user = Auth::guard('student')->user();
   .checkbox{padding-left: 25px}
   .panel ::-webkit-scrollbar{width: 5px;}
   ::-webkit-scrollbar-thumb{background-color: #ddd}
+  .course-image{width:100%}
 </style>
 
 <div class="content-wrapper">
