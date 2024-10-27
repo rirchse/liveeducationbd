@@ -38,7 +38,7 @@ $value = $course;
           <input type="hidden" name="course_id" value="{{$value->id}}">
         <div class="panel panel-default">
           <div class="penel-heading" style="text-align: center;padding:15px">
-            <img src="/img/logo.png" alt="">
+            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
           </div>
           <div class="panel-heading"><b>{{$value->name}}</b></div>
           <div class="panel-body">
