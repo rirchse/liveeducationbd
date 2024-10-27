@@ -47,9 +47,11 @@ class CourseCtrl extends Controller
      */
     public function store(Request $request)
     {
+        $source = new SourceCtrl;
         $this->validate($request, [
             'name'      => 'required|unique:courses|max:255',
             'details'   => 'nullable|max:1000',
+            'banner'    => 'nullable|image|mimes:jpeg,jpg,png,pdf|max:1000',
         ]);
         
         $data = $request->all();
@@ -59,6 +61,10 @@ class CourseCtrl extends Controller
         }
 
         $data['status'] = 'Active';
+        if(isset($data['banner']))
+        {
+            $data['banner'] = $source->uploadImage($data['banner'], 'courses/');
+        }
 
         try{
             Course::insert($data);
@@ -108,9 +114,11 @@ class CourseCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
+        $source = new SourceCtrl;
         $this->validate($request, [
             'name'      => 'required|max:255',
             'details'   => 'nullable|max:1000',
+            'banner'   => 'nullable|image|mimes:jpeg,jpg,png,pdf|max:1000',
         ]);
         
         $data = $request->all();
@@ -123,16 +131,29 @@ class CourseCtrl extends Controller
         {
             unset($data['_method']);
         }
+        
+        $course = Course::find($id);
+        $xbanner = public_path($course->banner);
+
+        if(isset($data['banner']))
+        {
+            $data['banner'] = $source->uploadImage($data['banner'], 'courses/');
+        }
 
         try{
             Course::where('id', $id)->update($data);
+
+            if(File::exists($xbanner))
+            {
+                File::delete($xbanner);
+            }
         }
         catch(\E $e)
         {
             return $e;
         }
         
-        Session::flash('success', 'The course successfully Update!');
+        Session::flash('success', 'The course successfully Updated!');
 
         return redirect()->route('course.index');
     }

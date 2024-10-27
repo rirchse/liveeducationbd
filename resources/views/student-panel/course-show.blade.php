@@ -26,14 +26,12 @@ $value = $course;
 
     <!-- Main content -->
     <section class="content">
-      {{-- <div class="box box-default">
-        <div class="box-header with-border">
-          <h3 class="box-title">Course No.</h3>
+      <div class="col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading"><b>{{$value->name}}</b></div>
+          <div class="panel-body" style="min-height: 420px">{{$value->details}}</div>
         </div>
-        <div class="box-body">
-          The great content goes here
-        </div> <!-- /.box-body -->
-      </div> <!-- /.box --> --}}
+      </div>
       <div class="col-md-4">
         <form action="{{route('students.course.apply')}}" method="post">
           @csrf

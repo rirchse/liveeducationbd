@@ -2,7 +2,7 @@
 $user = Auth::guard('student')->user();
 @endphp
 @extends('student')
-@section('title', 'Course')
+@section('title', 'কোর্স সমূহ')
 @section('content')
 {{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style>
@@ -15,10 +15,10 @@ $user = Auth::guard('student')->user();
   <div class="container">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1> Course {{-- <small>Courseple 2.0</small> --}} </h1>
+      <h1> কোর্স সমূহ {{-- <small>কোর্স সমূহple 2.0</small> --}} </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Course</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> হোম</a></li>
+        <li><a href="#">কোর্স সমূহ</a></li>
         {{-- <li class="active">Top Navigation</li> --}}
       </ol>
     </section>
@@ -40,7 +40,7 @@ $user = Auth::guard('student')->user();
             <img src="/img/logo.png" alt="">
           </div>
           <div class="panel-heading"><b>{{$value->name}}</b></div>
-          <div class="panel-body" style="min-height:400px;max-height:400px;overflow:auto">{{$value->details}}
+          <div class="panel-body" style="min-height:400px;max-height:400px;overflow:auto">{!!$value->details!!}
             @if($value->status == 'Scheduled')
             <span>{{$value->open.' - '.$value->close}}</span>
             @endif
@@ -49,7 +49,6 @@ $user = Auth::guard('student')->user();
             @if($value->students()->where('id', $user->id)->first())
             <button class="btn btn-default pull-right" disabled>Applied</button>
             @else
-            {{-- <a href="{{route('students.apply.course', $value->id)}}" class="btn btn-info pull-right" onclick="return confirm('Are you sure you want to apply to this course?')">Apply</a> --}}
             <a class="btn btn-info pull-right" href="{{route('students.course.show', $value->id)}}">View</a>
             @endif
             <div class="clearfix"></div>

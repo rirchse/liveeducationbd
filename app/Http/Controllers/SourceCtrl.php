@@ -33,6 +33,15 @@ class SourceCtrl extends Controller
     return '';
   }
 
+  public function dtcformat($date)
+  {
+    if($date)
+    {
+      return date('M d, Y H:i:s', strtotime($date));
+    }
+    return '';
+  }
+
   public function mcqlist()
   {
     return [

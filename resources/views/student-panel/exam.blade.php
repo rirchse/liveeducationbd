@@ -1,5 +1,5 @@
 @extends('student')
-@section('title', 'Exam')
+@section('title', 'পরীক্ষা সমূহ')
 @section('content')
 {{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style>
@@ -10,10 +10,10 @@
   <div class="container">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1> Exam {{-- <small>Example 2.0</small> --}} </h1>
+      <h1> পরীক্ষা সমূহ {{-- <small>পরীক্ষা সমূহple 2.0</small> --}} </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Exam</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> হোম</a></li>
+        <li><a href="#">পরীক্ষা সমূহ</a></li>
         {{-- <li class="active">Top Navigation</li> --}}
       </ol>
     </section>
@@ -30,7 +30,7 @@
               @endif
             </div>
             <div class="panel-footer">
-              <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">View</a>
+              <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">শুরু করুন</a>
               <div class="clearfix"></div>
             </div>
           </div>

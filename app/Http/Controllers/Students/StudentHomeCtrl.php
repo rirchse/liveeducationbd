@@ -22,12 +22,24 @@ class StudentHomeCtrl extends Controller
 
   public function home()
   {
-    return view('student-panel.home');
+    $user = Auth::guard('student')->user();
+    // active courses
+    $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
+
+    // autheticates user courses
+    $student = Student::find($user->id);
+    $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
+
+    // authenticates user examps
+    $student = Student::find($user->id);
+    $batch_ids = $student->batches()->pluck('id')->toArray();
+    $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
+    return view('student-panel.home', compact('courses', 'mycourses', 'papers'));
   }
 
   public function course()
   {
-    $courses = Course::orderBy('id', 'DESC')->get();
+    $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
     return view('student-panel.course', compact('courses'));
   }
 
@@ -81,7 +93,6 @@ class StudentHomeCtrl extends Controller
     $user = Auth::guard('student')->user();
     $student = Student::find($user->id);
     $batch_ids = $student->batches()->pluck('id')->toArray();
-    // dd($batch_ids);
     $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
     return view('student-panel.exam', compact('papers'));
   }

@@ -32,9 +32,10 @@ if(Auth::guard('student')->user())
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="{{route('students.course')}}">Courses</a></li>
-          <li class="active"><a href="{{route('students.my-course')}}">My Courses</a></li>
-          <li><a href="{{route('students.exam')}}">Exams</a></li>
+          <li class="active"><a href="{{route('students.home')}}">হোম</a></li>
+          <li class="active"><a href="{{route('students.course')}}">কোর্স সমূহ</a></li>
+          <li class="active"><a href="{{route('students.my-course')}}">আমার কোর্স সমূহ</a></li>
+          <li><a href="{{route('students.exam')}}">পরীক্ষা সমূহ</a></li>
           {{-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">

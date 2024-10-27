@@ -1,5 +1,8 @@
 @extends('dashboard')
 @section('title', 'Add New Course')
+@section('stylesheets')
+<link href="/assets/summernote/summernote.min.css" rel="stylesheet">
+@endsection
 @section('content')
 <section class="content-header">
   <h1>Add a Course</h1>
@@ -12,12 +15,12 @@
 <!-- Main content -->
 <section class="content">
   <div class="row"> <!-- left column -->
-    <div class="col-md-8"> <!-- general form elements -->
+    <div class="col-md-10"> <!-- general form elements -->
       <div class="box box-primary">
         <div class="box-header with-border">
             <h3 style="color: #800" class="box-title">Course Details</h3>
         </div>
-        <form action="{{route('course.store')}}" method="POST">
+        <form action="{{route('course.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="box-body">
                 <div class="col-md-12">
@@ -30,7 +33,14 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="details">Details</label>
-                        <textarea class="form-control" name="details" id="details" rows="5"></textarea>
+                        <textarea class="form-control editor" name="details" id="details" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="banner">Banner</label>
+                        <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
+                        <p style="color:red;padding:5px 0">Image size: 6:4 / 600px X 400px</p>
                     </div>
                 </div>
             </div> <!-- /.box body -->
@@ -45,40 +55,31 @@
 @endsection
 
 @section('scripts')
+<script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
-    function getsubcats(elm){
-
-        var catid = elm.options[elm.options.selectedIndex].value;
-
-        $.ajax({
-            type: 'GET', //THIS NEEDS TO BE GET
-            url: '/get_sub_cats/'+catid,
-            success: function (data) {
-
-                var obj = JSON.parse(JSON.stringify(data));
-                var sub_cat_html = "";
-
-                $.each(obj['subcats'], function (key, val) {
-                   sub_cat_html += "<option value="+val.id+">"+val.name+"</option>";
-                });
-
-                if(sub_cat_html != ""){
-                    $("#sub_cat").html('<option value="">Select SubCategory</option>'+sub_cat_html)
-                }else{
-                    $("#sub_cat").html('<option value="">No SubCategory</option>')
-                }
-
-                // console.log(obj['subcats'].count());
-
-                // $("#sub_cat").append(you_html); //// For Append
-                   //// For replace with previous one
-            },
-            error: function(data) { 
-                 console.log('data error');
-            }
-        });
+   // on upload show image
+   function showImg(e)
+    {
+        if(e.parentNode.firstElementChild.tagName == 'IMG')
+        {
+            e.parentNode.firstElementChild.src = window.URL.createObjectURL(e.files[0]);
+        }
+        else
+        {
+            let img = document.createElement('img');
+            img.src = window.URL.createObjectURL(e.files[0]);
+            img.setAttribute('style', 'width:100%;max-width:400px; margin-top:15px');
+            img.alt = '';
+            e.parentNode.appendChild(img);
+        }
+        
     }
 
-    // getsubcats(elm);
+    //this script for text editor
+    $(document).ready(function() {
+        $('.editor').summernote({
+            height: 150
+        });
+    });
 </script>
 @endsection
