@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    @include('partials.styles')
-
-    @yield('stylesheets')
-
+	@include('partials.styles')
+	@yield('stylesheets')
 </head>
 
 <body class="layout-top-nav">

@@ -22,14 +22,14 @@ $user = Auth::guard('student')->user();
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> হোম</a></li>
-        <li><a href="#">হোম</a></li>
+        {{-- <li><a href="#">হোম</a></li> --}}
         {{-- <li class="active">Top Navigation</li> --}}
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="box box-default">
+      <div class="box box-info">
         <div class="box-header with-border">
           <h3 class="box-title">কোর্স সমূহ</h3>
         </div>
@@ -86,7 +86,7 @@ $user = Auth::guard('student')->user();
       </div> <!-- /.box -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">আমার পরীক্ষা</h3>
+          <h3 class="box-title">পরীক্ষা</h3>
         </div>
         <div class="box-body">
           @foreach($papers as $value)

@@ -2,7 +2,6 @@
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
-// $value = $exams;
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -13,13 +12,17 @@ $user = Auth::guard('student')->user();
   .panel ::-webkit-scrollbar{width: 5px;}
   ::-webkit-scrollbar-thumb{background-color: #ddd}
   .mcqitems{list-style: none; padding-left: 10px}
-  .mcqitems li{padding:5px; margin: 10px; border:1px solid #ddd; border-radius: 15px; max-width: 300px;}
+  .mcqitems li{padding:5px; margin: 10px; max-width: 300px;}
+  .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; min-width: 300px;}
   .mcqitems li input[type="radio"]{width: 20px;height: 20px; margin-right: 5px; padding-top:5px}
   .mcqitems li span{vertical-align: top}
   .banner{margin-top:15px}
   .banner img{width:100%}
-  .timer{font-weight: bold; font-size: 22px; text-align: center; color:#666}
+  .timer{font-weight: bold; font-size: 20px; text-align: center; color:#666; border:2px solid; border-radius:10px}
   .time span{ border:2px solid #444; color:ddd}
+  .sticky{position: fixed; top:7%; left: 0; right: 0; z-index: 999999;}
+  #fixed{text-align: center}
+  .selected{background:lightblue;}
 </style>
 
 <div class="content-wrapper">
@@ -27,8 +30,17 @@ $user = Auth::guard('student')->user();
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="row">
-        <div class="box box-info">
-          <div class="timer"><span id="timer">00:00</span></div>
+        <div class="box box-info" id="fixed">
+          <div class="col-xs-4">
+            Questions: <b>50</b>
+          </div>
+          <div class="col-xs-4">
+            <div class="timer"><span id="timer">00:00</span></div>
+          </div>
+          <div class="col-xs-4">
+            Solved: <b>50</b>
+          </div>
+          <div class="clearfix"></div>
         </div>
       </div>
     </section>
@@ -49,12 +61,17 @@ $user = Auth::guard('student')->user();
           @foreach($paper->questions as $key => $value)
           <div class="panel panel-default">
             <div class="panel-heading" style="background-color:none">
-              <div style="display: inline; font-weight:bold;float:left; padding-right:15px">প্রশ্ন নং- {{$key+1}}. </div>
-              <div style="display: inline">{!! $value->title !!}</div>
+              <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
+              <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
             </div>
-            <ul class="mcqitems">
+            <ul class="mcqitems" id="{{$value->id}}">
               @foreach($value->mcqitems as $k => $val)
-              <li><span><input type="radio" name="correct{{$value->id}}"></span><span> {{$source->mcqlist()[$paper->format][$k]}} </span>{{$val->item}}</li>
+              <li>
+                <label for="correct{{$value->id.$val->id}}" class="">
+                  <input onchange="select(this)" type="radio" name="correct{{$value->id}}" id="correct{{$value->id.$val->id}}" />
+                  <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
+                </label>
+              </li>
               @endforeach
             </ul>
           </div>
@@ -120,5 +137,40 @@ $user = Auth::guard('student')->user();
       document.getElementById("timer").innerHTML = '<span style="color:#d00">সময় শেষ</span>';
     }
   }, 1000);
+
+  // navbar fixed on scroll
+  window.onscroll = function(){
+    let filterParent = document.getElementById('fixed');
+    if(document.body.scrollTop >= 100 || document.documentElement.scrollTop >= 100)
+    {
+      filterParent.classList.add('sticky');
+    }
+    else
+    {
+      filterParent.classList.remove('sticky');
+    }
+  }
+
+  // select mcq items
+  function select(e)
+  {
+    let items = e.parentNode.parentNode.children;
+    console.log(items);
+  
+    for(let x = 0; items.length > x; x++)
+    {
+      if(items[x].firstElementChild.firstElementChild.checked == true)
+      {
+        e.classList.add('selected');
+      }
+      else
+      {
+        e.classList.remove('selected');
+      }
+      console.log(items[x].firstElementChild.firstElementChild.checked == true);
+      console.log(x);
+
+    }
+  }
   </script>
 @endsection

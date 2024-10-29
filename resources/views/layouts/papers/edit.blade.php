@@ -227,6 +227,12 @@ $value = $paper;
                         </select>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="message">Message After Exam</label>
+                        <textarea class="form-control editor" name="message" id="message" rows="5" required>{{$value->message}}</textarea>
+                    </div>
+                </div>
             </div> <!-- /.box body -->
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary pull-right" onclick="formCheck(this)"><i class="fa fa-save"></i> Save</button>

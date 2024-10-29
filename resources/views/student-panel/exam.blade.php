@@ -1,3 +1,9 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = New SourceCtrl;
+$user = Auth::guard('student')->user();
+@endphp
+
 @extends('student')
 @section('title', 'পরীক্ষা সমূহ')
 @section('content')
@@ -26,7 +32,7 @@
             <div class="panel-heading"><b>Exam No. {{$value->name}}</b></div>
             <div class="panel-body">Status: {{$value->status}} 
               @if($value->status == 'Scheduled')
-              <p>{{$value->open.' - '.$value->close}}</p>
+              <p>{!!$source->dtformat($value->open).' <br> '.$source->dtformat($value->close)!!}</p>
               @endif
             </div>
             <div class="panel-footer">
