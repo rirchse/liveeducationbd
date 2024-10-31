@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Paper;
+use App\Models\Exam;
+use App\Models\Question;
 use App\Models\Student;
 use App\Models\Batch;
 use App\Models\Department;
 use App\Models\Group;
+use App\Models\McqItem;
+use App\Models\Choice;
 use Auth;
 use Session;
 
@@ -99,7 +103,96 @@ class StudentHomeCtrl extends Controller
 
   public function examShow($id)
   {
+    $user = Auth::guard('student')->user();
+    $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
     $paper = Paper::find($id);
+    if($paper->exam_limit <= $exams)
+    {
+      //find paper
+      $exam_id = Exam::where('paper_id', $paper->id)->orderBy('id', 'DESC')->first()->id;
+      $mcq_ids = Choice::where('exam_id', $exam_id)->pluck('mcq_id')->toArray();
+      $dbmcqs = McqItem::whereIn('id', $mcq_ids)->whereNotNull('correct_answer')->get();
+
+      $questions = $paper->questions()->count();
+      $answered = count($mcq_ids);
+      $correct = $dbmcqs->count();
+      $wrong = $answered - $correct;
+      $no_answered = $questions - $answered;
+      $marks = ($paper->mark * $correct) - ($wrong * $paper->minus);
+
+      $result = [
+        'questions' => $questions,
+        'answered' => $answered,
+        'correct' => $correct,
+        'wrong' => $wrong,
+        'no_answered' => $no_answered,
+        'marks' => $marks,
+      ];
+
+      return view('student-panel.exam-show', compact('paper', 'result'));
+    }
+    
     return view('student-panel.exam-show', compact('paper'));
+  }
+
+  public function examAdd(Request $request)
+  {
+    $user = Auth::guard('student')->user();
+    $this->validate($request, [
+      'paper_id' => 'required|numeric',
+      'question_id' => 'required|string',
+      'mcq_id' => 'required|string',
+    ]);
+
+    $questions = $answered = $correct = $wrong = $no_answered = $marks = 0;
+
+    $question_ids = explode(',', $request->question_id);
+    $mcq_ids = explode(',', $request->mcq_id);
+
+    //find paper
+    $paper = Paper::find($request->paper_id);
+    $dbmcqs = McqItem::whereIn('id', $mcq_ids)->whereNotNull('correct_answer')->get();
+
+    $questions = $paper->questions()->count();
+    $answered = count($question_ids);
+    $correct = $dbmcqs->count();
+    $wrong = $answered - $correct;
+    $no_answered = $questions - $answered;
+    $marks = ($paper->mark * $correct) - ($wrong * $paper->minus);
+
+    try{
+      $exam = new Exam;
+      $exam->student_id = $user->id;
+      $exam->paper_id = $paper->id;
+      $exam->answer = $answered;
+      $exam->correct = $correct;
+      $exam->wrong = $wrong;
+      $exam->no_answer = $no_answered;
+      $exam->mark = $marks;
+      $exam->save();
+
+      for($x = 0; $x < count($question_ids); $x++)
+      {
+        Choice::insert([
+          'exam_id' => $exam->id,
+          'question_id' => $question_ids[$x],
+          'mcq_id' => $mcq_ids[$x]
+        ]);
+      }
+    }catch(\E $e)
+    {
+      return $e;
+    }    
+
+    return response()->json([
+      'success' => true,
+      'message' => $paper->message,
+      'questions' => $questions,
+      'answered' => $answered,
+      'correct' => $correct,
+      'wrong' => $wrong,
+      'no_answered' => $no_answered,
+      'marks' => $marks,
+    ]);
   }
 }

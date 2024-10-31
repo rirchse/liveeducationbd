@@ -20,7 +20,7 @@ $user = Auth::guard('student')->user();
   .banner img{width:100%}
   .timer{font-weight: bold; font-size: 20px; text-align: center; color:#666; border:2px solid; border-radius:10px}
   .time span{ border:2px solid #444; color:ddd}
-  .sticky{position: fixed; top:7%; left: 0; right: 0; z-index: 999999;}
+  .sticky{position: fixed; top:50px; left: 0; right: 0; z-index: 999999;}
   #fixed{text-align: center}
   .selected{background:lightblue;}
 </style>
@@ -28,25 +28,65 @@ $user = Auth::guard('student')->user();
 <div class="content-wrapper">
   <div class="container">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header"></section>
+
+    <!-- Main content -->
+    <section class="content" id="content">
+      @if($result)
+      <div class="row">
+        <div class="result box box-info" id="result">
+          <div class="col-md-4 col-md-offset-4">
+            <h3 style="text-align: center">Result</h3>
+            <table class="table table-bordered">
+              <tr>
+                <td>Total Questions</td>
+                <th id="question">{{$result['questions']}}</th>
+              </tr>
+              <tr>
+                <td>Answered</td>
+                <th id="answer">{{$result['answered']}}</th>
+              </tr>
+              <tr>
+                <td>Correct</td>
+                <th id="correct">{{$result['correct']}}</th>
+              </tr>
+              <tr>
+                <td>Wrong</td>
+                <th id="wrong">{{$result['wrong']}}</th>
+              </tr>
+              <tr>
+                <td>No Answered</td>
+                <th id="no_answer">{{$result['no_answered']}}</th>
+              </tr>
+              <tr>
+                <td>Marks</td>
+                <th id="marks">{{$result['marks']}}</th>
+              </tr>
+            </table>
+            <p style="text-align: center"><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        {{-- <div class="box box-danger" style="text-align: center">
+          <h4>No Exam Available</h4>
+          <p><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+        </div> --}}
+      </div>
+      @else
       <div class="row">
         <div class="box box-info" id="fixed">
           <div class="col-xs-4">
-            Questions: <b>50</b>
+            Questions: <b>{{$paper->questions->count()}}</b>
           </div>
           <div class="col-xs-4">
             <div class="timer"><span id="timer">00:00</span></div>
           </div>
           <div class="col-xs-4">
-            Solved: <b>50</b>
+            Solved: <b id="solved">0</b>
           </div>
           <div class="clearfix"></div>
         </div>
       </div>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
       <div class="row">
         <div class="box col-md-12">
           <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
@@ -67,8 +107,8 @@ $user = Auth::guard('student')->user();
             <ul class="mcqitems" id="{{$value->id}}">
               @foreach($value->mcqitems as $k => $val)
               <li>
-                <label for="correct{{$value->id.$val->id}}" class="">
-                  <input onchange="select(this)" type="radio" name="correct{{$value->id}}" id="correct{{$value->id.$val->id}}" />
+                <label class="">
+                  <input onclick="answer(this)" type="radio" name="{{$value->id}}" id="{{$value->id.$val->id}}" check="0" value="{{$val->id}}"/>
                   <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
                 </label>
               </li>
@@ -78,10 +118,47 @@ $user = Auth::guard('student')->user();
           @endforeach
         </div> <!--/.col -->
         <div class="col-md-12">
-          <button class="btn btn-info pull-right">Submit</button>
+          <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
         </div>
       </div><!-- /.row -->
+      @endif
     </section> <!-- /.content -->
+
+    <div id="result_hidden" style="display: none">
+      <div class="result box box-info" id="result">
+        <div class="col-md-4 col-md-offset-4">
+          <h3 style="text-align: center">Result</h3>
+          <table class="table table-bordered">
+            <tr>
+              <td>Total Questions</td>
+              <th id="question">0</th>
+            </tr>
+            <tr>
+              <td>Answered</td>
+              <th id="answer">0</th>
+            </tr>
+            <tr>
+              <td>Correct</td>
+              <th id="correct">0</th>
+            </tr>
+            <tr>
+              <td>Wrong</td>
+              <th id="wrong">0</th>
+            </tr>
+            <tr>
+              <td>No Answered</td>
+              <th id="no_answer">0</th>
+            </tr>
+            <tr>
+              <td>Marks</td>
+              <th id="marks">0</th>
+            </tr>
+          </table>
+          <p style="text-align: center"><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
 
   </div> <!-- /.container -->
 </div> <!-- /.content-wrapper -->
@@ -152,25 +229,122 @@ $user = Auth::guard('student')->user();
   }
 
   // select mcq items
-  function select(e)
+  let parentIds = [];
+  function answer(e)
   {
-    let items = e.parentNode.parentNode.children;
-    console.log(items);
-  
-    for(let x = 0; items.length > x; x++)
+    const parent = e.parentNode.parentNode.parentNode;
+    const items = parent.children;
+    
+    let solved = document.getElementById('solved');
+    let parenId = parent.getAttribute('id');
+    if(e.getAttribute('check') == 0)
+    {
+      e.checked = true;
+      e.setAttribute('check', 1);
+      if(!parentIds.includes(parenId))
+      {
+        solved.innerHTML = Number(solved.innerHTML) + 1;
+        parentIds.push(parenId);
+      }
+    }
+    else
+    {
+      e.checked = false;
+      e.setAttribute('check', 0);
+      solved.innerHTML = Number(solved.innerHTML) - 1;
+      parentIds.splice(parentIds.indexOf(parenId))
+    }
+
+    for(let x = 0; x < items.length; x++)
     {
       if(items[x].firstElementChild.firstElementChild.checked == true)
       {
-        e.classList.add('selected');
+        items[x].firstElementChild.firstElementChild.setAttribute('check', 1);
+        items[x].firstElementChild.classList.add('selected');
       }
       else
       {
-        e.classList.remove('selected');
+        items[x].firstElementChild.firstElementChild.setAttribute('check', 0);
+        items[x].firstElementChild.classList.remove('selected');
       }
-      console.log(items[x].firstElementChild.firstElementChild.checked == true);
-      console.log(x);
-
     }
+  }
+
+  // submit exam
+  function submitExam()
+  {
+    let qids =[];
+    let mcqids = [];
+    let mcqitems = document.getElementsByClassName('mcqitems');
+    for(let x = 0; x < mcqitems.length; x++)
+    {
+      for(let y = 0; y < mcqitems[x].children.length; y++)
+      {
+        if(mcqitems[x].children[y].firstElementChild.firstElementChild.checked == true)
+        {
+          let choice = mcqitems[x].children[y].firstElementChild.firstElementChild;
+          qids.push(Number(choice.name));
+          mcqids.push(Number(choice.value));
+        }
+      }
+    }
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+    let formData = new FormData();
+    formData.append('paper_id', '{{$paper->id}}');
+    formData.append('question_id', qids);
+    formData.append('mcq_id', mcqids);
+
+    $.ajax({
+      url: '{{route("student.exam.add")}}',
+      type: 'POST',
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(data){
+        console.log(data);
+        if(data.success == true)
+        {
+          let content = document.getElementById('content');
+          let result_hidden = document.getElementById('result_hidden');
+          let question = document.getElementById('question');
+          let answer = document.getElementById('answer');
+          let correct = document.getElementById('correct');
+          let wrong = document.getElementById('wrong');
+          let no_answer = document.getElementById('no_answer');
+          let marks = document.getElementById('marks');
+          let message = document.getElementById('message');
+          let msg = 'Exam Completed';
+
+          question.innerHTML = data.questions;
+          answer.innerHTML = data.answered;
+          correct.innerHTML = data.correct;
+          wrong.innerHTML = data.wrong;
+          no_answer.innerHTML = data.no_answered;
+          marks.innerHTML = data.marks;
+
+          if(data.message != null)
+          {
+            msg = data.message;
+          }
+
+          alert(msg);
+          content.innerHTML = result_hidden.innerHTML;
+        }
+        // qcount.innerHTML = data.qcount.attached.length;
+        // loading.classList.add('hide');
+      },
+      error: function(data){
+        console.log(data);
+      },
+    });
+    console.log(qids);
   }
   </script>
 @endsection
