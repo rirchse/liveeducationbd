@@ -32,7 +32,7 @@ $user = Auth::guard('student')->user();
 
     <!-- Main content -->
     <section class="content" id="content">
-      @if($result)
+      @if(!empty($result))
       <div class="row">
         <div class="result box box-info" id="result">
           <div class="col-md-4 col-md-offset-4">

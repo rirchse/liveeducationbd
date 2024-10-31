@@ -227,10 +227,10 @@ $value = $paper;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="message">Message After Exam</label>
-                        <textarea class="form-control editor" name="message" id="message" rows="5" required>{{$value->message}}</textarea>
+                        <textarea class="form-control" name="message" id="message" rows="3">{{$value->message}}</textarea>
                     </div>
                 </div>
             </div> <!-- /.box body -->
