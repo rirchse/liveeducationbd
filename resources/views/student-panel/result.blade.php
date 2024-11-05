@@ -60,7 +60,7 @@ $percentage = $score = 0;
                 </tr>
                 <tr>
                   <td>Course Name</td>
-                  <th>{{$value->paper->course->name}}</th>
+                  <th>{{$value->paper->course?$value->paper->course->name:''}}</th>
                 </tr>
                 <tr>
                   <td>Exam No.</td>
