@@ -68,7 +68,7 @@ $user = Auth::guard('student')->user();
               @endforeach
             </ul>
             <div class="panel-footer" style="color: #0a0">
-              Right Answer: <b>{{$right_answer}}</b>
+              সঠিক উত্তরঃ <b>{{$right_answer}}</b>
             </div>
           </div>
           @endforeach

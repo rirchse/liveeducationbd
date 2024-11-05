@@ -84,9 +84,10 @@ background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, r
             <div class="col-md-3">
               <a class="" href="{{route('students.exam.show', $value->id)}}">
               <div class="panel">
-                <div class="panel-body no-padding">
+                {{-- <div class="panel-body no-padding">
                   <img src="{{$value->banner ? $value->banner : '/img/paper-banner.png'}}" alt="" style="width:100%">
-                </div>
+                </div> --}}
+                <div class="panel-heading">Live Education BD</div>
                 <div class="panel-body" style="font-size:22px"><b>Exam No. {{$value->name}}</b></div>
                 <div class="panel-footer">
                   Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>

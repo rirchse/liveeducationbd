@@ -36,15 +36,15 @@ $percentage = $score = 0;
     <section class="content" id="content">
       @if(!empty($result))
       <div class="row">
-        @foreach($exams as $value)
+        @foreach($exams as $key => $value)
         @php
         $percentage = $value->paper->questions->count() * $value->mark / 100;
         @endphp
-        <div class="col-md-4 col-md-offset-4 result" id="result">
+        <div class="col-md-6 col-md-offset-3 result" id="result">
           <div class="panel panel-default">
             <img src="/img/paper-banner.png" alt="" style="width:100%">
             <div class="panel-heading no-padding">
-              <h3 style="text-align: center">Exam: {{$value->id}} > Result</h3>
+              <h3 style="text-align: center">Exam: {{$key+1}}</h3>
             </div>
             <div class="panel-body">
               <table class="table table-bordered">
@@ -56,10 +56,10 @@ $percentage = $score = 0;
                   <th>{{$value->max}}</th>
                 </tr> --}}
                 <tr>
-                  <th colspan="2" style="text-align: center">Result Summary</th>
+                  <th colspan="2" style="text-align: center;font-size:18px">Result Summary</th>
                 </tr>
                 <tr>
-                  <td>Exam Name</td>
+                  <td>Course Name</td>
                   <th>{{$value->paper->course->name}}</th>
                 </tr>
                 <tr>
@@ -114,13 +114,13 @@ $percentage = $score = 0;
                   <td>Final Result</td>
                   <th style="font-size: 16px">
                     @if($percentage > 80)
-                    <label class="label label success">Best</label>
+                    <label class="label label success">Extra Ordinary</label>
                     @elseif($percentage > 60)
-                    <label class="label label info">Better</label>
+                    <label class="label label info">Very Good</label>
                     @elseif($percentage > 40)
                     <label class="label label warning">Good</label>
                     @elseif($percentage < 40)
-                    <label class="label label-danger">Bad</label>
+                    <label class="label label-danger">Learner</label>
                     @endif
                   </th>
                 </tr>
@@ -129,7 +129,7 @@ $percentage = $score = 0;
             <div class="panel-footer">
               <p style="text-align: center">
                 <a href="{{route('students.exam')}}" class="btn btn-warning pull-left"><i class="fa fa-arrow-left"></i> Back</a>
-                <a href="{{route('students.solution', $value->id)}}" class="btn btn-info pull-right"><i class="fa fa-file-o"></i> Soltion</a>
+                <a href="{{route('students.solution', $value->id)}}" class="btn btn-info pull-right"><i class="fa fa-file-o"></i> Your Exam Paper</a>
               </p>
               <div class="clearfix"></div>
             </div>
