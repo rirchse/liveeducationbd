@@ -3,6 +3,13 @@
 <head>
 	@include('partials.styles')
 	@yield('stylesheets')
+	<style>
+		.content-wrapper{
+			background: rgb(0,3,36);
+			background: linear-gradient(90deg, rgba(0,3,36,1) 0%, rgba(9,73,121,1) 53%, rgba(7,128,153,1) 100%);
+		}
+		.content-header, .content-header > .breadcrumb > li > a{color:#fff}
+	</style>
 </head>
 
 <body class="layout-top-nav">

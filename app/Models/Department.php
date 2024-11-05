@@ -30,4 +30,9 @@ class Department extends Model
     {
         return $this->belongsToMany(Question::class);
     }
+
+    public function paper()
+    {
+        return $this->hasOne(Paper::class, 'department_id');
+    }
 }

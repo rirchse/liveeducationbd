@@ -27,19 +27,18 @@ $user = Auth::guard('student')->user();
     <!-- Main content -->
     <section class="content">
         @foreach($papers as $value)
-        <div class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading"><b>Exam No. {{$value->name}}</b></div>
-            <div class="panel-body">Status: {{$value->status}} 
-              @if($value->status == 'Scheduled')
-              <p>{!!$source->dtformat($value->open).' <br> '.$source->dtformat($value->close)!!}</p>
-              @endif
+        <div class="col-md-3">
+          <a class="" href="{{route('students.instruction', $value->id)}}">
+          <div class="panel">
+            <div class="panel-body no-padding">
+              <img src="{{$value->banner ? $value->banner : '/img/paper-banner.png'}}" alt="" style="width:100%">
             </div>
+            <div class="panel-body" style="font-size:22px"><b>Exam No. {{$value->name}}</b></div>
             <div class="panel-footer">
-              <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">শুরু করুন</a>
-              <div class="clearfix"></div>
+              Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>
             </div>
           </div>
+        </a>
         </div>
         @endforeach
     </section> <!-- /.content -->

@@ -48,22 +48,22 @@ $value = $paper;
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Batch</label>
-                        <select name="batch_id" id="batch_id" class="form-control select2">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($batches as $val)
-                            <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Department</label>
-                        <select name="department_id" id="department_id" class="form-control select2">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($departments as $val)
-                            <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @foreach($batches as $val)
+                            <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>

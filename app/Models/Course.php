@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    
     public function filters()
     {
         return $this->belongsToMany(Filter::class);
@@ -40,5 +39,10 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function paper()
+    {
+        return $this->hasOne(Paper::class, 'course_id');
     }
 }

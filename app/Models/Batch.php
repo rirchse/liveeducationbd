@@ -21,6 +21,11 @@ class Batch extends Model
         return $this->belongsToMany(Paper::class);
     }
 
+    public function paper()
+    {
+        return $this->hasOne(Paper::class, 'batch_id');
+    }
+
     public function students()
     {
         return $this->belongsToMany(Student::class);

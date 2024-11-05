@@ -35,10 +35,9 @@ class StudentHomeCtrl extends Controller
     $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
 
     // authenticates user examps
-    $student = Student::find($user->id);
     $batch_ids = $student->batches()->pluck('id')->toArray();
     $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
-    return view('student-panel.home', compact('courses', 'mycourses', 'papers'));
+    return view('student-panel.home', compact('courses', 'mycourses', 'papers', 'student'));
   }
 
   public function course()
@@ -101,6 +100,24 @@ class StudentHomeCtrl extends Controller
     return view('student-panel.exam', compact('papers'));
   }
 
+  public function instruction($id)
+  {
+    $user = Auth::guard('student')->user();
+    // $student = Student::find($user->id);
+    $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
+    $paper = Paper::find($id);
+    if($exams)
+    {
+      return redirect()->route('students.result', $id);
+    }
+    if($paper->status == 'Scheduled' && $paper->open <= date('Y-m-d H:i:s'))
+    {
+      Paper::where('id', $id)->update(['status' => 'Published']);
+      $paper = Paper::find($id);
+    }
+    return view('student-panel.instruct', compact('paper'));
+  }
+
   public function examShow($id)
   {
     $user = Auth::guard('student')->user();
@@ -109,6 +126,9 @@ class StudentHomeCtrl extends Controller
     if($paper->exam_limit <= $exams)
     {
       //find paper
+      $exams = Exam::where('paper_id', $paper->id)
+      ->where('student_id', $user->id)
+      ->get();
       $exam_id = Exam::where('paper_id', $paper->id)->orderBy('id', 'DESC')->first()->id;
       $mcq_ids = Choice::where('exam_id', $exam_id)->pluck('mcq_id')->toArray();
       $dbmcqs = McqItem::whereIn('id', $mcq_ids)->whereNotNull('correct_answer')->get();
@@ -129,10 +149,30 @@ class StudentHomeCtrl extends Controller
         'marks' => $marks,
       ];
 
-      return view('student-panel.exam-show', compact('paper', 'result'));
+      return view('student-panel.exam-show', compact('paper', 'result', 'exams'));
     }
     
     return view('student-panel.exam-show', compact('paper'));
+  }
+
+  public function result($id)
+  {
+    $user = Auth::guard('student')->user();
+    $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->get();
+    $paper = Paper::find($id);
+    $result = 'Yes';
+
+    return view('student-panel.result', compact('exams', 'paper', 'result'));
+  }
+
+  public function solution($id)
+  {
+    $user = Auth::guard('student')->user();
+    $exam = Exam::find($id);
+    $paper = Paper::find($exam->paper_id);
+    $choices = Choice::where('exam_id', $id)->pluck('mcq_id', 'question_id')->toArray();
+    // dd($choices);
+    return view('student-panel.solution', compact('paper', 'choices'));
   }
 
   public function examAdd(Request $request)

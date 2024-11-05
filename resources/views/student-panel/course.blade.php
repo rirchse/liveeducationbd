@@ -16,7 +16,7 @@ $user = Auth::guard('student')->user();
   <div class="container">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1> কোর্স সমূহ {{-- <small>কোর্স সমূহple 2.0</small> --}} </h1>
+      <h1> কোর্স সমূহ </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> হোম</a></li>
         <li><a href="#">কোর্স সমূহ</a></li>
@@ -26,18 +26,10 @@ $user = Auth::guard('student')->user();
 
     <!-- Main content -->
     <section class="content">
-      {{-- <div class="box box-default">
-        <div class="box-header with-border">
-          <h3 class="box-title">Course No.</h3>
-        </div>
-        <div class="box-body">
-          The great content goes here
-        </div> <!-- /.box-body -->
-      </div> <!-- /.box --> --}}
       @foreach($courses as $value)
       <div class="col-md-4">
         <div class="panel panel-default">
-          <div class="penel-heading" style="text-align: center;padding:15px">
+          <div class="penel-heading" style="text-align: center;padding:15px;min-height:150px">
             <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
           </div>
           <div class="panel-heading"><b>{{$value->name}}</b></div>

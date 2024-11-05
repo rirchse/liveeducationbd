@@ -44,19 +44,19 @@ $value = $course;
           <div class="panel-heading"><b>{{$value->name}}</b></div>
           <div class="panel-body">
             <div class="form-group">
-              <label for="">Batch</label>
-              <select id="batch_id" name="batch_id" class="form-control" required>
+              <label for="">Department (Optional)</label>
+              <select id="department_id" name="department_id" class="form-control">
                 <option value="">Select One</option>
-                @foreach($batches as $val)
+                @foreach($departments as $val)
                 <option value="{{$val->id}}">{{$val->name}}</option>
                 @endforeach
               </select>
             </div>
             <div class="form-group">
-              <label for="">Department (Optional)</label>
-              <select id="department_id" name="department_id" class="form-control">
+              <label for="">Batch</label>
+              <select id="batch_id" name="batch_id" class="form-control" required>
                 <option value="">Select One</option>
-                @foreach($departments as $val)
+                @foreach($batches as $val)
                 <option value="{{$val->id}}">{{$val->name}}</option>
                 @endforeach
               </select>
@@ -103,5 +103,15 @@ $value = $course;
       e.firstChild.classList.remove('fa-eye');
     }
   }
+
+  window.location.hash = "no-back-button";
+
+    // Again because Google Chrome doesn't insert
+    // the first hash into the history
+    window.location.hash = "Again-No-back-button"; 
+
+    window.onhashchange = function(){
+        window.location.hash = "no-back-button";
+    }
 </script>
 @endsection

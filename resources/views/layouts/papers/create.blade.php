@@ -44,10 +44,10 @@ $source = New SourceCtrl;
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Batch</label>
-                        <select name="batch_id" id="batch_id" class="form-control select2">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($batches as $val)
+                            @foreach($departments as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
                             @endforeach
                         </select>
@@ -55,10 +55,10 @@ $source = New SourceCtrl;
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Department</label>
-                        <select name="department_id" id="department_id" class="form-control select2">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($departments as $val)
+                            @foreach($batches as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
                             @endforeach
                         </select>

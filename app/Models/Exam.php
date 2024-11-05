@@ -10,6 +10,10 @@ class Exam extends Model
     {
         return $this->belongsToMany(Course::class);
     }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 
     public function departments()
     {
@@ -19,6 +23,11 @@ class Exam extends Model
     public function papers()
     {
         return $this->belongsToMany(Paper::class);
+    }
+
+    public function paper()
+    {
+        return $this->belongsTo(Paper::class);
     }
 
     public function students()

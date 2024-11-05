@@ -23,6 +23,7 @@ $user = Auth::guard('student')->user();
   .sticky{position: fixed; top:50px; left: 0; right: 0; z-index: 999999;}
   #fixed{text-align: center}
   .selected{background:lightblue;}
+  .result table th{text-align: right}
 </style>
 
 <div class="content-wrapper">
@@ -34,43 +35,118 @@ $user = Auth::guard('student')->user();
     <section class="content" id="content">
       @if(!empty($result))
       <div class="row">
-        <div class="result box box-info" id="result">
-          <div class="col-md-4 col-md-offset-4">
-            <h3 style="text-align: center">Result</h3>
-            <table class="table table-bordered">
-              <tr>
-                <td>Total Questions</td>
-                <th id="question">{{$result['questions']}}</th>
-              </tr>
-              <tr>
-                <td>Answered</td>
-                <th id="answer">{{$result['answered']}}</th>
-              </tr>
-              <tr>
-                <td>Correct</td>
-                <th id="correct">{{$result['correct']}}</th>
-              </tr>
-              <tr>
-                <td>Wrong</td>
-                <th id="wrong">{{$result['wrong']}}</th>
-              </tr>
-              <tr>
-                <td>No Answered</td>
-                <th id="no_answer">{{$result['no_answered']}}</th>
-              </tr>
-              <tr>
-                <td>Marks</td>
-                <th id="marks">{{$result['marks']}}</th>
-              </tr>
-            </table>
-            <p style="text-align: center"><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+        @foreach($exams as $value)
+        <div class="col-md-4 result" id="result">
+          <div class="panel panel-default">
+            <img src="/img/paper-banner.png" alt="" style="width:100%">
+            <div class="panel-heading no-padding">
+              <h3 style="text-align: center">Exam: {{$value->id}} > Result</h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-bordered">
+                {{-- <tr>
+                  <th colspan="2" style="text-align: center">Exam & Candidate Details</th>
+                </tr>
+                <tr>
+                  <td>Candidate</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr> --}}
+                <tr>
+                  <th colspan="2" style="text-align: center">Result Summary</th>
+                </tr>
+                <tr>
+                  <td>Exam Name</td>
+                  <th id="question">{{$value->name}}</th>
+                </tr>
+                <tr>
+                  <td>Exam No.</td>
+                  <th id="question">{{$value->name}}</th>
+                </tr>
+                <tr>
+                  <td>Start Time</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr>
+                <tr>
+                  <td>End Time</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr>
+                <tr>
+                  <td>Total Questions</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr>
+                <tr>
+                  <td>Answered</td>
+                  <th id="answer">{{$value->answer}}</th>
+                </tr>
+                <tr>
+                  <td>Correct</td>
+                  <th id="correct">{{$value->correct}}</th>
+                </tr>
+                <tr>
+                  <td>Wrong</td>
+                  <th id="wrong">{{$value->wrong}}</th>
+                </tr>
+                <tr>
+                  <td>No Answered</td>
+                  <th id="no_answer">{{$value->no_answer}}</th>
+                </tr>
+                <tr>
+                  <td>Mark for per right answer</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Negative Mark for per wrong answer</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Score</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Result Percentage</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Final Result</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+              </table>
+            </div>
+            <div class="panel-footer">
+              <p style="text-align: center"><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+            </div>
           </div>
           <div class="clearfix"></div>
         </div>
+        @endforeach
+        
         {{-- <div class="box box-danger" style="text-align: center">
           <h4>No Exam Available</h4>
           <p><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
         </div> --}}
+        <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-heading">
+            <h4>Solution</h4>
+          </div>
+          @foreach($paper->questions as $key => $value)
+          <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:none">
+              <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
+              <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
+            </div>
+            <ul class="mcqitems" id="{{$value->id}}">
+              @foreach($value->mcqitems as $k => $val)
+              <li>
+                <label class="">
+                  <input onclick="answer(this)" type="radio" name="{{$value->id}}" id="{{$value->id.$val->id}}" check="0" value="{{$val->id}}"/>
+                  <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
+                </label>
+              </li>
+              @endforeach
+            </ul>
+          </div>
+          @endforeach
+        </div>
       </div>
       @else
       <div class="row">
@@ -336,6 +412,7 @@ $user = Auth::guard('student')->user();
 
           alert(msg);
           content.innerHTML = result_hidden.innerHTML;
+          window.location.href = '{{route("students.result", $paper->id)}}';
         }
         // qcount.innerHTML = data.qcount.attached.length;
         // loading.classList.add('hide');

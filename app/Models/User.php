@@ -82,5 +82,9 @@ class User extends Authenticatable
         return $this->hasMany(Subcategory::class);
     }
 
+    public function setting()
+    {
+      return $this->hasMany(Setting::class);
+    }
     
 }

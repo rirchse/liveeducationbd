@@ -16,13 +16,23 @@ class Paper extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
     public function batch()
     {
         return $this->belongsTo(Batch::class);
     }
 
-    public function department()
+    public function group()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Group::class);
+    }
+
+    public function exam()
+    {
+        return $this->hasOne(Exam::class, 'paper_id');
     }
 }

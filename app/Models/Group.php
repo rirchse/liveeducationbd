@@ -20,6 +20,11 @@ class Group extends Model
     // {
     //     return $this->belongsToMany(Paper::class);
     // }
+
+    public function paper()
+    {
+        return $this->hasOne(Paper::class, 'group_id');
+    }
     
     public function students()
     {

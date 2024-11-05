@@ -53,7 +53,10 @@ Route::middleware('auth:student')->group(function()
 	{
 		Route::get('students/home', 'home')->name('students.home');
 		Route::get('students/exam', 'exam')->name('students.exam');
+		Route::get('students/instruction/{paper}', 'instruction')->name('students.instruction');
 		Route::get('students/exam/{id}', 'examShow')->name('students.exam.show');
+		Route::get('students/result/{id}', 'result')->name('students.result');
+		Route::get('students/solution/{id}', 'solution')->name('students.solution');
 		Route::get('students/course', 'course')->name('students.course');
 		Route::get('students/course/{id}', 'courseShow')->name('students.course.show');
 		Route::post('students/course-apply', 'applyCourse')->name('students.course.apply');
