@@ -100,21 +100,43 @@ class StudentHomeCtrl extends Controller
     return view('student-panel.exam', compact('papers'));
   }
 
-  public function instruction($id)
+  public function check($id)
   {
     $user = Auth::guard('student')->user();
-    // $student = Student::find($user->id);
+    $check = [];
     $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
     $paper = Paper::find($id);
-    if($exams)
+    
+    if($paper->status == 'Scheduled' && $paper->open && $paper->open >= date('Y-m-d H:i:s'))
     {
-      return redirect()->route('students.result', $id);
+      $check['scheduled'] = true;
     }
-    if($paper->status == 'Scheduled' && $paper->open <= date('Y-m-d H:i:s'))
+    elseif($paper->status == 'Scheduled' && $paper->open <= date('Y-m-d H:i:s'))
     {
       Paper::where('id', $id)->update(['status' => 'Published']);
       $paper = Paper::find($id);
     }
+    elseif($paper->exam_limit && $paper->exam_limit <= $exams)
+    {
+      return redirect()->route('students.result', $id);
+    }
+    elseif($paper->exam_limit && $paper->exam_limit > $exams)
+    {
+      $check['result-exam'] = true;
+    }
+    else{
+      return redirect()->route('students.instruction', $id);
+    }
+
+    // dd($check);
+    
+    return view('student-panel.check', compact('paper', 'check'));
+  }
+
+  public function instruction($id)
+  {
+    $user = Auth::guard('student')->user();
+    $paper = Paper::find($id);
     return view('student-panel.instruct', compact('paper'));
   }
 
@@ -123,7 +145,7 @@ class StudentHomeCtrl extends Controller
     $user = Auth::guard('student')->user();
     $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
     $paper = Paper::find($id);
-    if($paper->exam_limit <= $exams)
+    if($paper->exam_limit && $paper->exam_limit <= $exams)
     {
       //find paper
       $exams = Exam::where('paper_id', $paper->id)

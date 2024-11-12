@@ -2,6 +2,8 @@
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
+$end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime(date('Y-m-d H:i:s'))));
+// dd($source->dtcformat($end_time));
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -13,7 +15,7 @@ $user = Auth::guard('student')->user();
   ::-webkit-scrollbar-thumb{background-color: #ddd}
   .mcqitems{list-style: none; padding-left: 10px}
   .mcqitems li{padding:5px; margin: 10px; max-width: 300px;}
-  .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; min-width: 300px;}
+  .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; max-width: 300px; width: 100%}
   .mcqitems li input[type="radio"]{width: 20px;height: 20px; margin-right: 5px; padding-top:5px}
   .mcqitems li span{vertical-align: top}
   .banner{margin-top:15px}
@@ -163,7 +165,7 @@ $user = Auth::guard('student')->user();
           <div class="clearfix"></div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" id="questions_panel">
         <div class="box col-md-12">
           <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
@@ -200,42 +202,6 @@ $user = Auth::guard('student')->user();
       @endif
     </section> <!-- /.content -->
 
-    <div id="result_hidden" style="display: none">
-      <div class="result box box-info" id="result">
-        <div class="col-md-4 col-md-offset-4">
-          <h3 style="text-align: center">Result</h3>
-          <table class="table table-bordered">
-            <tr>
-              <td>Total Questions</td>
-              <th id="question">0</th>
-            </tr>
-            <tr>
-              <td>Answered</td>
-              <th id="answer">0</th>
-            </tr>
-            <tr>
-              <td>Correct</td>
-              <th id="correct">0</th>
-            </tr>
-            <tr>
-              <td>Wrong</td>
-              <th id="wrong">0</th>
-            </tr>
-            <tr>
-              <td>No Answered</td>
-              <th id="no_answer">0</th>
-            </tr>
-            <tr>
-              <td>Marks</td>
-              <th id="marks">0</th>
-            </tr>
-          </table>
-          <p style="text-align: center"><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-
   </div> <!-- /.container -->
 </div> <!-- /.content-wrapper -->
 @endsection
@@ -243,14 +209,15 @@ $user = Auth::guard('student')->user();
 <script>
   // Set the date we're counting down to
   // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
-  var countDownDate = new Date("{{$source->dtcformat($paper->open)}}").getTime();
+  var countDownDate = new Date("{{$source->dtcformat($end_time)}}").getTime();
+  // var countDownDate = new Date().getTime();
   
   // Update the count down every 1 second
   var x = setInterval(function() {
   
     // Get today's date and time
     var now = new Date().getTime();
-    // var now = new Date("{{$source->dtcformat($paper->close)}}").getTime();
+    // var now = new Date("{{$source->dtcformat($end_time)}}").getTime();
       
     // Find the distance between now and the count down date
     var distance = countDownDate - now;
@@ -283,11 +250,21 @@ $user = Auth::guard('student')->user();
     // + minutes + "m " + seconds + "s ";
     document.getElementById("timer").innerHTML = d + " " + h + " "
     + m + " " + s + " ";
+
+    // console.log(distance);
       
     // If the count down is over, write some text 
+    if (distance < 60000 && distance > 59000) {
+      // alert('10 Seconds Left!');
+      document.getElementById('timer').style.color='red';
+
+    }
     if (distance < 0) {
       clearInterval(x);
       document.getElementById("timer").innerHTML = '<span style="color:#d00">সময় শেষ</span>';
+      document.getElementById('questions_panel').innerHTML = '<div class="box box-warning"><a class="btn btn-warning" href="{{route("students.exam")}}">Back</div>';
+      // submit the form automatically
+      submitExam();
     }
   }, 1000);
 

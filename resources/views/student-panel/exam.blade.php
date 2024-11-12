@@ -28,13 +28,10 @@ $user = Auth::guard('student')->user();
     <section class="content">
         @foreach($papers as $value)
         <div class="col-md-3">
-          <a class="" href="{{route('students.instruction', $value->id)}}">
-          <div class="panel" style="min-height: 150px">
-            {{-- <div class="panel-body no-padding">
-              <img src="{{$value->banner ? $value->banner : '/img/paper-banner.png'}}" alt="" style="width:100%">
-            </div> --}}
+          <a class="" href="{{route('students.check', $value->id)}}">
+          <div class="panel" style="min-height: 130px">
             <div class="panel-heading">Live Education BD</div>
-            <div class="panel-body" style="font-size:22px"><b>{{$value->name}}</b></div>
+            <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$value->name}}</b></div>
             <div class="panel-footer">
               Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>
             </div>

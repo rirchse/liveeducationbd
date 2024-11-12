@@ -40,8 +40,8 @@ $source = New SourceCtrl;
               <table id="example1" class="table table-bordered table-hover">
                 <tr>
                   <th>Id</th>
-                  <th>Header</th>
-                  <th>Name</th>
+                  <th>Student Name</th>
+                  <th>Result</th>
                   <th>Time</th>
                   <th>Mark</th>
                   <th>Result View</th>
@@ -53,7 +53,7 @@ $source = New SourceCtrl;
                   <th>Close Time</th>
                   <th width="120">Action</th>
                 </tr>
-                @foreach($papers as $value)
+                @foreach($students as $value)
                 <tr>
                   <td>{{$value->id}}</td>
                   <td>{!! $value->header !!}</td>

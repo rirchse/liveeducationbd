@@ -12,6 +12,7 @@ use App\Models\Course;
 use App\Models\Batch;
 use App\Models\Department;
 use App\Models\Group;
+use App\Models\Student;
 use Auth;
 use Image;
 use Toastr;
@@ -277,6 +278,18 @@ class PaperCtrl extends Controller
             'success' => false,
             'message' => 'We are getting error'
         ]);
+    }
+
+    public function solution($id)
+    {
+        $paper = Paper::find($id);
+        return view('layouts.papers.solution', compact('paper'));
+    }
+
+    public function result($id)
+    {
+        $students = Student::all();
+        return view('layouts.papers.result', compact('students'));
     }
     
 }

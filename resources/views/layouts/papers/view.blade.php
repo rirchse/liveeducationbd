@@ -31,6 +31,8 @@ $source = New SourceCtrl;
             <div class="text-right toolbar-icon pull-right" style="display: inline">
               <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
               <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
+              <a href="{{route('paper.solution', $paper->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a>
+              <a href="{{route('paper.result', $paper->id)}}" title="Result" class="label label-warning"><i class="fa fa-list-o"> Result</i></a>
               <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
               <a href="{{route('paper.show', $paper->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a>
               <a href="{{route('paper.edit', $paper->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a>

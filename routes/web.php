@@ -53,6 +53,7 @@ Route::middleware('auth:student')->group(function()
 	{
 		Route::get('students/home', 'home')->name('students.home');
 		Route::get('students/exam', 'exam')->name('students.exam');
+		Route::get('students/check/{paper}', 'check')->name('students.check');
 		Route::get('students/instruction/{paper}', 'instruction')->name('students.instruction');
 		Route::get('students/exam/{id}', 'examShow')->name('students.exam.show');
 		Route::get('students/result/{id}', 'result')->name('students.result');
@@ -138,6 +139,8 @@ Route::middleware(['auth'])->group(function()
 		Route::get('paper/add-question/{paper_id}', 'addQuestion')->name('paper.add.question');
 		Route::post('paper/add_to_paper', 'addToPaper')->name('paper.addtopaper');
 		Route::get('/paper/view/{id}', 'view')->name('paper.view');
+		Route::get('/paper/solution/{id}', 'solution')->name('paper.solution');
+		Route::get('/paper/result/{id}', 'result')->name('paper.result');
 	});
 
 	Route::controller(StudentCtrl::class)->group(function()
