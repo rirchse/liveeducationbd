@@ -34,7 +34,7 @@ $value = $paper;
             </div>
             <div class="panel-body">
               <p> পরীক্ষা শুরু হবে <b>{{ $source->dtformat($value->open)}}</b> এবং শেষ হবে <b>{{ $source->dtformat($value->close)}}</b></p>
-          </div>
+            </div>
             <div class="panel-footer">
               <a class="btn btn-info pull-right" href="{{route('students.exam', $value->id)}}">Back</a>
               <div class="clearfix"></div>
@@ -45,11 +45,9 @@ $value = $paper;
             <div class="panel-heading">
               <b>Exam No. {{$value->name}}</b>
             </div>
-            <div class="panel-body">
-              <a href="#" class="btn btn-warning">View Result</a>
-          </div>
             <div class="panel-footer">
-              <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">শুরু করুন</a>
+              <a href="{{route('students.result', $value->id)}}" class="btn btn-warning">ফলাফল দেখুন</a>
+              <a class="btn btn-info pull-right" href="{{route('students.instruction', $value->id)}}">পুনরায় পরীক্ষা দিন</a>
               <div class="clearfix"></div>
             </div>
           </div>

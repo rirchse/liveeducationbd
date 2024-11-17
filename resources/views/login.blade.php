@@ -5,15 +5,24 @@
     @include('partials.styles')
 
     @yield('stylesheets')
+		<style>
+			.wrapper{
+				background: rgb(0,3,36);
+				background: linear-gradient(90deg, rgba(0,3,36,1) 0%, rgba(9,73,121,1) 53%, rgba(7,128,153,1) 100%);
+			}
+			.content-header, .content-header > .breadcrumb > li > a{color:#fff}
+		</style>
 
 </head>
 
-<body class="login-page">
+<body class="layout-top-nav login/-page">
+	<div class="wrapper" style="width:100%;padding-bottom: 50px">
     @include('auth.login_header')
 
 		@yield('content')
 
     @include('auth.login_footer')
+	</div>
 
 	<!--   Core JS Files   -->
 	@include('partials.scripts')

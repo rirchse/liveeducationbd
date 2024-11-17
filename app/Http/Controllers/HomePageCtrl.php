@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Students;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,27 +17,19 @@ use App\Models\Choice;
 use Auth;
 use Session;
 
-class StudentHomeCtrl extends Controller
+class HomePageCtrl extends Controller
 {
-  public function __construct()
+  public function index()
   {
-    $this->middleware('auth:student');
-  }
-
-  public function home()
-  {
-    $user = Auth::guard('student')->user();
     // active courses
     $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
 
-    // autheticates user courses
-    $student = Student::find($user->id);
-    $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
+    // Active batches
+    $batches = Batch::where('status', 'Active')->get();
 
-    // authenticates user examps
-    $batch_ids = $student->batches()->pluck('id')->toArray();
+    $batch_ids = Batch::pluck('id')->toArray();
     $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
-    return view('student-panel.home', compact('courses', 'mycourses', 'papers', 'student'));
+    return view('student-panel.index', compact('courses', 'batches', 'papers'));
   }
 
   public function course()
@@ -121,10 +113,6 @@ class StudentHomeCtrl extends Controller
       return redirect()->route('students.result', $id);
     }
     elseif($paper->exam_limit && $paper->exam_limit > $exams)
-    {
-      $check['result-exam'] = true;
-    }
-    elseif($exams && is_null($paper->exam_limit))
     {
       $check['result-exam'] = true;
     }

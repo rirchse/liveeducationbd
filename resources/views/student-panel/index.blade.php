@@ -1,5 +1,5 @@
 @php
-$user = Auth::guard('student')->user();
+// $user = Auth::guard('student')->user();
 @endphp
 @extends('student')
 @section('title', 'হোম')
@@ -28,7 +28,7 @@ $user = Auth::guard('student')->user();
         <div class="col-md-3">
           <div class="panel panel-default">
             <div class="penel-heading hover" style="text-align: center;padding:15px;min-height:150px">
-              <a href="{{route('students.course.show', $value->id)}}">
+              <a href="{{route('home.course.show', $value->id)}}">
                 <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
               </a>
             </div>
@@ -36,38 +36,19 @@ $user = Auth::guard('student')->user();
         </div>
         @endforeach
       </div> <!-- /.row -->
-      <div class="box box-warning">
-        <div class="box-header with-border">
-          <h3 class="box-title">আমার কোর্স</h3>
-        </div>
-      </div> <!-- /.box -->
-        <div class="row" style="margin-bottom:35px">
-          @foreach($mycourses as $value)
-          <div class="col-md-3">
-            <div class="panel panel-default">
-              <div class="penel-heading" style="text-align: center;padding:15px">
-                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
-              </div>
-              <div class="panel-heading"><b>{{$value->name}}</b></div>
-            </div>
-          </div>
-          @endforeach
-        </div> <!-- /.row -->
       <div class="box box-danger">
         <div class="box-header with-border">
           <h3 class="box-title">পরীক্ষা</h3>
         </div>
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
-        @php
-        $batches = $student->batches()->where('status', 'Active')->get();
-        @endphp
         @if($batches)
           @foreach($batches as $batch)
-          @if($batch->paper()->get())
+          {{-- {{$batch->paper()->where('status', 'Published')->get()}} --}}
+          @if($batch->paper()->where('status', 'Published')->get())
           <div class="col-md-12">
-            <label class="" for="" style="color:#fff;background: rgb(38,43,99);
-background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, rgba(7,128,153,1) 100%); width:100%; display:block; padding:5px 10px">{{$batch->name}}</label>
+            {{-- <label class="" for="" style="color:#fff;background: rgb(38,43,99);
+background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, rgba(7,128,153,1) 100%); width:100%; display:block; padding:5px 10px">{{$batch->name}}</label> --}}
           </div>
           @endif
           

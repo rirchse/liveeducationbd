@@ -13,6 +13,7 @@ use App\Models\Batch;
 use App\Models\Department;
 use App\Models\Group;
 use App\Models\Student;
+use App\Models\Exam;
 use Auth;
 use Image;
 use Toastr;
@@ -288,8 +289,9 @@ class PaperCtrl extends Controller
 
     public function result($id)
     {
-        $students = Student::all();
-        return view('layouts.papers.result', compact('students'));
+        $paper = Paper::find($id);
+        $exams = Exam::where('paper_id', $id)->get();
+        return view('layouts.papers.result', compact('paper', 'exams'));
     }
     
 }

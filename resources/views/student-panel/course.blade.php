@@ -39,10 +39,10 @@ $user = Auth::guard('student')->user();
             @endif
           </div>
           <div class="panel-footer">
-            @if($value->students()->where('id', $user->id)->first())
+            @if(!empty($user) && $value->students()->where('id', $user->id)->first())
             <button class="btn btn-default pull-right" disabled>Applied</button>
             @else
-            <a class="btn btn-info pull-right" href="{{route('students.course.show', $value->id)}}">View</a>
+            <a class="btn btn-info pull-right" href="{{route('home.course.show', $value->id)}}">View</a>
             @endif
             <div class="clearfix"></div>
           </div>
@@ -53,22 +53,5 @@ $user = Auth::guard('student')->user();
   </div> <!-- /.container -->
 </div>
 
-<script>
-  function showPassword(e)
-  {
-    let elm = e.previousElementSibling;
-    if(elm.type == 'password')
-    {
-      elm.setAttribute('type', 'text');
-      e.firstChild.classList.add('fa-eye');
-      e.firstChild.classList.remove('fa-eye-slash');
-    }
-    else 
-    {
-      elm.setAttribute('type', 'password');
-      e.firstChild.classList.add('fa-eye-slash');
-      e.firstChild.classList.remove('fa-eye');
-    }
-  }
-</script>
+<script></script>
 @endsection

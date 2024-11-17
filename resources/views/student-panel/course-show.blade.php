@@ -72,7 +72,7 @@ $value = $course;
             </div>
           </div>
           <div class="panel-footer">
-            @if($value->students()->where('id', $user->id)->first())
+            @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
             <button class="btn btn-default pull-right" disabled>Applied</button>
             @else
             <button class="btn btn-info pull-right" onclick="return confirm('Double check you provided information.')">Apply</button>

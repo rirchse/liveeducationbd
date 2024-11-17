@@ -4,15 +4,14 @@ $source = New SourceCtrl;
 @endphp
 
 @extends('dashboard')
-@section('title', 'View All Question Papers')
+@section('title', 'View All Results')
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>All Question Papers</h1>
+  <h1>All Results</h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-    {{-- <li><a href="#">Tables</a></li> --}}
-    <li class="active">All Question Papers</li>
+    <li class="active">All Results</li>
   </ol>
 </section>
 <!-- Main content -->
@@ -21,91 +20,79 @@ $source = New SourceCtrl;
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header">
-          <h3 class="box-title">List of Question Papers</h3>
-              <div class="box-tools">
-                <a href="{{route('paper.create')}}" class="btn btn-sm btn-info">
-                  <i class="fa fa-plus"></i> Add
-                </a>
-                {{-- <div class="input-group input-group-sm" style="float:right; width: 150px;margin-left:15px">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
-                </div> --}}
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table id="example1" class="table table-bordered table-hover">
-                <tr>
-                  <th>Id</th>
-                  <th>Student Name</th>
-                  <th>Result</th>
-                  <th>Time</th>
-                  <th>Mark</th>
-                  <th>Result View</th>
-                  <th>Exam Limit</th>
-                  <th>Display Questions</th>
-                  <th>Question Limit</th>
-                  <th>Status</th>
-                  <th>Open Time</th>
-                  <th>Close Time</th>
-                  <th width="120">Action</th>
-                </tr>
-                @foreach($students as $value)
-                <tr>
-                  <td>{{$value->id}}</td>
-                  <td>{!! $value->header !!}</td>
-                  <td>{{$value->name}}</td>
-                  <td>{{$value->time}}</td>
-                  <td>{{$value->mark}}</td>
-                  <td>{{$value->result_view}}</td>
-                  <td>{{$value->exam_limit}}</td>
-                  <td>{{$value->display}}</td>
-                  <td>{{$value->max}}</td>
-                  <td>
-                    <span class="label label-primary">{{$value->status}}</span>
-                  </td>
-                  <td>{{$value->open}}</td>
-                  <td>{{$value->close}}</td>
-                  <td>
-                    <a href="{{route('paper.show', $value->id)}}" class="btn btn-sm label-info" title="Details"><i class="fa fa-file-text"></i></a>
-                    <a href="{{route('paper.edit',$value->id)}}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-gear"></i></a>
-                    {{-- <form style="display: inline" action="{{route('paper.destroy', $value->id)}}" method="POST">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one?')"><i class="fa fa-trash"></i></button></form> --}}
-                  </td>
-                </tr>
-                @endforeach
-              </table>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <div class="pagination-sm no-margin pull-right">
-                {{-- {{$values->links()}} --}}
-              </div>
-            </div>
+          <h3 class="box-title">List of Results</h3>
+          <div class="box-tools">
+            <a class="btn btn-info" onclick="printDiv()">
+              <i class="fa fa-print"></i> Print
+            </a>
           </div>
-          <!-- /.box -->
         </div>
-      </div>
-    </section>
+        <!-- /.box-header -->
+      </div><!--/.box -->
+      <div class="box box-body table-responsive no-padding">
+        <table id="print" class="table table-bordered table-hover">
+          <tr>
+            <th colspan="8">
+              @if($paper->banner)
+              <img src="{{$paper->banner}}" alt="" style="width:100%" />
+              @endif
+              {!! $paper->header !!}
+            </th>
+          </tr>
+          <tr>
+            <th colspan="4">Exam No. {{$paper->name}}</th>
+            <th colspan="4" style="text-align: right">Exam Date: {{$paper->date}}</th>
+          </tr>
+          <tr>
+            <th>SL No.</th>
+            <th>Student Name</th>
+            <th>Registration ID</th>
+            <th>Department</th>
+            <th style="text-align: right">Correct</th>
+            <th style="text-align: right">Wrong</th>
+            <th style="text-align: right">Blank</th>
+            <th style="text-align: right">Total Mark</th>
+          </tr>
+          @foreach($exams as $key => $value)
+          <tr>
+            <td>{{$key+1}}</td>
+            <td>{{$value->student->name}}</td>
+            <td>{{$value->student->reg_id}}</td>
+            <td>{{$value->paper->department->name}}</td>
+            <td style="text-align: right">{{$value->correct}}</td>
+            <td style="text-align: right">{{$value->wrong}}</td>
+            <td style="text-align: right">{{$value->no_answer}}</td>
+            <td style="text-align: right">{{$value->no_answer}}</td>
+          </tr>
+          @endforeach
+        </table>
+      </div> <!-- /.box-body -->
+    </div> <!-- /.box -->
+  </div>
+  </section>
     <!-- /.content -->
     @endsection
-{{-- @section('scripts')
+@section('scripts')
   <script>
-    $(function () {
-      $('#example1').DataTable()
-      $('#example2').DataTable({
-        'paging'      : true,
-        'lengthChange': false,
-        'searching'   : false,
-        'ordering'    : true,
-        'info'        : true,
-        'autoWidth'   : false
-      })
-    })
+    function printDiv()
+  {
+    // document.getElementById('heading').style.display = 'block';
+    var divToPrint = document.getElementById('print');
+    var htmlToPrint = '' +
+        '<style type="text/css">' +
+        '.heading{display:block}'+
+        '.pageheader{font-size:15px}'+
+        'table { border-collapse:collapse; font-size:15px;width:100%}' +
+        '.table tr th, .table tr td { padding: 10px; border:1px solid #ddd; text-align:left}' +
+        'table tr{background: #ddd}'+
+        '.receipt{display:none}'+
+        '</style>';
+    htmlToPrint += divToPrint.outerHTML;
+    newWin = window.open(htmlToPrint);
+    newWin.document.write(htmlToPrint);
+    newWin.print();
+    newWin.close();
+    // document.getElementById('heading').style.display = 'none';
+  }
   </script>
-@endsection --}}
+@endsection

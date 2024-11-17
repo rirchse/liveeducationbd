@@ -1,23 +1,21 @@
-<?php
+@php
 $user = [];
 if(Auth::guard('student')->user())
 {
   $user = Auth::guard('student')->user();
 }
-// $uri = explode('/', $_SERVER['REQUEST_URI']);
-// dd($_SERVER['REQUEST_URI']);
+
 function active($name)
 {
-  $uri = explode('/', $_SERVER['REQUEST_URI']);
-  if(isset($uri[2]) && $uri[2] == $name || $_SERVER['REQUEST_URI'] == $name)
+  if($name == explode('/', $_SERVER['REQUEST_URI'])[2])
   {
     return 'active';
   }
 }
-?>
+@endphp
 <!-- top bar  -->
 <style>
-  body{background: url(/img/bg.jpg) no-repeat right bottom;}
+/*body{background: url(/img/bg.jpg) no-repeat right bottom;}*/
   .main-header{color: #000!important;margin-bottom:50px}
   .navbar-static-top{ background: #fff; position: fixed;top:0; left:0; right:0}
   .header_logo{width: 190px; padding-left: 50px;margin-top: -7px;margin-bottom: -10px}
@@ -35,9 +33,8 @@ function active($name)
   <nav class="navbar navbar-static-top">
     <div class="container">
       <div class="navbar-header">
-        <a href="{{route('homepage')}}" class="navbar-brand">
-          <img src="/img/logo.png" alt="" style="max-width: 70px; display:inline; padding-right: 15px"><b>{{config('app.name')}}</b>
-        </a>
+        <a href="{{route('students.home')}}" class="navbar-brand">
+          <img src="/img/logo.png" alt="" style="max-width: 70px; display:inline; padding-right: 15px"><b>{{config('app.name')}}</b></a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -46,10 +43,22 @@ function active($name)
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
         <ul class="nav navbar-nav">
-          <li class="{{active('home').active('/')}}"><a href="{{route('homepage')}}">হোম <span class="sr-only">(current)</span></a></li>
-          <li class="{{active('course')}}"><a href="{{route('home.course')}}">কোর্স সমূহ</a></li>
+          <li class="{{active('home')}}"><a href="{{route('students.home')}}">হোম <span class="sr-only">(current)</span></a></li>
+          <li class="{{active('course')}}"><a href="{{route('students.course')}}">কোর্স সমূহ</a></li>
           <li class="{{active('my-course')}}"><a href="{{route('students.my-course')}}">আমার কোর্স সমূহ</a></li>
           <li class="{{active('exam')}}"><a href="{{route('students.exam')}}">পরীক্ষা</a></li>
+          {{-- <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li> --}}
         </ul>
         {{-- <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
@@ -61,8 +70,6 @@ function active($name)
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          
-          @if(!empty($user))
           <!-- Messages: style can be found in dropdown.less-->
           {{-- <li class="dropdown messages-menu">
             <!-- Menu toggle button -->
@@ -98,7 +105,6 @@ function active($name)
             </ul>
           </li> --}}
           <!-- /.messages-menu -->
-
 
           <!-- Notifications Menu -->
           <li class="dropdown notifications-menu">
@@ -170,10 +176,6 @@ function active($name)
               </li>
             </ul>
           </li>
-          @else
-          <li><a href="/signup">Sign up</a></li>
-          <li><a href="/students/login">Login</a></li>
-          @endif
         </ul>
       </div> <!-- /.navbar-custom-menu -->
       <div class="clearfix"></div>

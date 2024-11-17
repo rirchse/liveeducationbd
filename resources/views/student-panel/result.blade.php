@@ -102,7 +102,7 @@ $percentage = $score = 0;
                   <td>Negative Mark for per wrong answer</td>
                   <th>{{$value->paper->minus}}</th>
                 </tr>
-                <tr>
+                <tr style="font-size:18px;border:1px solid #999; background: #ddd">
                   <td>Score</td>
                   <th>{{$value->mark .'/'.$value->paper->questions->count()}}</th>
                 </tr>

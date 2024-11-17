@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\StudentLogin;
 use App\Http\Controllers\Students\StudentHomeCtrl;
+use App\Http\Controllers\HomePageCtrl;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,11 @@ use App\Http\Controllers\Students\StudentHomeCtrl;
 */
 
 
-Route::get('/', function () {
-	// return view('layouts.homes.index');
-	return redirect('/login');
+Route::controller(HomePageCtrl::class)->group(function()
+{
+	Route::get('/', 'index')->name('homepage');
+	Route::get('home/course', 'course')->name('home.course');
+	Route::get('home/course/{id}', 'courseShow')->name('home.course.show');
 });
 Route::get('/login', function()
 {
@@ -37,7 +40,8 @@ Route::controller(RegisterController::class)->group(function()
 	Route::get('/account_verify/{code}', 'verify')->name('email.verify');
 	// Route::get('/verification', '')
 });
-Route::get('students', function(){
+Route::get('students', function()
+{
 	return '<p style="text-align:center;margin-top:20%">Welcome to Student Panel</p>';
 })->name('students');
 Route::controller(StudentLogin::class)->group(function()
@@ -86,7 +90,7 @@ Route::middleware(['auth'])->group(function()
 	/** -------------------- Resource Routes --------------- */
 	Route::resource('filter', 'FilterCtrl');
 	Route::resource('sub-filter', 'SubFilterCtrl');
-	Route::resource('filter-item', 'FilterItemCtrl');
+	// Route::resource('filter-item', 'FilterItemCtrl');
 	Route::resource('course', 'CourseCtrl');
 	Route::resource('department', 'DepartmentCtrl');
 	Route::resource('semester', 'SemesterCtrl');

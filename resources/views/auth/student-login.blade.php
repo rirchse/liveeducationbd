@@ -12,7 +12,7 @@
       <div class="sign-up-form">
         <div class="login-box" style="margin-top:10px">
         <div class="login-logo">
-          <h2>{{config('app.name', 'App Name')}}</h2>
+          <h2 style="color:#fff">{{config('app.name', 'App Name')}}</h2>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
