@@ -181,10 +181,16 @@ class StudentHomeCtrl extends Controller
     return view('student-panel.exam-show', compact('paper'));
   }
 
-  public function result($id)
+  public function result($id, $value = null)
   {
+    
     $user = Auth::guard('student')->user();
+    
     $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->get();
+    if($value == 'after')
+    {
+      $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->orderBy('id', 'DESC')->limit(1)->get();
+    }
     $paper = Paper::find($id);
     $result = 'Yes';
 
@@ -206,14 +212,21 @@ class StudentHomeCtrl extends Controller
     $user = Auth::guard('student')->user();
     $this->validate($request, [
       'paper_id' => 'required|numeric',
-      'question_id' => 'required|string',
-      'mcq_id' => 'required|string',
+      'question_id' => 'nullable|string',
+      'mcq_id' => 'nullable|string',
     ]);
 
     $questions = $answered = $correct = $wrong = $no_answered = $marks = 0;
+    $question_ids = $mcq_ids = [];  
 
-    $question_ids = explode(',', $request->question_id);
-    $mcq_ids = explode(',', $request->mcq_id);
+    if($question_ids)
+    {
+      $question_ids = explode(',', $request->question_id);
+    }
+    if($mcq_ids)
+    {
+      $mcq_ids = explode(',', $request->mcq_id);
+    }
 
     //find paper
     $paper = Paper::find($request->paper_id);
@@ -237,13 +250,16 @@ class StudentHomeCtrl extends Controller
       $exam->mark = $marks;
       $exam->save();
 
-      for($x = 0; $x < count($question_ids); $x++)
+      if($mcq_ids)
       {
-        Choice::insert([
-          'exam_id' => $exam->id,
-          'question_id' => $question_ids[$x],
-          'mcq_id' => $mcq_ids[$x]
-        ]);
+        for($x = 0; $x < count($question_ids); $x++)
+        {
+          Choice::insert([
+            'exam_id' => $exam->id,
+            'question_id' => $question_ids[$x],
+            'mcq_id' => $mcq_ids[$x]
+          ]);
+        }
       }
     }catch(\E $e)
     {

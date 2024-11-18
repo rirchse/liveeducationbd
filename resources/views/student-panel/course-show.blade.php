@@ -87,23 +87,6 @@ $value = $course;
 </div>
 
 <script>
-  function showPassword(e)
-  {
-    let elm = e.previousElementSibling;
-    if(elm.type == 'password')
-    {
-      elm.setAttribute('type', 'text');
-      e.firstChild.classList.add('fa-eye');
-      e.firstChild.classList.remove('fa-eye-slash');
-    }
-    else 
-    {
-      elm.setAttribute('type', 'password');
-      e.firstChild.classList.add('fa-eye-slash');
-      e.firstChild.classList.remove('fa-eye');
-    }
-  }
-
   window.location.hash = "no-back-button";
 
     // Again because Google Chrome doesn't insert

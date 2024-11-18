@@ -104,7 +104,7 @@ $percentage = $score = 0;
                 </tr>
                 <tr style="font-size:18px;border:1px solid #999; background: #ddd">
                   <td>Score</td>
-                  <th>{{$value->mark .'/'.$value->paper->questions->count()}}</th>
+                  <th>{{$value->mark}}</th>
                 </tr>
                 <tr>
                   <td>Result Percentage</td>

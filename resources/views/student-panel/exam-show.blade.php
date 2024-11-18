@@ -375,12 +375,12 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
           let message = document.getElementById('message');
           let msg = 'Exam Completed';
 
-          question.innerHTML = data.questions;
-          answer.innerHTML = data.answered;
-          correct.innerHTML = data.correct;
-          wrong.innerHTML = data.wrong;
-          no_answer.innerHTML = data.no_answered;
-          marks.innerHTML = data.marks;
+          // question.innerHTML = data.questions;
+          // answer.innerHTML = data.answered;
+          // correct.innerHTML = data.correct;
+          // wrong.innerHTML = data.wrong;
+          // no_answer.innerHTML = data.no_answered;
+          // marks.innerHTML = data.marks;
 
           if(data.message != null)
           {
@@ -388,8 +388,8 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
           }
 
           alert(msg);
-          content.innerHTML = result_hidden.innerHTML;
-          window.location.href = '{{route("students.result", $paper->id)}}';
+          // content.innerHTML = result_hidden.innerHTML;
+          window.location.href = '{{route("students.result", [$paper->id, "after"])}}';
         }
         // qcount.innerHTML = data.qcount.attached.length;
         // loading.classList.add('hide');
@@ -399,6 +399,13 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
       },
     });
     console.log(qids);
+  }
+
+  // show result
+  function showResult($data)
+  {
+    let content = document.getElementById('content');
+    //
   }
   </script>
 @endsection
