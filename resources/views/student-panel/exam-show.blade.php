@@ -169,11 +169,12 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
         <div class="box col-md-12">
           <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
-          @if($paper->details)
+          <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
+          {{-- @if($paper->details)
           <div class="col-md-12 indication">
             <p>"{!! $paper->details !!}"</p><br>
           </div>
-          @endif
+          @endif --}}
         </div>
         <div class="col-md-12 no-padding">
           @foreach($paper->questions as $key => $value)

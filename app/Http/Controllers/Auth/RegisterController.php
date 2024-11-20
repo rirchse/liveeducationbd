@@ -139,7 +139,8 @@ class RegisterController extends Controller
                     'status' => 'Active',
                     'remember_token' => NULL
                 ]);
-            }catch(\E $e)
+            }
+            catch(\E $e)
             {
                 return $e;
             }
@@ -151,6 +152,6 @@ class RegisterController extends Controller
             Session::flash('error', 'Your account already verified.');
         }
 
-        return redirect()->route('register');
+        return redirect()->route('login');
     }
 }

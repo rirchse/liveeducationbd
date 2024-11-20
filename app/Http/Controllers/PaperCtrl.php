@@ -290,7 +290,7 @@ class PaperCtrl extends Controller
     public function result($id)
     {
         $paper = Paper::find($id);
-        $exams = Exam::where('paper_id', $id)->get();
+        $exams = Exam::where('paper_id', $id)->orderBy('mark', 'DESC')->get();
         return view('layouts.papers.result', compact('paper', 'exams'));
     }
     

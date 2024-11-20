@@ -217,16 +217,18 @@ class StudentHomeCtrl extends Controller
     ]);
 
     $questions = $answered = $correct = $wrong = $no_answered = $marks = 0;
-    $question_ids = $mcq_ids = [];  
-
-    if($question_ids)
-    {
-      $question_ids = explode(',', $request->question_id);
-    }
-    if($mcq_ids)
-    {
-      $mcq_ids = explode(',', $request->mcq_id);
-    }
+    $question_ids = [];
+    $mcq_ids = []; 
+    $question_ids = explode(',', $request->question_id); 
+    $mcq_ids = explode(',', $request->mcq_id);
+    // if($question_ids)
+    // {
+    //   $question_ids = explode(',', $request->question_id);
+    // }
+    // if($mcq_ids)
+    // {
+    //   $mcq_ids = explode(',', $request->mcq_id);
+    // }
 
     //find paper
     $paper = Paper::find($request->paper_id);

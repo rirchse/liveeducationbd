@@ -41,7 +41,7 @@ $source = New SourceCtrl;
           </tr>
           <tr>
             <th colspan="4">Exam No. {{$paper->name}}</th>
-            <th colspan="4" style="text-align: right">Exam Date: {{$paper->date}}</th>
+            <th colspan="4" style="text-align: right">Exam Date: {{$source->dformat($exams[0]->created_at)}}</th>
           </tr>
           <tr>
             <th>SL No.</th>
@@ -57,12 +57,12 @@ $source = New SourceCtrl;
           <tr>
             <td>{{$key+1}}</td>
             <td>{{$value->student->name}}</td>
-            <td>{{$value->student->reg_id}}</td>
+            <td>{{str_pad($value->student->id, 6, '0', STR_PAD_LEFT)}}</td>
             <td>{{$value->paper->department->name}}</td>
             <td style="text-align: right">{{$value->correct}}</td>
             <td style="text-align: right">{{$value->wrong}}</td>
             <td style="text-align: right">{{$value->no_answer}}</td>
-            <td style="text-align: right">{{$value->no_answer}}</td>
+            <td style="text-align: right">{{$value->mark}}</td>
           </tr>
           @endforeach
         </table>
