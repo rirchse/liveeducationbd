@@ -50,6 +50,8 @@ function active($name)
           <li class="{{active('course')}}"><a href="{{route('home.course')}}">কোর্স সমূহ</a></li>
           <li class="{{active('my-course')}}"><a href="{{route('students.my-course')}}">আমার কোর্স সমূহ</a></li>
           <li class="{{active('exam')}}"><a href="{{route('students.exam')}}">পরীক্ষা</a></li>
+          {{-- <li><a href="/signup">Sign up</a></li>
+          <li><a href="/students/login">Login</a></li> --}}
         </ul>
         {{-- <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
@@ -59,7 +61,7 @@ function active($name)
       </div>
       <!-- /.navbar-collapse -->
       <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
+      <div class=" navbar-custom-menu">
         <ul class="nav navbar-nav">
           
           @if(!empty($user))
@@ -135,12 +137,11 @@ function active($name)
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="{{$user->image ? :'/img/avatar.png' }} " class="img-circle" alt="User Image">
-
-                {{-- <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
-                </p> --}}
+                <img src="{{$user->image ? :'/img/avatar.png' }} " class="img-circle" alt="User Image"/>
+                <p style="color: #000">
+                  {{$user->name}}
+                  {{-- <small>Member since Nov. 2012</small> --}}
+                </p>
               </li>
               <!-- Menu Body -->
               {{-- <li class="user-body">
@@ -171,8 +172,6 @@ function active($name)
             </ul>
           </li>
           @else
-          <li><a href="/signup">Sign up</a></li>
-          <li><a href="/students/login">Login</a></li>
           @endif
         </ul>
       </div> <!-- /.navbar-custom-menu -->

@@ -38,7 +38,7 @@ $percentage = $score = 0;
       <div class="row">
         @foreach($exams as $key => $value)
         @php
-        $percentage = $value->paper->questions->count() * $value->mark / 100;
+        $percentage = 100 / $value->paper->questions->count() * $value->mark;
         @endphp
         <div class="col-md-6 col-md-offset-3 result" id="result">
           <div class="panel panel-default">
@@ -114,11 +114,11 @@ $percentage = $score = 0;
                   <td>Final Result</td>
                   <th style="font-size: 16px">
                     @if($percentage > 80)
-                    <label class="label label success">Extra Ordinary</label>
+                    <label class="label label-success">Extra Ordinary</label>
                     @elseif($percentage > 60)
-                    <label class="label label info">Very Good</label>
+                    <label class="label label-info">Very Good</label>
                     @elseif($percentage > 40)
-                    <label class="label label warning">Good</label>
+                    <label class="label label-warning">Good</label>
                     @elseif($percentage < 40)
                     <label class="label label-danger">Learner</label>
                     @endif

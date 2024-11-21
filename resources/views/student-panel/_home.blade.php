@@ -41,18 +41,18 @@ $user = Auth::guard('student')->user();
           <h3 class="box-title">আমার কোর্স</h3>
         </div>
       </div> <!-- /.box -->
-        <div class="row" style="margin-bottom:35px">
-          @foreach($mycourses as $value)
-          <div class="col-md-3">
-            <div class="panel panel-default">
-              <div class="penel-heading" style="text-align: center;padding:15px">
-                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
-              </div>
-              <div class="panel-heading"><b>{{$value->name}}</b></div>
+      <div class="row" style="margin-bottom:35px">
+        @foreach($mycourses as $value)
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="penel-heading" style="text-align: center;padding:15px">
+              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
             </div>
+            <div class="panel-heading"><b>{{$value->name}}</b></div>
           </div>
-          @endforeach
-        </div> <!-- /.row -->
+        </div>
+        @endforeach
+      </div> <!-- /.row -->
       <div class="box box-danger">
         <div class="box-header with-border">
           <h3 class="box-title">পরীক্ষা</h3>

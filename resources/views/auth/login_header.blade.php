@@ -11,6 +11,11 @@
   .alert{margin: 10px auto;float: none;}
   .main-header .navbar-brand{color:#444}
   .navbar-toggle{color:#444}
+  body{background-color:#0d0}
+  @media screen and (max-width:768px)
+  {
+    .navbar-collapse, .navbar-nav{text-align:left; width: 100%; padding-left: 0}
+  }
 </style>
 
   <header id="head/er" class="main-header" style="color:#000!important">
@@ -21,18 +26,18 @@
             <img class="header/_logo" src="/img/logo.png?v=3008" alt="" style="max-width: 70px; display:inline; padding-right: 15px">
             <b>{{config('app.name')}}</b>
           </a>
-          {{-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
-          </button> --}}
+          </button>
         </div>
-        <div class="collapse navbar-collapse pull-left">
-         
+        <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/signup">Sign up</a></li>
+            <li><a href="/students/login">Login</a></li>
+          </ul>
         </div>
         <div class="navbar-custom-menu">
-         <ul class="nav navbar-nav">
-           <li><a href="/signup">Sign up</a></li>
-           <li><a href="/students/login">Login</a></li>
-         </ul>
+         
         </div>
       </div>
     </nav>

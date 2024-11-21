@@ -42,8 +42,8 @@ $source = New SourceCtrl;
     <div class="row">
       <div class="col-md-12">
       <div class="box" id="print">
+        <div class="banner"><img src="{{$paper->banner}}" alt="" style="width:100%"></div>
         <div class="col-md-12">
-          <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
           {{-- @if($paper->details)
           <div class="col-md-12 indication">
@@ -54,7 +54,7 @@ $source = New SourceCtrl;
             <div class="col-md-12">
               @foreach($paper->questions as $key => $value)
               <div class="panel">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:15px">প্রশ্ন নং- {{$key+1}}. </div> <div style="display: inline">{!! $value->title !!}</div>
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px">প্রশ্ন {{$key+1}}.</div><div style="display: inline">{!! $value->title !!}</div>
                 @php
                 $correct_ans = '';
                 @endphp

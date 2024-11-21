@@ -21,6 +21,13 @@ class HomePageCtrl extends Controller
 {
   public function index()
   {
+    $mycourses = [];
+    $user = Auth::guard('student')->user();
+    if($user)
+    {
+      $student = Student::find($user->id);
+      $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
+    }
     // active courses
     $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
 
@@ -29,7 +36,7 @@ class HomePageCtrl extends Controller
 
     $batch_ids = Batch::pluck('id')->toArray();
     $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
-    return view('student-panel.index', compact('courses', 'batches', 'papers'));
+    return view('student-panel.index', compact('courses', 'mycourses', 'batches', 'papers'));
   }
 
   public function course()

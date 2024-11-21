@@ -1,5 +1,5 @@
 @php
-// $user = Auth::guard('student')->user();
+$user = Auth::guard('student')->user();
 @endphp
 @extends('student')
 @section('title', 'হোম')
@@ -36,6 +36,27 @@
         </div>
         @endforeach
       </div> <!-- /.row -->
+      @if(!empty($user) && !empty($mycourses))
+      
+      <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title">আমার কোর্স</h3>
+        </div>
+      </div> <!-- /.box -->
+      <div class="row" style="margin-bottom:35px">
+        @foreach($mycourses as $value)
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="penel-heading" style="text-align: center;padding:15px">
+              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
+            </div>
+            <div class="panel-heading"><b>{{$value->name}}</b></div>
+          </div>
+        </div>
+        @endforeach
+      </div> <!-- /.row -->
+      @endif
+      @if(!empty($user))
       <div class="box box-danger">
         <div class="box-header with-border">
           <h3 class="box-title">পরীক্ষা</h3>
@@ -47,14 +68,13 @@
           {{-- {{$batch->paper()->where('status', 'Published')->get()}} --}}
           @if($batch->paper()->where('status', 'Published')->get())
           <div class="col-md-12">
-            {{-- <label class="" for="" style="color:#fff;background: rgb(38,43,99);
-background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, rgba(7,128,153,1) 100%); width:100%; display:block; padding:5px 10px">{{$batch->name}}</label> --}}
+            {{-- <label class="" for="" style="color:#fff;background: rgb(38,43,99); background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, rgba(7,128,153,1) 100%); width:100%; display:block; padding:5px 10px">{{$batch->name}}</label> --}}
           </div>
           @endif
           
             @foreach($batch->paper()->get() as $value)
             <div class="col-md-3">
-              <a class="" href="{{route('students.exam.show', $value->id)}}">
+              <a class="" href="{{route('students.check', $value->id)}}">
               <div class="panel">
                 {{-- <div class="panel-body no-padding">
                   <img src="{{$value->banner ? $value->banner : '/img/paper-banner.png'}}" alt="" style="width:100%">
@@ -71,6 +91,7 @@ background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, r
           @endforeach
         @endif
       </div> <!-- /.row -->
+      @endif
     </section> <!-- /.content -->
   </div> <!-- /.container -->
 </div>

@@ -14,7 +14,8 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
   .panel ::-webkit-scrollbar{width: 5px;}
   ::-webkit-scrollbar-thumb{background-color: #ddd}
   .mcqitems{list-style: none; padding-left: 10px}
-  .mcqitems li{padding:5px; margin: 10px; max-width: 300px;}
+  .mcqitems li{padding:5px; max-width: 300px;}
+  .mcqitems li:first-child{margin-top:10px}
   .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; max-width: 300px; width: 100%}
   .mcqitems li input[type="radio"]{width: 20px;height: 20px; margin-right: 5px; padding-top:5px}
   .mcqitems li span{vertical-align: top}
@@ -166,8 +167,8 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
         </div>
       </div>
       <div class="row" id="questions_panel">
+        <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
         <div class="box col-md-12">
-          <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
           <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
           {{-- @if($paper->details)
