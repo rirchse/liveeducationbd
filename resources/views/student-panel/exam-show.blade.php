@@ -167,19 +167,14 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
         </div>
       </div>
       <div class="row" id="questions_panel">
-        <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
+        <div class="banner"><img src="{{$paper->banner}}" alt=""/></div>
         <div class="box col-md-12">
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
           <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
-          {{-- @if($paper->details)
-          <div class="col-md-12 indication">
-            <p>"{!! $paper->details !!}"</p><br>
-          </div>
-          @endif --}}
         </div>
-        <div class="col-md-12 no-padding">
+        <div class="col-md-12 no-padding" id="questions-area">
           @foreach($paper->questions as $key => $value)
-          <div class="panel panel-default">
+          <div class="panel panel-default {{$paper->display == 'One' && $key != 0? 'hide':''}}">
             <div class="panel-heading" style="background-color:none">
               <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
               <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
@@ -194,12 +189,15 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
               </li>
               @endforeach
             </ul>
+            @if($paper->display == 'One')
+            <div class="panel-footer">
+              <button class="btn btn-success" onclick="showNextQuestion(this)">Next <i class="fa fa-long-arrow-right"></i></button>
+            </div>
+            @endif
           </div>
           @endforeach
         </div> <!--/.col -->
-        <div class="col-md-12">
-          <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
-        </div>
+        <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
       </div><!-- /.row -->
       @endif
     </section> <!-- /.content -->
@@ -209,6 +207,21 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
 @endsection
 @section('scripts')
 <script>
+  //show next question
+  function showNextQuestion(e)
+  {
+    let questionArea = document.getElementById('questions-area');
+    e.parentNode.parentNode.classList.add('hide');
+    if(e.parentNode.parentNode.nextElementSibling)
+    {
+      e.parentNode.parentNode.nextElementSibling.classList.remove('hide');
+    }
+    else
+    {
+      questionArea.innerHTML = '<div class="panel panel-default"> <div class="panel-body"> Exam Completed. You can Submit now! </div></div>';
+    }
+    // console.log(e.parentNode.parentNode.nextElementSibling);
+  }
   // Set the date we're counting down to
   // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
   var countDownDate = new Date("{{$source->dtcformat($end_time)}}").getTime();
