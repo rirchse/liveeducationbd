@@ -26,7 +26,7 @@ function active($name)
   .header_menu a{color: #000!important}
   .item{margin:9px; color:#eee!important;font-size:18px}
   .alert{margin: 10px auto;float: none;}
-  .main-header .navbar-brand{color:#444}
+  .main-header .navbar-brand{color:#444; font-size: 16px}
   .navbar-toggle{color:#444}
   .active{background:#ddd}
 </style>
@@ -36,7 +36,8 @@ function active($name)
     <div class="container">
       <div class="navbar-header">
         <a href="{{route('homepage')}}" class="navbar-brand">
-          <img src="/img/logo.png" alt="" style="max-width: 70px; display:inline; padding-right: 15px"><b>{{config('app.name')}}</b>
+          <img src="/img/logo.png" alt="" style="max-width: 60px; display:inline; padding-right: 10px"/>
+          <b class="brand-name">{{config('app.name')}}</b>
         </a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>

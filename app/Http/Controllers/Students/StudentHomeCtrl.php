@@ -183,16 +183,18 @@ class StudentHomeCtrl extends Controller
 
   public function result($id, $value = null)
   {
-    
+    $result = '';
     $user = Auth::guard('student')->user();
-    
     $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->get();
+    $paper = Paper::find($id);
     if($value == 'after')
     {
       $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->orderBy('id', 'DESC')->limit(1)->get();
+      if($paper->result_view == 'Yes')
+      {
+        $result = 'Yes';
+      }
     }
-    $paper = Paper::find($id);
-    $result = 'Yes';
 
     return view('student-panel.result', compact('exams', 'paper', 'result'));
   }

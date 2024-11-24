@@ -103,6 +103,7 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('batch', 'BatchCtrl');
 	Route::resource('group', 'GroupCtrl');
 	Route::resource('student', 'StudentCtrl');
+	Route::resource('syllabus', 'SyllabusCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()
@@ -154,6 +155,13 @@ Route::middleware(['auth'])->group(function()
 		Route::get('add-student-complete', 'addStudentComplete')->name('students.add.complete');
 		Route::get('student/view/{id}/{name}', 'view')->name('student.view');
 		Route::get('student/remove/{id}/{name}/{obj}', 'remove')->name('student.remove');
+	});
+
+	Route::controller(SyllabusCtrl::class)->group(function()
+	{
+		Route::get('syllabus/add-question/{paper_id}', 'addQuestion')->name('syllabus.add.question');
+		Route::post('syllabus/add_to_paper', 'addToPaper')->name('syllabus.addtopaper');
+		Route::get('syllabus/view/{id}', 'view')->name('syllabus.view');
 	});
 	
 });

@@ -139,6 +139,7 @@ $percentage = $score = 0;
         @endforeach
       </div>
       @else
+      <p>{{$paper->message}}</p>
       @endif
     </section> <!-- /.content -->
 

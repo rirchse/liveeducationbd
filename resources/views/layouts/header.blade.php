@@ -142,6 +142,7 @@
             <li><a href="{{route('paper.index')}}"><i class="fa fa-list"></i> View Question Papers</a></li>
             <li><a href="{{route('batch.index')}}"><i class="fa fa-th"></i> View Batches</a></li>
             <li><a href="{{route('group.index')}}"><i class="fa fa-object-group"></i> View Groups</a></li>
+            <li><a href="{{route('syllabus.index')}}"><i class="fa fa-file-text"></i> Syllabus</a></li>
           </ul>
         </li>
        

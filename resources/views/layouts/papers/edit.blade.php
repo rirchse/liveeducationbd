@@ -158,7 +158,7 @@ $value = $paper;
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="result_view">Student Can View Result After Exam?</label>
-                        <select class="form-control" name="result_view" id="result_view" >
+                        <select class="form-control" name="result_view" id="result_view" onchange="resultView(this)">
                             <option value="">Select One</option>
                             <option value="Yes" {{$value->result_view == 'Yes'? 'selected': ''}}>Yes</option>
                             <option value="No" {{$value->result_view == 'No'? 'selected': ''}}>No</option>
@@ -247,6 +247,23 @@ $value = $paper;
 @section('scripts')
 <script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
+
+//result view add setting
+function resultView(e)
+{
+    console.log(e.options[e.selectedIndex].value == 'No');
+    if(e.options[e.selectedIndex].value == 'No')
+    {
+        let msg = document.createElement('div');
+        msg.classList.add('col-md-6');
+        msg.innerHTML = '<div class="form-group">'+
+                                '<label for="message">Message After Exam</label>'+
+                                '<input type="text" class="form-control" name="message" id="message" value="">'+
+                            '</div>';
+
+        e.parentNode.parentNode.nextElementSibling = msg;
+    }
+}
 function Status(e){
         let timer = e.parentNode.parentNode.nextElementSibling;
         if(e.options[e.selectedIndex].value == 'Scheduled')

@@ -1,3 +1,4 @@
+{{-- {{dd($_SERVER['REQUEST_URI'] == '/login')}} --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,7 @@
 
     @yield('stylesheets')
 		<style>
-			.wrapper{
+			.layout-top-nav{
 				background: rgb(0,3,36);
 				background: linear-gradient(90deg, rgba(0,3,36,1) 0%, rgba(9,73,121,1) 53%, rgba(7,128,153,1) 100%);
 			}
@@ -15,8 +16,8 @@
 
 </head>
 
-<body class="layout-top-nav login/-page">
-	<div class="wrapper" style="width:100%;padding-bottom: 50px">
+<body class="layout-top-nav" style="width:100%; {{$_SERVER['REQUEST_URI'] == '/login'? 'background:rgba(0,0,0,0.3)':''}}">
+	<div class="wrapper" style="height:100%; width:100%;padding-bottom: 50px">
     @include('auth.login_header')
 
 		@yield('content')

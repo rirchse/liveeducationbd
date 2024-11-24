@@ -11,7 +11,6 @@
   .alert{margin: 10px auto;float: none;}
   .main-header .navbar-brand{color:#444}
   .navbar-toggle{color:#444}
-  body{background-color:#0d0}
   @media screen and (max-width:768px)
   {
     .navbar-collapse, .navbar-nav{text-align:left; width: 100%; padding-left: 0}

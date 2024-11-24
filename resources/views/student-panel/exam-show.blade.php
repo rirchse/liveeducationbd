@@ -3,7 +3,11 @@ use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
 $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime(date('Y-m-d H:i:s'))));
-// dd($source->dtcformat($end_time));
+$questions = $paper->questions;
+if($paper->random == 'Yes')
+{
+  $questions = $paper->questions()->inRandomOrder()->get();
+}
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -173,7 +177,7 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
           <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
         </div>
         <div class="col-md-12 no-padding" id="questions-area">
-          @foreach($paper->questions as $key => $value)
+          @foreach($questions as $key => $value)
           <div class="panel panel-default {{$paper->display == 'One' && $key != 0? 'hide':''}}">
             <div class="panel-heading" style="background-color:none">
               <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>

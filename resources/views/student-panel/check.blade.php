@@ -10,6 +10,7 @@ $value = $paper;
 @section('content')
 <style>
   .checkbox{padding-left: 25px}
+  .cst-btn{margin-bottom:10px}
 </style>
 
 <div class="content-wrapper">
@@ -46,8 +47,12 @@ $value = $paper;
               <b>Exam No. {{$value->name}}</b>
             </div>
             <div class="panel-footer">
-              <a href="{{route('students.result', $value->id)}}" class="btn btn-warning">ফলাফল দেখুন</a>
-              <a class="btn btn-info pull-right" href="{{route('students.instruction', $value->id)}}">পুনরায় পরীক্ষা দিন</a>
+              {{-- <div class="col-md-6"> --}}
+                <a href="{{route('students.result', $value->id)}}" class="btn btn-warning cst-btn">ফলাফল দেখুন</a>
+              {{-- </div>
+              <div class="col-md-6"> --}}
+                <a class="btn btn-info cst-btn" href="{{route('students.instruction', $value->id)}}">পুনরায় পরীক্ষা দিন</a>
+              {{-- </div> --}}
               <div class="clearfix"></div>
             </div>
           </div>

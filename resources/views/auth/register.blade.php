@@ -79,7 +79,7 @@
           </div> -->
           <!-- /.social-auth-links -->
 
-          {{-- <a href="{{route('login')}}" class="text-primary">Already have an account?</a> --}}
+          <a href="{{route('students.login')}}" class="text-primary">Already have an account?</a>
         </div><!-- /.login-box-body -->
       </div><!-- /.login-box -->
       </div>

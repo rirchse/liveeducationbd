@@ -6,18 +6,18 @@
   .checkbox{padding-left: 25px}
 </style>
 
-<div class="main-wrapper" style="width:100%;">
+<div class="main-wrapper">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="sign-up-form">
         <div class="login-box" style="margin-top:10px">
         <div class="login-logo">
-          <h2 style="color:#fff">{{config('app.name', 'App Name')}} Login</h2>
+          <h2 style="color:#fff">{{config('app.name', 'App Name')}}</h2>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
           <p class="login-box-msg">
-          <img src="/img/logo.png?v=3008" alt=""><br><br>Login to start your session</p>
+          <img src="/img/logo.png?v=3008" alt=""><br><br>ADMIN LOGIN</p>
 
           <form action="{{ route('login.post') }}" method="POST" style="margin-bottom:15px">
             @csrf
@@ -64,7 +64,7 @@
               Google+</a>
           </div> -->
           <!-- /.social-auth-links -->
-          <p><a href="#" class="text-primary">I forgot my password</a></p>
+          <p><a href="#" class="text-primary" onclick="alert('Contact with Administrator')">I forgot my password</a></p>
           {{-- <p><a href="{{route('register')}}" class="text-success">Create New Account</a></p> --}}
         </div><!-- /.login-box-body -->
       </div><!-- /.login-box -->

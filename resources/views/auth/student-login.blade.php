@@ -65,7 +65,7 @@
           </div> -->
           <!-- /.social-auth-links -->
           <p><a href="#" class="text-primary">I forgot my password</a></p>
-          {{-- <p><a href="{{route('register')}}" class="text-success">Create New Account</a></p> --}}
+          <p><a href="{{route('register')}}" class="text-success">Create New Account</a></p>
         </div><!-- /.login-box-body -->
       </div><!-- /.login-box -->
       </div>
