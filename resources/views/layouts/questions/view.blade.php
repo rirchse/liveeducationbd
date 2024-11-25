@@ -3,6 +3,7 @@ use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $correct = '';
 $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
+$url = route('paper.addtopaper');
 @endphp
 
 @extends('dashboard')
@@ -150,6 +151,9 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
           @if(!is_null(Session::get('_paper')))
           @php
           $paper = Session::get('_paper');
+          if($paper->type == 'syllabus'){
+            $url = route('syllabus.addtopaper');
+          }
           @endphp
           <div class="box-header">
             <div class="paper_panel">
@@ -160,7 +164,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
                 </div>
               </div>
               <div class="form-group">
-                <a class="btn btn-info pull-right" href="{{route('paper.view', $paper->id)}}"><i class="fa fa-check"></i> Done</a>
+                <a class="btn btn-info pull-right" href="{{$paper->type == 'syllabus'? route('syllabus.view', $paper->id): route('paper.view', $paper->id)}}"><i class="fa fa-check"></i> Done</a>
                 {{-- <button type="button" class="btn btn-success btn-sm pull-right" onclick="addToPaper(this)" value="{{$paper->id}}"><i class="fa fa-plus"></i> Add To Paper</button> --}}
               </div>
             </div>
@@ -212,7 +216,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
       </div>
 
       {{-- <div class="alert hi/de" style="background:#fff;right:0">///</div> --}}
-
+      
 <script>
   function getDepartments(e)
   {
@@ -504,7 +508,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
       {
         if(Number(maxq.innerHTML) != 0 && Number(qcount.innerHTML) >= Number(maxq.innerHTML))
         {
-          alert('Question Enry Max Limit Over!');
+          alert('Maximum Question Entry Limit Exceeded!');
           e.checked = false;
         }
         else
@@ -525,20 +529,6 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
   function addToPaper(e, action)
   {
     let ids = e.value;
-    //loading image view
-    // loading.classList.remove('hide');
-
-    // let qcount = document.getElementById('qcount');
-    // let questions = document.getElementsByClassName('check');
-
-    // let ids = [];
-    // for(let q = 0; q < questions.length; q++)
-    // {
-    //   if(questions[q].checked == true)
-    //   {
-    //     ids.push(questions[q].value);
-    //   }
-    // }
 
     let formData = new FormData();
     formData.append('question', ids);
@@ -552,7 +542,7 @@ $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
       });
 
     $.ajax({
-      url: '{{route("paper.addtopaper")}}',
+      url: '{{$url}}',
       type: 'POST',
       data: formData,
       cache: false,

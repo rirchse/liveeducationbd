@@ -159,7 +159,7 @@ Route::middleware(['auth'])->group(function()
 
 	Route::controller(SyllabusCtrl::class)->group(function()
 	{
-		Route::get('syllabus/add-question/{paper_id}', 'addQuestion')->name('syllabus.add.question');
+		Route::get('add-question/{syllabus}/{paper_id}', 'addQuestion')->name('syllabus.add.question');
 		Route::post('syllabus/add_to_paper', 'addToPaper')->name('syllabus.addtopaper');
 		Route::get('syllabus/view/{id}', 'view')->name('syllabus.view');
 	});

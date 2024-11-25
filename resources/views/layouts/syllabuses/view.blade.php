@@ -29,7 +29,7 @@ $source = New SourceCtrl;
           <div class="box-header with-border">
             <h4 class="box-title" style="display: inline">Syllabus (<b>{{count($syllabus->questions)}}</b>)</h4>
             <div class="text-right toolbar-icon pull-right" style="display: inline">
-              {{-- <a href="{{route('syllabus.add.question', $syllabus->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a> --}}
+              <a href="{{route('syllabus.add.question', ['syllabus', $syllabus->id])}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
               <a href="{{route('syllabus.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
               {{-- <a href="{{route('syllabus.solution', $syllabus->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a> --}}
               {{-- <a href="{{route('syllabus.result', $syllabus->id)}}" title="Result" class="label label-warning"><i class="fa fa-list-o"> Result</i></a> --}}

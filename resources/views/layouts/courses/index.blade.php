@@ -55,11 +55,7 @@ $source = New SourceCtrl;
                   <td>{{$source->dtformat($course->created_at)}}</td>
                   <td>{{$source->dtformat($course->updated_at)}}</td>
                   <td>
-                    @if($course->status == 'Active')
-                    <span class="label label-success">Active</span>
-                    @elseif($course->status == 'Inactive')
-                    <span class="label label-warning">Inactive</span>
-                    @endif
+                    <span class="label label-{{$course->status == 'Active'?'success':'danger'}}">{{$course->status}}</span>
                   </td>
                   <td>
                     {{-- <a href="{{route('course.show',$course->id)}}" class="label label-info" title="course Details"><i class="fa fa-file-text"></i></a> --}}

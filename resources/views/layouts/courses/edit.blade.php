@@ -43,7 +43,15 @@
                         <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
                         <p style="color:red;padding:5px 0">Image size: 6:4 / 600px X 400px</p>
                     </div>
-                    <img src="{{$course->banner}}" alt="" style="max-width:300px"><hr>
+                    <img src="{{$course->banner}}" alt="" style="max-width:300px">
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Status:</label><br>
+                        <label for="status">
+                            <input type="checkbox" name="status" id="status" {{$course->status == 'Active'? 'checked':''}} /> Active
+                        </label>
+                    </div>
                 </div>
             </div> <!-- /.box body -->
             <div class="box-footer">

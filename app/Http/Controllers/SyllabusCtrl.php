@@ -188,9 +188,10 @@ class SyllabusCtrl extends Controller
     }
 
     //custom routes
-    public function addQuestion($id)
+    public function addQuestion($type, $id)
     {
         $paper = Syllabus::find($id);
+        $paper['type'] = $type;
         if($paper)
         {
             Session::put('_paper', $paper);
@@ -215,12 +216,12 @@ class SyllabusCtrl extends Controller
                 $qcount = $paper->questions()->detach($ids);
             }
 
-            $paper = Paper::find($paper->id);
+            $paper = Syllabus::find($paper->id);
             Session::put('_paper', $paper);
 
             return response()->json([
                 'success' => true,
-                'message' => 'The question added to the paper',
+                'message' => 'The question added to the syllabus',
                 'qcount' => $qcount
             ]);
         }

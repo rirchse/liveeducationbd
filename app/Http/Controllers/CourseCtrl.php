@@ -140,6 +140,15 @@ class CourseCtrl extends Controller
             $data['banner'] = $source->uploadImage($data['banner'], 'courses/');
         }
 
+        if(isset($data['status']))
+        {
+            $data['status'] = 'Active';
+        }
+        else
+        {
+            $data['status'] = 'Deactive';
+        }
+
         try{
             Course::where('id', $id)->update($data);
 
