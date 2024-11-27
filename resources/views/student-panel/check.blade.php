@@ -47,13 +47,8 @@ $value = $paper;
               <b>Exam No. {{$value->name}}</b>
             </div>
             <div class="panel-footer">
-              {{-- <div class="col-md-6"> --}}
                 <a href="{{route('students.result', $value->id)}}" class="btn btn-warning cst-btn">ফলাফল দেখুন</a>
-              {{-- </div>
-              <div class="col-md-6"> --}}
                 <a class="btn btn-info cst-btn" href="{{route('students.instruction', $value->id)}}">পুনরায় পরীক্ষা দিন</a>
-              {{-- </div> --}}
-              <div class="clearfix"></div>
             </div>
           </div>
           @elseif($value->status == 'Published')

@@ -35,7 +35,7 @@ $source = New SourceCtrl;
               {{-- <a href="{{route('syllabus.result', $syllabus->id)}}" title="Result" class="label label-warning"><i class="fa fa-list-o"> Result</i></a> --}}
               <a href="{{route('syllabus.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
               {{-- <a href="{{route('syllabus.show', $syllabus->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a> --}}
-              {{-- <a href="{{route('syllabus.edit', $syllabus->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a> --}}
+              <a href="{{route('syllabus.edit', $syllabus->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a>
             </div>
           </div>
         </div>

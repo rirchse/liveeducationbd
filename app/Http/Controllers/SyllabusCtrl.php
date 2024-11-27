@@ -108,7 +108,7 @@ class SyllabusCtrl extends Controller
     public function show($id)
     {
         $group = Group::find($id);
-        return view('layouts.groups.read', compact('group'));
+        return view('layouts.syllabuses.read', compact('group'));
     }
 
     /**
@@ -119,8 +119,9 @@ class SyllabusCtrl extends Controller
      */
     public function edit($id)
     {
-        $group = Group::find($id);
-        return view('layouts.groups.edit', compact('group'));
+        $courses = Course::where('status', 'Active')->get();
+        $syllabus = Syllabus::find($id);
+        return view('layouts.syllabuses.edit', compact('syllabus', 'courses'));
     }
 
     /**

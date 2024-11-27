@@ -10,18 +10,9 @@ if(!is_null(Session::get('_paper')))
   $paper = Session::get('_paper');
   $xqs = $paper->questions()->pluck('id')->toArray();
 }
-// function qexist($id)
-// {
-//   dd($xqs);
-//   if(in_array($id, $xqs))
-//   {
-//     return 'checked';
-//   }
-//   return null;
-// }
 @endphp
 <style>
-.panel .panel-heading{background-color:#fff}
+.panel .panel-heading{background-color:#fff; text-align: justify}
 .panel-body{padding-top:5px}
 .panel-body label{white-space: normal;}
 .tools{text-align: right}
@@ -29,18 +20,6 @@ if(!is_null(Session::get('_paper')))
 </style>
 <div class="box-header">
   <h3 class="box-title">Questions ({{$questions->total()}})</h3>
-      {{-- <div class="box-tools">
-        <a href="{{route('question.create')}}" class="btn btn-sm btn-info">
-          <i class="fa fa-plus"></i> Add
-        </a>
-        <div class="input-group input-group-sm" style="float:right; width: 150px;margin-left:15px">
-          <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-          <div class="input-group-btn">
-            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-          </div>
-        </div>
-      </div> --}}
 </div><!-- /.box-header -->
 <div class="box-body">
   @foreach($questions as $key => $value)

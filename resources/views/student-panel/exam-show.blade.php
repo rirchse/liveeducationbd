@@ -8,6 +8,7 @@ if($paper->random == 'Yes')
 {
   $questions = $paper->questions()->inRandomOrder()->get();
 }
+$start_at = strtotime(date('Y-m-d H:i:s'));
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -371,6 +372,7 @@ if($paper->random == 'Yes')
     formData.append('paper_id', '{{$paper->id}}');
     formData.append('question_id', qids);
     formData.append('mcq_id', mcqids);
+    formData.append('start_at', '{{$start_at}}');
 
     $.ajax({
       url: '{{route("student.exam.add")}}',

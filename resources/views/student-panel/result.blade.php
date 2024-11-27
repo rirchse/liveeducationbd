@@ -34,7 +34,7 @@ $percentage = $score = 0;
 
     <!-- Main content -->
     <section class="content" id="content">
-      @if(!empty($result))
+      @if(isset($result['result']))
       <div class="row">
         @foreach($exams as $key => $value)
         @php
@@ -68,11 +68,11 @@ $percentage = $score = 0;
                 </tr>
                 <tr>
                   <td>Start Time</td>
-                  <th>{{$value->max}}</th>
+                  <th>{{$source->dtformat($value->start_at)}}</th>
                 </tr>
                 <tr>
                   <td>End Time</td>
-                  <th>{{$value->max}}</th>
+                  <th>{{$source->dtformat($value->end_at)}}</th>
                 </tr>
                 {{-- <tr>
                   <td>Total Questions</td>
@@ -138,8 +138,22 @@ $percentage = $score = 0;
         </div>
         @endforeach
       </div>
+      @elseif(isset($result['message']))
+      <div class="col-md-6 col-md-offset-3 panel panel-default">
+        <div class="panel-body" style="text-align: center">
+          <p>{{$paper->result_message}}</p>
+          <hr>
+          <p><a href="/">Back</a></p>
+        </div>
+      </div>
       @else
-      <p>{{$paper->message}}</p>
+      <div class="col-md-6 col-md-offset-3 panel panel-default">
+        <div class="panel-body" style="text-align: center">
+          <p>{{$paper->message}}</p>
+          <hr>
+          <p><a href="/">Back</a></p>
+        </div>
+      </div>
       @endif
     </section> <!-- /.content -->
 
@@ -148,5 +162,6 @@ $percentage = $score = 0;
 @endsection
 @section('scripts')
 <script>
-  </script>
+  //
+</script>
 @endsection

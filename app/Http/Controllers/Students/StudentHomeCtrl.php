@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SourceCtrl;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Paper;
@@ -16,6 +17,7 @@ use App\Models\McqItem;
 use App\Models\Choice;
 use Auth;
 use Session;
+use Mail;
 
 class StudentHomeCtrl extends Controller
 {
@@ -183,7 +185,7 @@ class StudentHomeCtrl extends Controller
 
   public function result($id, $value = null)
   {
-    $result = '';
+    $result = [];
     $user = Auth::guard('student')->user();
     $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->get();
     $paper = Paper::find($id);
@@ -192,7 +194,11 @@ class StudentHomeCtrl extends Controller
       $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->orderBy('id', 'DESC')->limit(1)->get();
       if($paper->result_view == 'Yes')
       {
-        $result = 'Yes';
+        $result['result'] = 'Yes';
+      }
+      else
+      {
+        $result['message'] = 'Yes';
       }
     }
 
@@ -217,6 +223,9 @@ class StudentHomeCtrl extends Controller
       'question_id' => 'nullable|string',
       'mcq_id' => 'nullable|string',
     ]);
+
+    // dd($request->start_at);
+    // dd(date('Y-m-d H:i:s'));
 
     $questions = $answered = $correct = $wrong = $no_answered = $marks = 0;
     $question_ids = [];
@@ -247,6 +256,8 @@ class StudentHomeCtrl extends Controller
       $exam = new Exam;
       $exam->student_id = $user->id;
       $exam->paper_id = $paper->id;
+      $exam->start_at = date('Y-m-d H:i:s', $request->start_at);
+      $exam->end_at = date('Y-m-d H:i:s');
       $exam->answer = $answered;
       $exam->correct = $correct;
       $exam->wrong = $wrong;
@@ -268,7 +279,13 @@ class StudentHomeCtrl extends Controller
     }catch(\E $e)
     {
       return $e;
-    }    
+    }
+    
+    $exam = Exam::where('student_id', $user->id)->orderBy('id', 'DESC')->first();
+    if($paper->email == 'Yes')
+    {
+      $this->resultSendToMail($paper, $exam);
+    }
 
     return response()->json([
       'success' => true,
@@ -280,5 +297,36 @@ class StudentHomeCtrl extends Controller
       'no_answered' => $no_answered,
       'marks' => $marks,
     ]);
+  }
+
+  public function resultSendToMail($paper, $exam)
+  {
+    $source = new SourceCtrl;
+    $user = Auth::guard('student')->user();
+    $data = [
+      'email_from' => 'noreply@liveeducationbd.com',
+      'from_name' => 'LiveEducationBD',
+      'email_to' => $user->email,
+      'subject' => 'Result | Live Education BD',
+      'candidate' => $user->name,
+      'course_name' => $exam->paper->course?$exam->paper->course->name:'',
+      'exam_no' => $exam->paper->name,
+      'start_at' => $source->dtformat($exam->start_at),
+      'end_at' => $source->dtformat($exam->end_at),
+      'answered' => $exam->answered,
+      'correct' => $exam->correct,
+      'wrong' => $exam->wrong,
+      'no_answer' => $exam->no_answer,
+      'mark' => $exam->mark,
+      'minus' => $exam->minus,
+      'percentage' => 100 / $exam->paper->questions->count() * $exam->mark,
+      'comments' => '<a target="_blank" href="'.$source->host().'/students/result/'.$paper->id.'/after">View Details</a>'
+    ];
+
+    Mail::send('mail.send_result_tomail', $data, function($message) use ($data)
+    {
+      $message->to($data['email_to'])->subject($data['subject']);
+      $message->from($data['email_from'], $data['from_name']);
+    });
   }
 }
