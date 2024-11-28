@@ -135,6 +135,7 @@ class SyllabusCtrl extends Controller
     {
         $this->validate($request, [
             'name'      => 'required|max:255',
+            'header'    => 'required|max:255',
             'details'   => 'nullable|max:1000',
         ]);
         
@@ -150,16 +151,16 @@ class SyllabusCtrl extends Controller
         }
 
         try{
-            Group::where('id', $id)->update($data);
+            Syllabus::where('id', $id)->update($data);
         }
         catch(\E $e)
         {
             return $e;
         }
         
-        Session::flash('success', 'The group successfully Updated!');
+        Session::flash('success', 'The syllabus successfully Updated!');
 
-        return redirect()->route('group.index');
+        return redirect()->route('syllabus.index');
     }
 
     /**

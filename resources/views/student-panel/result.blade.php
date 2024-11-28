@@ -48,15 +48,12 @@ $percentage = $score = 0;
             </div>
             <div class="panel-body">
               <table class="table table-bordered">
-                {{-- <tr>
-                  <th colspan="2" style="text-align: center">Exam & Candidate Details</th>
+                <tr>
+                  <th colspan="2" style="text-align: center;font-size:18px">Result Summary</th>
                 </tr>
                 <tr>
                   <td>Candidate</td>
-                  <th>{{$value->max}}</th>
-                </tr> --}}
-                <tr>
-                  <th colspan="2" style="text-align: center;font-size:18px">Result Summary</th>
+                  <th>{{$user->name}}</th>
                 </tr>
                 <tr>
                   <td>Course Name</td>
@@ -74,10 +71,6 @@ $percentage = $score = 0;
                   <td>End Time</td>
                   <th>{{$source->dtformat($value->end_at)}}</th>
                 </tr>
-                {{-- <tr>
-                  <td>Total Questions</td>
-                  <th>{{$value->max}}</th>
-                </tr> --}}
                 <tr>
                   <td>Answered</td>
                   <th id="answer">{{$value->answer}}</th>

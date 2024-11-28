@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Syllabus extends Model
 {
-    // public function paper()
-    // {
-    //     return $this->hasOne(Paper::class, 'group_id');
-    // }
-
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+    
     public function questions()
     {
         return $this->belongsToMany(Question::class);

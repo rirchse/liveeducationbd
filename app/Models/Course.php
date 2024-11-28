@@ -45,4 +45,9 @@ class Course extends Model
     {
         return $this->hasOne(Paper::class, 'course_id');
     }
+    
+    public function syllabus()
+    {
+        return $this->hasOne(Syllabus::class, 'course_id');
+    }
 }

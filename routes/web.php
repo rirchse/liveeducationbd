@@ -67,6 +67,7 @@ Route::middleware('auth:student')->group(function()
 		Route::post('students/course-apply', 'applyCourse')->name('students.course.apply');
 		Route::get('students/my-course', 'myCourse')->name('students.my-course');
 		Route::post('student/exam_add', 'examAdd')->name('student.exam.add');
+		Route::get('students/syllabus/{id}', 'syllabus')->name('student.syllabus');
 	});
 });
 

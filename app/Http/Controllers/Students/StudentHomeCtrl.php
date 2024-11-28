@@ -15,6 +15,7 @@ use App\Models\Department;
 use App\Models\Group;
 use App\Models\McqItem;
 use App\Models\Choice;
+use App\Models\Syllabus;
 use Auth;
 use Session;
 use Mail;
@@ -202,6 +203,8 @@ class StudentHomeCtrl extends Controller
       }
     }
 
+    $result['result'] = 'Yes';
+
     return view('student-panel.result', compact('exams', 'paper', 'result'));
   }
 
@@ -328,5 +331,11 @@ class StudentHomeCtrl extends Controller
       $message->to($data['email_to'])->subject($data['subject']);
       $message->from($data['email_from'], $data['from_name']);
     });
+  }
+
+  public function syllabus($id)
+  {
+    $syllabus = Syllabus::find($id);
+    return view('student-panel.syllabus', compact('syllabus'));
   }
 }

@@ -29,6 +29,8 @@ $source = New SourceCtrl;
           <div class="box-header with-border">
             <h4 class="box-title" style="display: inline">Question Paper (<b>{{count($paper->questions)}}</b>)</h4>
             <div class="text-right toolbar-icon pull-right" style="display: inline">
+              <a id="exam-url" href="#" style="font-size: 12px">{{route('students.instruction', $paper->id)}}</a>
+              <button title="Copy Link" class="label label-default" onclick="copyUrl()"><i class="fa fa-copy"></i> Copy Link </button>
               <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
               <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
               <a href="{{route('paper.solution', $paper->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a>
@@ -47,11 +49,6 @@ $source = New SourceCtrl;
         <div class="col-md-12">
           <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
-          {{-- @if($paper->details)
-          <div class="col-md-12 indication">
-            <p>"{!! $paper->details !!}"</p><br>
-          </div>
-          @endif --}}
             <div class="col-md-12">
               @foreach($paper->questions as $key => $value)
               <div class="panel">
@@ -71,4 +68,16 @@ $source = New SourceCtrl;
     </div><!-- /.row -->
   </section><!-- /.content -->
    
+@endsection
+@section('scripts')
+<script>
+  function copyUrl() {
+      var range = document.createRange();
+      range.selectNode(document.getElementById("exam-url"));
+      window.getSelection().removeAllRanges(); // clear current selection
+      window.getSelection().addRange(range); // to select text
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();// to deselect
+  }
+</script>
 @endsection

@@ -31,6 +31,11 @@ $value = $course;
         <div class="panel panel-default">
           <div class="panel-heading"><b>{{$value->name}}</b></div>
           <div class="panel-body" style="min-height: 420px">{!!$value->details!!}</div>
+          <div class="panel-footer">
+            @if($value->syllabus)
+            <a href="{{route('student.syllabus', $value->syllabus->id)}}" class="btn btn-primary"> <i class="fa fa-book"> </i> View Syllabus</a>
+            @endif
+          </div>
         </div>
       </div>
       <div class="col-md-4">
