@@ -193,17 +193,16 @@ class StudentHomeCtrl extends Controller
     if($value == 'after')
     {
       $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->orderBy('id', 'DESC')->limit(1)->get();
-      if($paper->result_view == 'Yes')
-      {
-        $result['result'] = 'Yes';
-      }
-      else
-      {
-        $result['message'] = 'Yes';
-      }
     }
-
-    $result['result'] = 'Yes';
+    
+    if($paper->result_view == 'Yes')
+    {
+      $result['result'] = 'Yes';
+    }
+    else
+    {
+      $result['message'] = 'Yes';
+    }
 
     return view('student-panel.result', compact('exams', 'paper', 'result'));
   }
@@ -227,38 +226,34 @@ class StudentHomeCtrl extends Controller
       'mcq_id' => 'nullable|string',
     ]);
 
-    // dd($request->start_at);
-    // dd(date('Y-m-d H:i:s'));
-
     $questions = $answered = $correct = $wrong = $no_answered = $marks = 0;
     $question_ids = [];
-    $mcq_ids = []; 
-    $question_ids = explode(',', $request->question_id); 
-    $mcq_ids = explode(',', $request->mcq_id);
-    // if($question_ids)
-    // {
-    //   $question_ids = explode(',', $request->question_id);
-    // }
-    // if($mcq_ids)
-    // {
-    //   $mcq_ids = explode(',', $request->mcq_id);
-    // }
+    $mcq_ids = [];
 
     //find paper
     $paper = Paper::find($request->paper_id);
-    $dbmcqs = McqItem::whereIn('id', $mcq_ids)->whereNotNull('correct_answer')->get();
 
-    $questions = $paper->questions()->count();
-    $answered = count($question_ids);
-    $correct = $dbmcqs->count();
-    $wrong = $answered - $correct;
-    $no_answered = $questions - $answered;
-    $marks = ($paper->mark * $correct) - ($wrong * $paper->minus);
+    // if choice any question the do this action
+    if($request->mcq_id)
+    {
+      $question_ids = explode(',', $request->question_id); 
+      $mcq_ids = explode(',', $request->mcq_id);
+      
+      $dbmcqs = McqItem::whereIn('id', $mcq_ids)->whereNotNull('correct_answer')->get();
+
+      $questions = $paper->questions()->count();
+      $answered = count($question_ids);
+      $correct = $dbmcqs->count();
+      $wrong = $answered - $correct;
+      $no_answered = $questions - $answered;
+      $marks = ($paper->mark * $correct) - ($wrong * $paper->minus);
+
+    }
 
     try{
       $exam = new Exam;
       $exam->student_id = $user->id;
-      $exam->paper_id = $paper->id;
+      $exam->paper_id = $request->paper_id;
       $exam->start_at = date('Y-m-d H:i:s', $request->start_at);
       $exam->end_at = date('Y-m-d H:i:s');
       $exam->answer = $answered;

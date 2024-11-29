@@ -52,7 +52,7 @@ $value = $paper;
                 <tr>
                 <tr>
                   <th>Banner:</th>
-                  <td><img src="{{$value->banner}}" alt="" style="widows: 100%"></td>
+                  <td><img src="{{$value->banner}}" alt="" style="width: 100%"></td>
                 </tr>
                 <tr>
                   <th>Header:</th>

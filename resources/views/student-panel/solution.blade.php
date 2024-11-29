@@ -14,7 +14,7 @@ $user = Auth::guard('student')->user();
   ::-webkit-scrollbar-thumb{background-color: #ddd}
   .mcqitems{list-style: none; padding-left: 10px}
   .mcqitems li{padding:5px; margin: 10px; max-width: 300px;}
-  .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; min-width: 300px;}
+  .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; min-width: 270px;}
   .mcqitems li input[type="radio"]{width: 20px;height: 20px; margin-right: 5px; padding-top:5px}
   .mcqitems li span{vertical-align: top}
   .banner{margin-top:15px}
@@ -40,7 +40,7 @@ $user = Auth::guard('student')->user();
         <div class="col-md-12 no-padding">
           @foreach($paper->questions as $key => $value)
           @php
-          $choice = $right_answer = '';
+          $choice = $right_answer = $correct_id = '';
           if(!empty($choices[$value->id]))
           {
             $choice = $choices[$value->id];
@@ -57,10 +57,14 @@ $user = Auth::guard('student')->user();
               if($val->correct_answer)
               {
                 $right_answer = $source->mcqlist()[$paper->format][$k].' '. $val->item;
+                $correct_id = $val->id;
               }
               @endphp
               <li>
                 <label class="{{ $choice == $val->id ? 'selected':''}}">
+                  @if($choice == $val->id && $correct_id != $choice)
+                  <span style="font-size: 22px; color:red;"><i class="fa fa-times"></i></span>
+                  @endif
                   <input {{ $choice != $val->id ? 'disabled':'checked'}} type="radio" />
                   <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
                 </label>

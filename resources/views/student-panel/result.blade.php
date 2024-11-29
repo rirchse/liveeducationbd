@@ -42,7 +42,10 @@ $percentage = $score = 0;
         @endphp
         <div class="col-md-6 col-md-offset-3 result" id="result">
           <div class="panel panel-default">
-            <img src="/img/paper-banner.png" alt="" style="width:100%">
+            @if($paper->banner)
+            <img src="{{$paper->banner}}" alt="" style="width:100%">
+            @endif
+            {!! $paper->header !!}
             <div class="panel-heading no-padding">
               <h3 style="text-align: center">Exam: {{$key+1}}</h3>
             </div>

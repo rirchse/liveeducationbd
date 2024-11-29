@@ -1,5 +1,10 @@
 @php
+$student  = [];
 $user = Auth::guard('student')->user();
+if($user)
+{
+  $student = \App\Models\Student::find($user->id);
+}
 @endphp
 @extends('student')
 @section('title', 'হোম')
@@ -25,19 +30,19 @@ $user = Auth::guard('student')->user();
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
         @foreach($courses as $value)
-        <div class="col-md-3">
+        <div class="col-md-2">
+          <a href="{{route('home.course.show', $value->id)}}">
           <div class="panel panel-default">
             <div class="penel-heading hover" style="text-align: center;padding:15px;min-height:150px">
-              <a href="{{route('home.course.show', $value->id)}}">
-                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
-              </a>
+                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
             </div>
           </div>
+        </a>
         </div>
         @endforeach
       </div> <!-- /.row -->
-      @if(!empty($user) && !empty($mycourses))
-      
+
+      @if(!empty($user) && count($mycourses))      
       <div class="box box-warning">
         <div class="box-header with-border">
           <h3 class="box-title">আমার কোর্স</h3>
@@ -45,51 +50,46 @@ $user = Auth::guard('student')->user();
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
         @foreach($mycourses as $value)
-        <div class="col-md-3">
+        <div class="col-md-2">
+          <a href="{{route('students.course.show', $value->id)}}">
           <div class="panel panel-default">
             <div class="penel-heading" style="text-align: center;padding:15px">
-              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
+              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
             </div>
             <div class="panel-heading"><b>{{$value->name}}</b></div>
           </div>
+          </a>
         </div>
         @endforeach
       </div> <!-- /.row -->
       @endif
-      @if(!empty($user))
+
+      @if(!empty($student) && count($student->courses()->get()))
       <div class="box box-danger">
         <div class="box-header with-border">
           <h3 class="box-title">পরীক্ষা</h3>
         </div>
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
-        @if($batches)
-          @foreach($batches as $batch)
-          {{-- {{$batch->paper()->where('status', 'Published')->get()}} --}}
-          @if($batch->paper()->where('status', 'Published')->get())
-          <div class="col-md-12">
-            {{-- <label class="" for="" style="color:#fff;background: rgb(38,43,99); background: linear-gradient(90deg, rgba(38,43,99,1) 25%, rgba(9,73,121,1) 50%, rgba(7,128,153,1) 100%); width:100%; display:block; padding:5px 10px">{{$batch->name}}</label> --}}
-          </div>
-          @endif
           
-            @foreach($batch->paper()->get() as $value)
-            <div class="col-md-3">
-              <a class="" href="{{route('students.check', $value->id)}}">
-              <div class="panel">
-                {{-- <div class="panel-body no-padding">
-                  <img src="{{$value->banner ? $value->banner : '/img/paper-banner.png'}}" alt="" style="width:100%">
-                </div> --}}
-                <div class="panel-heading">Live Education BD</div>
-                <div class="panel-body" style="font-size:22px"><b>{{$value->name}}</b></div>
-                <div class="panel-footer">
-                  Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>
-                </div>
+        @foreach($student->courses()->get() as $course)
+        @php
+        $paper = $course->paper;
+        @endphp
+        @if($course->paper)
+          <div class="col-md-3">
+            <a class="" href="{{route('students.check', $paper->id)}}">
+            <div class="panel">
+              <div class="panel-heading">Live Education BD</div>
+              <div class="panel-body" style="font-size:22px"><b>{{$paper->name}}</b></div>
+              <div class="panel-footer">
+                Course: <b>{{$course->name}}<b>
               </div>
-            </a>
             </div>
-            @endforeach
-          @endforeach
+          </a>
+          </div>
         @endif
+        @endforeach
       </div> <!-- /.row -->
       @endif
     </section> <!-- /.content -->

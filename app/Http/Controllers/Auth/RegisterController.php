@@ -121,7 +121,7 @@ class RegisterController extends Controller
 
         $source->sendMail($emailData);
 
-        Session::flash('success', 'Registration successfully completed. Thank you for join with us. A verifiaction email has been sent to '.$data['email'].' Please verify your account. If you get any problem to verification, please contact our support team.');
+        Session::flash('success', 'Registration completed successfully. Thank you for joining us! A verification email has been sent to '.$data['email'].'. Please verify your account. If you encounter any issues during the verification process, feel free to contact our support team.');
 
         return redirect()->route('register');
     }

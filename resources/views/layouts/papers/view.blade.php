@@ -30,7 +30,7 @@ $source = New SourceCtrl;
             <h4 class="box-title" style="display: inline">Question Paper (<b>{{count($paper->questions)}}</b>)</h4>
             <div class="text-right toolbar-icon pull-right" style="display: inline">
               <a id="exam-url" href="#" style="font-size: 12px">{{route('students.instruction', $paper->id)}}</a>
-              <button title="Copy Link" class="label label-default" onclick="copyUrl()"><i class="fa fa-copy"></i> Copy Link </button>
+              <button title="Copy Link" class="btn btn-default btn-sm" onclick="copyUrl(); alert('Link Copied to the clipboard')"><i class="fa fa-copy"></i> Copy Link </button>
               <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
               <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
               <a href="{{route('paper.solution', $paper->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a>

@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="banner">Banner</label>
                         <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
-                        <p style="color:red;padding:5px 0">Image size: 6:4 / 600px X 400px</p>
+                        <p style="color:red;padding:5px 0">Image size: 4:6 / 400px X 600px</p>
                     </div>
                 </div>
             </div> <!-- /.box body -->

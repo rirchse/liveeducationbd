@@ -7,7 +7,6 @@ $user = Auth::guard('student')->user();
 @extends('student')
 @section('title', 'পরীক্ষা সমূহ')
 @section('content')
-{{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style>
   .checkbox{padding-left: 25px}
 </style>
@@ -18,27 +17,35 @@ $user = Auth::guard('student')->user();
     <section class="content-header">
       <h1> পরীক্ষা সমূহ {{-- <small>পরীক্ষা সমূহple 2.0</small> --}} </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> হোম</a></li>
-        <li><a href="#">পরীক্ষা সমূহ</a></li>
+        <li><a href="/"><i class="fa fa-dashboard"></i> হোম</a></li>
+        <li><a href="{{route('students.exam')}}">পরীক্ষা সমূহ</a></li>
         {{-- <li class="active">Top Navigation</li> --}}
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-        @foreach($papers as $value)
-        <div class="col-md-3">
-          <a class="" href="{{route('students.check', $value->id)}}">
-          <div class="panel" style="min-height: 130px">
-            <div class="panel-heading">Live Education BD</div>
-            <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$value->name}}</b></div>
-            <div class="panel-footer">
-              Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>
-            </div>
+      @if(count($papers))
+      @foreach($papers as $value)
+      <div class="col-md-3">
+        <a class="" href="{{route('students.check', $value->id)}}">
+        <div class="panel" style="min-height: 130px">
+          <div class="panel-heading">Live Education BD</div>
+          <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$value->name}}</b></div>
+          <div class="panel-footer">
+            Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>
           </div>
-        </a>
         </div>
-        @endforeach
+      </a>
+      </div>
+      @endforeach
+      @else
+      <div class="panel panel-default">
+        <div class="panel-body">
+          No Exam Available
+        </div>
+      </div>
+      @endif
     </section> <!-- /.content -->
   </div> <!-- /.container -->
 </div>

@@ -18,7 +18,7 @@ $user = Auth::guard('student')->user();
     <section class="content-header">
       <h1> কোর্স সমূহ </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> হোম</a></li>
+        <li><a href="/"><i class="fa fa-dashboard"></i> হোম</a></li>
         <li><a href="#">কোর্স সমূহ</a></li>
         {{-- <li class="active">Top Navigation</li> --}}
       </ol>
@@ -26,18 +26,14 @@ $user = Auth::guard('student')->user();
 
     <!-- Main content -->
     <section class="content">
+      @if(count($courses))
       @foreach($courses as $value)
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="panel panel-default">
           <div class="penel-heading" style="text-align: center;padding:15px;min-height:150px">
-            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
+            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
           </div>
           <div class="panel-heading"><b>{{$value->name}}</b></div>
-          <div class="panel-body" style="min-height:400px;max-height:400px;overflow:auto">{!!$value->details!!}
-            @if($value->status == 'Scheduled')
-            <span>{{$value->open.' - '.$value->close}}</span>
-            @endif
-          </div>
           <div class="panel-footer">
             @if(!empty($user) && $value->students()->where('id', $user->id)->first())
             <button class="btn btn-default pull-right" disabled>Applied</button>
@@ -49,6 +45,13 @@ $user = Auth::guard('student')->user();
         </div>
       </div>
       @endforeach
+      @else
+      <div class="panel panel-default">
+        <div class="panel-body">
+          No Course Available
+        </div>
+      </div>
+      @endif
     </section> <!-- /.content -->
   </div> <!-- /.container -->
 </div>

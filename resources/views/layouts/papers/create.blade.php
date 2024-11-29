@@ -92,6 +92,7 @@ $source = New SourceCtrl;
                         <label for="banner">Banner</label>
                         <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
                     </div>
+                    <p style="color:red;padding:5px 0">Image size: 8:1 / 800px X 100px</p>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">

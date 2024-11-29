@@ -96,6 +96,7 @@ $value = $paper;
                         <label for="banner">Banner</label>
                         <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
                     </div>
+                    <p style="color:red;padding:5px 0">Image size: 8:1 / 800px X 100px</p>
                     <img src="{{$value->banner}}" alt="" style="max-width:600px"><hr>
                 </div>
                 <div class="col-md-6">
@@ -158,12 +159,14 @@ $value = $paper;
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="result_view">Student Can View Result After Exam?</label>
-                        <select class="form-control" name="result_view" id="result_view" onchange="resultView(this)">
+                        <select class="form-control" name="result_view" id="result_view" onchange="resultView(this)" required>
                             <option value="">Select One</option>
                             <option value="Yes" {{$value->result_view == 'Yes'? 'selected': ''}}>Yes</option>
                             <option value="No" {{$value->result_view == 'No'? 'selected': ''}}>No</option>
                         </select>
                     </div>
+                </div>
+                <div class="col-md-6" id="result_message" style="display: none">
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -198,12 +201,14 @@ $value = $paper;
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="permit">Who can exam?</label>
+                        <label for="permit">Exam Permission For Candidates?</label>
                         <select class="form-control" name="permit" id="permit" >
                             <option value="">Select One</option>
-                            <option value="Every One" {{$value->permit == 'Every One'? 'selected': ''}}>Every One</option>
+                            <option value="Course" {{$value->permit == 'Course'? 'selected': ''}}>Course</option>
+                            <option value="Department" {{$value->permit == 'Department'? 'selected': ''}}>Department</option>
                             <option value="Batch" {{$value->permit == 'Batch'? 'selected': ''}}>Batch</option>
                             <option value="Group" {{$value->permit == 'Group'? 'selected': ''}}>Group</option>
+                            <option value="Every One" {{$value->permit == 'Every One'? 'selected': ''}}>Every One</option>
                         </select>
                     </div>
                 </div>
@@ -248,20 +253,41 @@ $value = $paper;
 <script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
 
+// on upload show image
+    function showImg(e)
+    {
+        if(e.parentNode.firstElementChild.tagName == 'IMG')
+        {
+            e.parentNode.firstElementChild.src = window.URL.createObjectURL(e.files[0]);
+        }
+        else
+        {
+            let img = document.createElement('img');
+            img.src = window.URL.createObjectURL(e.files[0]);
+            img.setAttribute('style', 'width:100%;max-width:400px; margin-top:15px');
+            img.alt = '';
+            e.parentNode.appendChild(img);
+        }
+        
+    }
+
 //result view add setting
 function resultView(e)
 {
+    let result_message = document.getElementById('result_message');
     console.log(e.options[e.selectedIndex].value == 'No');
     if(e.options[e.selectedIndex].value == 'No')
     {
-        let msg = document.createElement('div');
-        msg.classList.add('col-md-6');
-        msg.innerHTML = '<div class="form-group">'+
-                                '<label for="message">Message After Exam</label>'+
-                                '<input type="text" class="form-control" name="message" id="message" value="">'+
-                            '</div>';
-
-        e.parentNode.parentNode.nextElementSibling = msg;
+        result_message.innerHTML = '<div class="form-group">'+
+            '<label for="result_message">Write short message instead of result Publish</label>'+
+            '<input type="text" class="form-control" name="result_message" id="result_message" required>'+
+        '</div>';
+        result_message.style.display = 'block';
+    }
+    else
+    {
+        result_message.innerHTML = '';
+        result_message.style.display = 'none';
     }
 }
 function Status(e){
