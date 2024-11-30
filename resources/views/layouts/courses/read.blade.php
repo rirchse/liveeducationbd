@@ -1,3 +1,7 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+@endphp
 @extends('dashboard')
 @section('title', 'Course Details')
 @section('content')
@@ -31,65 +35,66 @@
                     <td>{{$course->name}}</td>
                   </tr>
                 <tr>
-                    <th>Brand:</th>
-                    <td>{{$course->brand}}</td>
-                  </tr>
-                <tr>
-                    <th>MRP Price:</th>
-                    <td>{{$course->mrp_price}}</td>
-                  </tr>
-                <tr>
-                    <th>Credit Price:</th>
-                    <td>{{$course->credit_price}}</td>
-                  </tr>
-                <tr>
-                <tr>
-                  <th>Cash Price:</th>
-                  <td>{{$course->cash_price}}</td>
+                  <th>Departments:</th>
+                  <td>
+                    @if($course->departments)
+                    @foreach($course->departments as $value)
+                    <label class="label label-primary">{{$value->name}}</label>
+                    @endforeach
+                    @endif
+                  </td>
                 </tr>
                 <tr>
-                  <th>Buying Price:</th>
-                  <td>{{$course->buying_price}}</td>
+                <tr>
+                  <th>Syllabuses:</th>
+                  <td>
+                    @if($course->syllabuses)
+                    @foreach($course->syllabuses as $value)
+                    <label class="label label-info">{{$value->name}}</label>
+                    @endforeach
+                    @endif
+                  </td>
                 </tr>
                 <tr>
-                    <th>Serial No:</th>
-                    <td>{{$course->serial_no}}</td>
-                  </tr>
-                  <tr>
-                    <th>Details:</th>
-                    <td>{{$course->details}}</td>
-                  </tr>
-                
-                   <tr>
-                    <th>Status:</th>
-                    <td>
-                      @if($course->status == 0)
-                      <span class="label label-warning">Unactive</span>
-                      @elseif($course->status == 1)
-                      <span class="label label-success">Active</span>
-                      @elseif($course->status == 2)
-                      <span class="label label-danger">Disabled</span>
-                      @endif
-                    </td>
-                  </tr>
-                  
-                  <tr>
-                    <th>Date:</th>
-                    <td>{{date('d M Y h:i:s A',strtotime($course->buying_date) )}} </td>
-                  </tr>
-                  <tr>
-                    <th>Record Created On:</th>
-                    <td>{{date('d M Y h:i:s A',strtotime($course->created_at) )}} </td>
-                  </tr>
-                  <tr>
-                    <th>Record Updated On:</th>
-                    <td>{{date('d M Y h:i:s A',strtotime($course->updated_at) )}} </td>
-                  </tr>
+                  <th>Papers:</th>
+                  <td>
+                    @if($course->papers)
+                    @foreach($course->papers as $value)
+                    <label class="label label-warning">{{$value->name}}</label>
+                    @endforeach
+                    @endif
+                  </td>
+                </tr>
+                <tr>
+                  <th>Students</th>
+                  <td><b>{{$course->students->count()}}</b></td>
+                </tr>
+                <tr>
+                  <th>Teachers:</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>Details:</th>
+                  <td>{!!$course->details!!}</td>
+                </tr>
+                <tr>
+                  <th>Status:</th>
+                  <td>
+                    <span class="label label-{{$course->status == 'Active'? 'success':'danger'}}">{{$course->status}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Record Created On:</th>
+                  <td>{{$source->dtformat($course->created_at)}} </td>
+                </tr>
+                <tr>
+                  <th>Record Updated On:</th>
+                  <td>{{$source->dtformat($course->updated_at)}} </td>
+                </tr>
               </tbody>
             </table>
           </div>
           <div class="clearfix"></div>
-          <p><a href="{{route('course.delete',$course->id)}}" onclick="return confirm('Are sure you want to permanently delete this product?')" class="text-danger" style="padding:15px">Permanently Remove?</a></p>
         </div>
       </div><!-- /.box -->
     </div><!--/.col (left) -->

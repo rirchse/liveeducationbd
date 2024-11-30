@@ -33,7 +33,9 @@ $value = $course;
           <div class="panel-body" style="min-height: 420px">{!!$value->details!!}</div>
           <div class="panel-footer">
             @if($value->syllabus)
-            <a href="{{route('student.syllabus', $value->syllabus->id)}}" class="btn btn-primary"> <i class="fa fa-book"> </i> View Syllabus</a>
+            @foreach($value->syllabus->get() as $syllabus)
+            <a href="{{route('student.syllabus', $syllabus->id)}}" class="btn btn-primary"> <i class="fa fa-book"> </i> {{$syllabus->name}}</a>
+            @endforeach
             @endif
           </div>
         </div>

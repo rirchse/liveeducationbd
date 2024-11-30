@@ -100,6 +100,8 @@ class StudentHomeCtrl extends Controller
     $student = Student::find($user->id);
     $batch_ids = $student->batches()->pluck('id')->toArray();
     $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
+
+    $papers = $student->course;
     return view('student-panel.exam', compact('papers'));
   }
 

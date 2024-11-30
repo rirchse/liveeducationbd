@@ -41,6 +41,11 @@ class Course extends Model
         return $this->belongsToMany(Student::class);
     }
 
+    public function papers()
+    {
+        return $this->hasMany(Paper::class, 'course_id');
+    }
+
     public function paper()
     {
         return $this->hasOne(Paper::class, 'course_id');
@@ -49,5 +54,10 @@ class Course extends Model
     public function syllabus()
     {
         return $this->hasOne(Syllabus::class, 'course_id');
+    }
+
+    public function syllabuses()
+    {
+        return $this->hasMany(Syllabus::class, 'course_id');
     }
 }

@@ -45,7 +45,7 @@ $source = New SourceCtrl;
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th>Status</th>
-                  <th width="130">Action</th>
+                  <th width="170">Action</th>
                 </tr>
                 @foreach($courses as $course)
                 <tr>
@@ -58,7 +58,7 @@ $source = New SourceCtrl;
                     <span class="label label-{{$course->status == 'Active'?'success':'danger'}}">{{$course->status}}</span>
                   </td>
                   <td>
-                    {{-- <a href="{{route('course.show',$course->id)}}" class="label label-info" title="course Details"><i class="fa fa-file-text"></i></a> --}}
+                    <a href="{{route('course.show',$course->id)}}" class="btn btn-info" title="course Details"><i class="fa fa-file-text"></i></a>
                     <a href="{{route('students.add', [$course->id, 'Course'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a>
                     <a href="{{route('course.edit',$course->id)}}" class="btn btn-warning btn-sm" title="Edit this course"><i class="fa fa-edit"></i></a>
                     <form style="display: inline" action="{{route('course.destroy', $course->id)}}" method="POST">

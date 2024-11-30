@@ -2,6 +2,11 @@
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
+$student = [];
+if($user)
+{
+  $student = \App\Models\Student::find($user->id);
+}
 @endphp
 
 @extends('student')
@@ -25,15 +30,18 @@ $user = Auth::guard('student')->user();
 
     <!-- Main content -->
     <section class="content">
-      @if(count($papers))
-      @foreach($papers as $value)
+      @if(!empty($student) && count($student->courses()->get()))
+      @foreach($student->courses()->get() as $course)
+      @php
+      $paper = $course->paper;
+      @endphp
       <div class="col-md-3">
-        <a class="" href="{{route('students.check', $value->id)}}">
+        <a class="" href="{{route('students.check', $paper->id)}}">
         <div class="panel" style="min-height: 130px">
           <div class="panel-heading">Live Education BD</div>
-          <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$value->name}}</b></div>
+          <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
           <div class="panel-footer">
-            Course: <b>{{$value->course()->first() ? $value->course()->first()->name:''}}<b>
+            Course: <b>{{$course->name}}<b>
           </div>
         </div>
       </a>
