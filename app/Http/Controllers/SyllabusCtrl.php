@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Department;
 use App\Models\Batch;
 use App\Models\Group;
 use App\Models\Syllabus;
@@ -49,7 +50,8 @@ class SyllabusCtrl extends Controller
     public function create()
     {
         $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
-        return view('layouts.syllabuses.create', compact('courses'));
+        $departments = Department::where('status', 'Active')->get();
+        return view('layouts.syllabuses.create', compact('courses', 'departments'));
     }
 
     /**
@@ -120,8 +122,9 @@ class SyllabusCtrl extends Controller
     public function edit($id)
     {
         $courses = Course::where('status', 'Active')->get();
+        $departments = Department::where('status', 'Active')->get();
         $syllabus = Syllabus::find($id);
-        return view('layouts.syllabuses.edit', compact('syllabus', 'courses'));
+        return view('layouts.syllabuses.edit', compact('syllabus', 'courses', 'departments'));
     }
 
     /**

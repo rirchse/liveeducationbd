@@ -38,8 +38,8 @@ class StudentHomeCtrl extends Controller
     $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
 
     // authenticates user examps
-    $batch_ids = $student->batches()->pluck('id')->toArray();
-    $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
+    // $batch_ids = $student->batches()->pluck('id')->toArray();
+    $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
     return view('student-panel.home', compact('courses', 'mycourses', 'papers', 'student'));
   }
 
@@ -97,11 +97,8 @@ class StudentHomeCtrl extends Controller
   public function exam()
   {
     $user = Auth::guard('student')->user();
-    $student = Student::find($user->id);
-    $batch_ids = $student->batches()->pluck('id')->toArray();
-    $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
-
-    $papers = $student->course;
+    $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
+    
     return view('student-panel.exam', compact('papers'));
   }
 

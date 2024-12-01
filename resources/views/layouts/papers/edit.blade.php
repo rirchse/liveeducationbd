@@ -214,11 +214,11 @@ $value = $paper;
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="permit">Paid exam?</label>
-                        <select class="form-control" name="permit" id="permit" >
+                        <label for="paid">Paid exam?</label>
+                        <select class="form-control" name="paid" id="paid" required>
                             <option value="">Select One</option>
-                            <option value="Yes" {{$value->permit == 'Yes'? 'selected': ''}}>Yes</option>
-                            <option value="No" {{$value->permit == 'No'? 'selected': ''}}>No</option>
+                            <option value="Yes" {{$value->paid == 'Yes'? 'selected': ''}}>Yes</option>
+                            <option value="No" {{$value->paid == 'No'? 'selected': ''}}>No</option>
                         </select>
                     </div>
                 </div>

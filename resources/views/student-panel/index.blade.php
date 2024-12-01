@@ -73,23 +73,40 @@ if($user)
       <div class="row" style="margin-bottom:35px">
           
         @foreach($student->courses()->get() as $course)
+        @if($course->paper)
         @php
         $paper = $course->paper;
         @endphp
-        @if($course->paper)
+          @if( $paper->permit == 'Course' && $student->courses->find($course->id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
           <div class="col-md-3">
             <a class="" href="{{route('students.check', $paper->id)}}">
             <div class="panel">
               <div class="panel-heading">Live Education BD</div>
-              <div class="panel-body" style="font-size:22px"><b>{{$paper->name}}</b></div>
+              <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
               <div class="panel-footer">
                 Course: <b>{{$course->name}}<b>
               </div>
             </div>
           </a>
           </div>
+          @endif
         @endif
         @endforeach
+        @if($papers)
+        @foreach($papers as $paper)
+        <div class="col-md-3">
+          <a class="" href="{{route('students.check', $paper->id)}}">
+          <div class="panel">
+            <div class="panel-heading">Live Education BD</div>
+            <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
+            <div class="panel-footer">
+              Course: <b>{{$course->name}}<b>
+            </div>
+          </div>
+        </a>
+        </div>
+        @endforeach
+        @endif
       </div> <!-- /.row -->
       @endif
     </section> <!-- /.content -->

@@ -34,8 +34,8 @@ class HomePageCtrl extends Controller
     // Active batches
     $batches = Batch::where('status', 'Active')->get();
 
-    $batch_ids = Batch::pluck('id')->toArray();
-    $papers = Paper::orderBy('id', 'DESC')->whereIn('batch_id', $batch_ids)->get();
+    $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
+    
     return view('student-panel.index', compact('courses', 'mycourses', 'batches', 'papers'));
   }
 

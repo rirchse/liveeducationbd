@@ -26,6 +26,7 @@
       @if(count($courses))
 
       @foreach($courses as $value)
+      <a href="{{route('home.course.show', $value->id)}}">
       <div class="col-md-3">
         <div class="panel panel-default">
           <div class="penel-heading" style="text-align: center;padding:15px;min-height:150px">
@@ -34,6 +35,7 @@
           <div class="panel-heading"><b>{{$value->name}}</b></div>
         </div>
       </div>
+      </a>
       @endforeach
       @else
       <div class="panel panel-default">

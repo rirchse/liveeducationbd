@@ -23,7 +23,7 @@
         <form action="{{route('syllabus.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="box-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">Course Name</label>
                         <select class="form-control select2" name="course_id" id="course_id" required >
@@ -33,7 +33,18 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}">{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">Syllabus Name</label>
                         <input type="text" class="form-control" name="name" id="name" required>

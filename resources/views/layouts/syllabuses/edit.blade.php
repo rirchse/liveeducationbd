@@ -35,7 +35,7 @@ $value = $syllabus;
             @csrf
             @method('PUT')
             <div class="box-body">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Course</label>
                         <select name="course_id" id="course_id" class="form-control select2">
@@ -46,7 +46,18 @@ $value = $syllabus;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">Syllabus Name</label>
                         <input type="text" class="form-control" name="name" id="name" required value="{{$value->name}}">

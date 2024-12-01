@@ -1,5 +1,10 @@
 @php
 $user = Auth::guard('student')->user();
+$student = [];
+if($user)
+{
+  $student = \App\Models\Student::find($user->id);
+}
 $value = $course;
 @endphp
 @extends('student')
@@ -27,39 +32,47 @@ $value = $course;
 
     <!-- Main content -->
     <section class="content">
-      <div class="col-md-8">
+      <div class="col-md-9">
         <div class="panel panel-default">
           <div class="panel-heading"><b>{{$value->name}}</b></div>
           <div class="panel-body" style="min-height: 420px">{!!$value->details!!}</div>
           <div class="panel-footer">
             @if($value->syllabus)
             @foreach($value->syllabus->get() as $syllabus)
+            {{-- {{$student->departments->find($syllabus->department_id)}} --}}
+            @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
+            @if($student->courses->find($syllabus->course_id) && $student->departments->find($syllabus->department_id))
             <a href="{{route('student.syllabus', $syllabus->id)}}" class="btn btn-primary"> <i class="fa fa-book"> </i> {{$syllabus->name}}</a>
+            @endif
+            @else
+            <a href="{{route('student.syllabus', $syllabus->id)}}" class="btn btn-primary"> <i class="fa fa-book"> </i> {{$syllabus->name}}</a>
+            @endif
             @endforeach
             @endif
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <form action="{{route('students.course.apply')}}" method="post">
           @csrf
           <input type="hidden" name="course_id" value="{{$value->id}}">
         <div class="panel panel-default">
           <div class="penel-heading" style="text-align: center;padding:15px">
-            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/logo.png'}}" alt="" />
+            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
           </div>
           <div class="panel-heading"><b>{{$value->name}}</b></div>
+          @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
           <div class="panel-body">
             <div class="form-group">
-              <label for="">Department (Optional)</label>
-              <select id="department_id" name="department_id" class="form-control">
+              <label for="">Department</label>
+              <select id="department_id" name="department_id" class="form-control" required>
                 <option value="">Select One</option>
                 @foreach($departments as $val)
                 <option value="{{$val->id}}">{{$val->name}}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
               <label for="">Batch</label>
               <select id="batch_id" name="batch_id" class="form-control" required>
                 <option value="">Select One</option>
@@ -76,8 +89,9 @@ $value = $course;
                 <option value="{{$val->id}}">{{$val->name}}</option>
                 @endforeach
               </select>
-            </div>
+            </div> --}}
           </div>
+          @endif
           <div class="panel-footer">
             @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
             <button class="btn btn-default pull-right" disabled>Applied</button>

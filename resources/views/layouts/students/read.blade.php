@@ -19,7 +19,7 @@ $value = $student;
     <!-- Main content -->
   <section class="content">
     <div class="row"><!-- left column -->
-      <div class="col-md-6"><!-- general form elements -->
+      <div class="col-md-8"><!-- general form elements -->
         <div class="box box-primary">
           <div class="box-header with-border">
             <h4 class="box-title">Student Information</h4>
@@ -71,6 +71,57 @@ $value = $student;
                       <a href="{{$value->image}}" target="_blank" title="View large image"><img src="{{$value->image}}" width=100 style="border: 5px solid #eee"></a>
                       @else
                       No image
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><h4>Purchases & Connections</h4></td>
+                  </tr>
+                  <tr>
+                    <th>Courses</th>
+                    <td>
+                      @if($value->courses)
+                      @foreach($value->courses as $course)
+                      <span class="btn btn-success btn-xs">
+                        {{$course->name}}
+                      </span>
+                      @endforeach
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Departments</th>
+                    <td>
+                      @if($value->departments)
+                      @foreach($value->departments as $course)
+                      <span class="btn btn-primary btn-xs">
+                        {{$course->name}}
+                      </span>
+                      @endforeach
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Batches</th>
+                    <td>
+                      @if($value->batches)
+                      @foreach($value->batches as $course)
+                      <span class="btn btn-info btn-xs">
+                        {{$course->name}}
+                      </span>
+                      @endforeach
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Groups</th>
+                    <td>
+                      @if($value->groups)
+                      @foreach($value->groups as $course)
+                      <span class="btn btn-default btn-xs">
+                        {{$course->name}}
+                      </span>
+                      @endforeach
                       @endif
                     </td>
                   </tr>
