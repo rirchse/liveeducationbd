@@ -48,6 +48,17 @@ $value = $syllabus;
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2">
+                            <option value="">Select One</option>
+                            @foreach($batches as $val)
+                            <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
                         <label for="">Department</label>
                         <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
@@ -57,7 +68,7 @@ $value = $syllabus;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="name">Syllabus Name</label>
                         <input type="text" class="form-control" name="name" id="name" required value="{{$value->name}}">
@@ -83,7 +94,7 @@ $value = $syllabus;
                                 <option value="">Select One</option>
                                 <option value="Unpublished" {{$value->status == 'Unpublished'? 'selected':''}}>Unpublished</option>
                                 <option value="Published" {{$value->status == 'Published'? 'selected':''}}>Published</option>
-                                <option value="Scheduled" {{$value->status == 'Scheduled'? 'selected':''}}>Scheduled</option>
+                                {{-- <option value="Scheduled" {{$value->status == 'Scheduled'? 'selected':''}}>Scheduled</option> --}}
                             </select>
                         </div>
                     </div>
@@ -102,17 +113,18 @@ $value = $syllabus;
                         </select>
                     </div>
                 </div>
-                {{-- <div class="col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="column">Columns</label>
-                        <select class="form-control" name="column" id="column" >
-                            <option value="">Select One</option>
-                            @foreach($source->mcqlist() as $key => $val)
-                            <option value="{{$key}}" {{$value->format == $key? 'selected': ''}}>{{implode(', ', $val)}}</option>
-                            @endforeach
-                        </select>
+                        <label for="pdf">PDF</label>
+                        <input type="file" name="pdf" class="form-control">
                     </div>
-                </div> --}}
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="routine">Routine</label>
+                        <input type="file" name="routine" class="form-control">
+                    </div>
+                </div>
             </div> <!-- /.box body -->
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary pull-right" onclick="formCheck(this)"><i class="fa fa-save"></i> Save</button>

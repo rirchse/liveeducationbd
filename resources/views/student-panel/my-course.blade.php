@@ -29,7 +29,7 @@
       <a href="{{route('home.course.show', $value->id)}}">
       <div class="col-md-3">
         <div class="panel panel-default">
-          <div class="penel-heading" style="text-align: center;padding:15px;min-height:150px">
+          <div class="penel-heading no-padding" style="text-align: center;padding:15px;min-height:150px">
             <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
           </div>
           <div class="panel-heading"><b>{{$value->name}}</b></div>

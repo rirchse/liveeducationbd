@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Course;
+use App\Models\Department;
 use App\Models\Batch;
 use App\Models\Role;
 use Auth;
@@ -101,8 +103,10 @@ class BatchCtrl extends Controller
      */
     public function edit($id)
     {
+        $courses = Course::where('status', 'Active')->get();
+        $departments = Department::where('status', 'Active')->get();
         $batch = Batch::find($id);
-        return view('layouts.batches.edit', compact('batch'));
+        return view('layouts.batches.edit', compact('courses', 'departments', 'batch'));
     }
 
     /**
@@ -114,12 +118,23 @@ class BatchCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
+        $source = new SourceCtrl;
         $this->validate($request, [
-            'name'      => 'required|max:255',
-            'details'   => 'nullable|max:1000',
+            'course_id'    => 'required|numeric',
+            'department_id'=> 'required|array',
+            'name'         => 'required|max:255',
+            'price'        => 'nullable|numeric',
+            'discount'     => 'nullable|numeric',
+            'net_price'    => 'nullable|numeric',
+            'teacher_id'   => 'nullable|array',
+            'status'       => 'nullable|string',
+            'details'      => 'nullable|max:1000',
         ]);
         
         $data = $request->all();
+        $batch = Batch::find($id);
+        $xbanner = public_path($batch->banner);
+        $departments = [];
 
         if(isset($data['_token']))
         {
@@ -130,8 +145,40 @@ class BatchCtrl extends Controller
             unset($data['_method']);
         }
 
+        if(isset($data['status']))
+        {
+            $data['status'] = 'Active';
+        }
+        else
+        {
+            $data['status'] = 'Deactive';
+        }
+
+        if(isset($data['department_id']))
+        {
+            $departments = $data['department_id'];
+            unset($data['department_id']);
+        }
+
+        if(isset($data['teacher_id']))
+        {
+            unset($data['teacher_id']);
+        }
+
+        if(isset($data['banner']))
+        {
+            $data['banner'] = $source->uploadImage($data['banner'], 'batches/');
+        }
+
         try{
             Batch::where('id', $id)->update($data);
+
+            if(File::exists($xbanner))
+            {
+                File::delete($xbanner);
+            }
+
+            $batch->departments()->sync($departments);
         }
         catch(\E $e)
         {

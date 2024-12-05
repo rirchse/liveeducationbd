@@ -50,8 +50,9 @@ class SyllabusCtrl extends Controller
     public function create()
     {
         $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
+        $batches = Batch::where('status', 'Active')->get();
         $departments = Department::where('status', 'Active')->get();
-        return view('layouts.syllabuses.create', compact('courses', 'departments'));
+        return view('layouts.syllabuses.create', compact('courses', 'batches', 'departments'));
     }
 
     /**
@@ -62,11 +63,15 @@ class SyllabusCtrl extends Controller
      */
     public function store(Request $request)
     {
+        $source = new SourceCtrl;
+
         $this->validate($request, [
             'course_id' => 'required|numeric',
             'name'      => 'required|unique:groups|max:255',
             'header'    => 'required',
             'details'   => 'nullable|max:1000',
+            'pdf'       => 'nullable|mimes:pdf|max:1000',
+            'routine'   => 'nullable|mimes:pdf|max:1000',
         ]);
         
         $data = $request->all();
@@ -87,6 +92,16 @@ class SyllabusCtrl extends Controller
         $data['created_by'] = Auth::id();
 
         try{
+            // upload pdf file
+            if($request->hasFile('pdf'))
+            {
+                $data['pdf'] = $source->uploadImage($data['pdf'], 'syllabus/temp/');
+            }
+            // upload pdf routine
+            if($request->hasFile('routine'))
+            {
+                $data['routine'] = $source->uploadImage($data['routine'], 'routine/');
+            }
             Syllabus::insert($data);
         }
         catch(\E $e)
@@ -122,9 +137,10 @@ class SyllabusCtrl extends Controller
     public function edit($id)
     {
         $courses = Course::where('status', 'Active')->get();
+        $batches = Batch::where('status', 'Active')->get();
         $departments = Department::where('status', 'Active')->get();
         $syllabus = Syllabus::find($id);
-        return view('layouts.syllabuses.edit', compact('syllabus', 'courses', 'departments'));
+        return view('layouts.syllabuses.edit', compact('syllabus', 'courses', 'departments', 'batches'));
     }
 
     /**
@@ -136,13 +152,22 @@ class SyllabusCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
+        $source = new SourceCtrl;
+
         $this->validate($request, [
+            'course_id' => 'required|numeric',
             'name'      => 'required|max:255',
             'header'    => 'required|max:255',
             'details'   => 'nullable|max:1000',
+            'pdf'       => 'nullable|mimes:pdf|max:1000',
+            'routine'   => 'nullable|mimes:pdf|max:1000',
         ]);
         
         $data = $request->all();
+        $batch = Batch::find($id);
+        //get existing file
+        $xpdf = public_path($batch->pdf);
+        $xroutine = public_path($batch->routine);
 
         if(isset($data['_token']))
         {
@@ -154,7 +179,27 @@ class SyllabusCtrl extends Controller
         }
 
         try{
+            // upload pdf file
+            if($request->hasFile('pdf'))
+            {
+                $data['pdf'] = $source->uploadImage($data['pdf'], 'syllabus/temp/');
+            }
+            // upload pdf routine
+            if($request->hasFile('routine'))
+            {
+                $data['routine'] = $source->uploadImage($data['routine'], 'routine/');
+            }
             Syllabus::where('id', $id)->update($data);
+
+            if(File::exists($xpdf))
+            {
+                File::delete($xpdf);
+            }
+            
+            if(File::exists($xroutine))
+            {
+                File::delete($xroutine);
+            }
         }
         catch(\E $e)
         {
@@ -235,6 +280,12 @@ class SyllabusCtrl extends Controller
             'success' => false,
             'message' => 'We are getting error'
         ]);
+    }
+
+    public function pdf($id)
+    {
+        $syllabus = Syllabus::find($id);
+        return view('layouts.syllabuses.print', compact('syllabus'));
     }
     
 }

@@ -19,6 +19,9 @@ use App\Models\Syllabus;
 use Auth;
 use Session;
 use Mail;
+// use \Mpdf\Mpdf as PDF; 
+// use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class StudentHomeCtrl extends Controller
 {
@@ -45,15 +48,15 @@ class StudentHomeCtrl extends Controller
 
   public function course()
   {
-    $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
+    $courses = Batch::orderBy('id', 'DESC')->where('status', 'Active')->get();
     return view('student-panel.course', compact('courses'));
   }
 
   public function courseShow($id)
   {
-    $course = Course::find($id);
+    $course = Batch::find($id);
     $batches = Batch::where('status', 'Active')->get();
-    $departments = Department::where('status', 'Active')->get();
+    $departments = $course->departments()->where('status', 'Active')->get();
     $groups = Group::where('status', 'Active')->get();
     return view('student-panel.course-show', compact('course', 'batches', 'departments', 'groups'));
   }
@@ -61,10 +64,8 @@ class StudentHomeCtrl extends Controller
   public function applyCourse(Request $request)
   {
     $this->validate($request, [
-      'course_id' => 'required|numeric',
       'batch_id' => 'required|numeric',
-      'department_id' => 'nullable|numeric',
-      'group_id' => 'nullable|numeric',
+      'department_id' => 'required|numeric',
     ]);
 
     $data = $request->all();
@@ -77,10 +78,9 @@ class StudentHomeCtrl extends Controller
       // return back();
       return redirect()->route('students.my-course');
     }
-    $student->courses()->attach($request->course_id);
+    
     $student->batches()->attach($request->batch_id);
     $student->departments()->attach($request->department_id);
-    $student->groups()->attach($request->group_id);
 
     Session::flash('success', 'You have successfully applied to the course.');
     return redirect()->route('students.my-course');
@@ -90,7 +90,7 @@ class StudentHomeCtrl extends Controller
   {
     $user = Auth::guard('student')->user();
     $student = Student::find($user->id);
-    $courses = $student->courses()->orderBy('id', 'DESC')->get();
+    $courses = $student->batches()->orderBy('id', 'DESC')->where('status', 'Active')->get();
     return view('student-panel.my-course', compact('courses'));
   }
 
@@ -331,5 +331,45 @@ class StudentHomeCtrl extends Controller
   {
     $syllabus = Syllabus::find($id);
     return view('student-panel.syllabus', compact('syllabus'));
+  }
+
+  public function generatePDF($id)
+  {
+    $syllabus = Syllabus::find($id);
+
+    // Setup a filename 
+    // $documentFileName = "fun.pdf";
+
+    // Create the mPDF document
+    // $document = new PDF( [
+    //   'mode' => 'utf-8',
+    //   'format' => 'A4',
+    //   'margin_header' => '3',
+    //   'margin_top' => '20',
+    //   'margin_bottom' => '20',
+    //   'margin_footer' => '2',
+    // ]); 
+    // Set some header informations for output
+  //   $header = [
+  //     'Content-Type' => 'application/pdf',
+  //     'Content-Disposition' => 'inline; filename="'.$documentFileName.'"'
+  // ];
+
+  // Write some simple Content
+  // $document->WriteHTML('<h1 style="color:blue">TheCodingJack</h1>');
+  // $document->WriteHTML('<p>Write something, just for fun!</p>');
+   
+  // Save PDF on your public storage 
+  // Storage::disk('public')->put($documentFileName, $document->Output($documentFileName, "S"));
+   
+  // Get file back from storage with the give header informations
+  // return Storage::disk('public')->download($documentFileName, 'Request', $header); //
+
+    $pdf = PDF::loadView('student-panel.syllabus-pdf', compact('syllabus'));
+
+    return $pdf->download('Syllabus PDF.pdf');
+    // return $pdf->stream('document.pdf');
+
+    // return view('student-panel.syllabus-pdf', compact('syllabus'));
   }
 }

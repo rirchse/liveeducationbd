@@ -1,3 +1,11 @@
+@php
+$department_ids = [];
+foreach($batch->departments as $val)
+{
+    array_push($department_ids, $val->id);
+}
+@endphp
+
 @extends('dashboard')
 @section('title', 'Edit Batch')
 @section('content')
@@ -17,15 +25,74 @@
         <div class="box-header with-border">
             <h3 style="color: #800" class="box-title">Batch Details</h3>
         </div>
-        <form action="{{route('batch.update', $batch)}}" method="POST">
+        <form action="{{route('batch.update', $batch)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="box-body">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Course Name (*)</label>
+                        <select class="form-control select2" name="course_id" id="course_id" required  onchange="getDepartments(this)">
+                            <option value="">Select One</option>
+                            @foreach($courses as $val)
+                            <option value="{{$val->id}}" {{$batch->id == $val->id? 'selected':''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="name">Batch Name</label>
                         <input type="text" class="form-control" name="name" id="name" required value="{{$batch->name}}">
                     </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Department Name (*)</label>
+                        <select class="form-control select2" multiple name="department_id[]" id="department_id" required>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}"{{in_array($val->id, $department_ids)? 'selected':''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" class="form-control" name="price" id="price" required value="{{$batch->price}}" step="0.01" placeholder="0.00 Tk." onkeyup="calcPrice()">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="discount">Discount</label>
+                        <input type="number" class="form-control" name="discount" id="discount" value="{{$batch->discount}}" step="0.01" placeholder="0.00 Tk." onkeyup="calcPrice()">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="net_price">Net Price</label>
+                        <input type="number" class="form-control" name="net_price" id="net_price" value="{{$batch->net_price}}" step="0.01" placeholder="0.00 Tk.">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="teacher">Teachers</label>
+                        <input type="text" class="form-control" name="teacher_id[]" id="teacher">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="status">Status </label><br>
+                        <label><input type="checkbox" name="status" id="status" value="{{$batch->status}}" style="width: 15px; height:15px" {{$batch->status == 'Active' ?'checked':''}}> <span style="margin-top:-10px">Active</span></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="banner">Banner</label>
+                        <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
+                        <p style="color:red;padding:5px 0">Image size: 4:6 / 400px X 600px</p>
+                    </div>
+                    <img src="{{$batch->banner}}" alt="" style="max-width:300px">
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
@@ -47,32 +114,64 @@
 
 @section('scripts')
 <script type="text/javascript">
-    function getsubcats(elm){
+    // on upload show image
+    function showImg(e)
+     {
+         if(e.parentNode.firstElementChild.tagName == 'IMG')
+         {
+             e.parentNode.firstElementChild.src = window.URL.createObjectURL(e.files[0]);
+         }
+         else
+         {
+             let img = document.createElement('img');
+             img.src = window.URL.createObjectURL(e.files[0]);
+             img.setAttribute('style', 'width:100%;max-width:400px; margin-top:15px');
+             img.alt = '';
+             e.parentNode.appendChild(img);
+         }
+         
+     }
+function calcPrice()
+{
+    let price = document.getElementById('price');
+    let discount = document.getElementById('discount');
+    let net_price = document.getElementById('net_price');
 
-        var catid = elm.options[elm.options.selectedIndex].value;
+    net_price.value = Number(price.value - discount.value).toFixed(2);
+}
 
-        $.ajax({
-            type: 'GET', //THIS NEEDS TO BE GET
-            url: '/get_sub_cats/'+catid,
-            success: function (data) {
+    // get department on select the course
+    function getDepartments(e)
+{
+    let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
-                var obj = JSON.parse(JSON.stringify(data));
-                var sub_cat_html = "";
+    $.ajax({
+        type: 'GET', //THIS NEEDS TO BE GET
+        url: '/get_departments/' + ids,
+        success: function (data) {
 
-                $.each(obj['subcats'], function (key, val) {
-                   sub_cat_html += "<option value="+val.id+">"+val.name+"</option>";
-                });
+            var obj = JSON.parse(JSON.stringify(data));
+            var options = '';
 
-                if(sub_cat_html != ""){
-                    $("#sub_cat").html('<option value="">Select SubCategory</option>'+sub_cat_html)
-                }else{
-                    $("#sub_cat").html('<option value="">No SubCategory</option>')
-                }
-            },
-            error: function(data) { 
-                 console.log('data error');
+            $.each(obj['data'], function (key, val) {
+                options += '<option value="'+val.id+'">'+val.name+'</option>';
+            });
+
+            if(options != ""){
+                $("#department_id").html(options)
+            }else{
+                $("#department_id").html('')
+                $("#semester_id").html('')
+                $("#subject_id").html('')
+                $("#chapter_id").html('')
             }
-        });
-    }
+        },
+        error: function(data) { 
+                console.log('data error');
+        }
+    });
+}
+
+$(function(){$('.select2').select2()});
 </script>
 @endsection

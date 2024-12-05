@@ -19,14 +19,16 @@ use Session;
 
 class HomePageCtrl extends Controller
 {
+  public $departments;
+
   public function index()
   {
-    $mycourses = [];
+    $mybatches = [];
     $user = Auth::guard('student')->user();
     if($user)
     {
       $student = Student::find($user->id);
-      $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
+      $mybatches = $student->batches()->orderBy('id', 'DESC')->get();
     }
     // active courses
     $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
@@ -36,31 +38,33 @@ class HomePageCtrl extends Controller
 
     $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
     
-    return view('student-panel.index', compact('courses', 'mycourses', 'batches', 'papers'));
+    return view('student-panel.index', compact('courses', 'mybatches', 'batches', 'papers'));
   }
 
   public function course()
   {
-    $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
+    $courses = Batch::orderBy('id', 'DESC')->where('status', 'Active')->get();
     return view('student-panel.course', compact('courses'));
   }
 
   public function courseShow($id)
   {
-    $course = Course::find($id);
-    $batches = Batch::where('status', 'Active')->get();
-    $departments = Department::where('status', 'Active')->get();
+    // $course = Course::find($id);
+    $batch = Batch::find($id);
+    // dd($batch);
+    if($batch->departments()->where('status', 'Active')->get())
+    {
+      $departments = $batch->departments()->where('status', 'Active')->get();
+    }
     $groups = Group::where('status', 'Active')->get();
-    return view('student-panel.course-show', compact('course', 'batches', 'departments', 'groups'));
+    return view('student-panel.course-show', compact('batch', 'departments', 'groups'));
   }
 
   public function applyCourse(Request $request)
   {
     $this->validate($request, [
-      'course_id' => 'required|numeric',
       'batch_id' => 'required|numeric',
-      'department_id' => 'nullable|numeric',
-      'group_id' => 'nullable|numeric',
+      'department_id' => 'required|numeric',
     ]);
 
     $data = $request->all();
@@ -73,10 +77,10 @@ class HomePageCtrl extends Controller
       // return back();
       return redirect()->route('students.my-course');
     }
-    $student->courses()->attach($request->course_id);
+    // $student->courses()->attach($request->course_id);
     $student->batches()->attach($request->batch_id);
     $student->departments()->attach($request->department_id);
-    $student->groups()->attach($request->group_id);
+    // $student->groups()->attach($request->group_id);
 
     Session::flash('success', 'You have successfully applied to the course.');
     return redirect()->route('students.my-course');
@@ -86,7 +90,7 @@ class HomePageCtrl extends Controller
   {
     $user = Auth::guard('student')->user();
     $student = Student::find($user->id);
-    $courses = $student->courses()->orderBy('id', 'DESC')->get();
+    $courses = $student->courses()->orderBy('id', 'DESC')->where('status', 'Active')->get();
     return view('student-panel.my-course', compact('courses'));
   }
 

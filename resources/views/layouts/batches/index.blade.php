@@ -39,10 +39,8 @@ $source = New SourceCtrl;
                 <tr>
                   <th>Id</th>
                   <th>Name</th>
-                  <th>Details</th>
+                  <th>Departments</th>
                   <th>Students</th>
-                  <th>Created At</th>
-                  <th>Updated At</th>
                   <th>Status</th>
                   <th width="130">Action</th>
                 </tr>
@@ -50,16 +48,14 @@ $source = New SourceCtrl;
                 <tr>
                   <td>{{$value->id}}</td>
                   <td>{{$value->name}}</td>
-                  <td>{{$value->details}}</td>
-                  <td><a href="{{route('student.view', [$value->id, 'batch'])}}" class="btn btn-info">{{$value->students()->count()}}</a></td>
-                  <td>{{$source->dtformat($value->created_at)}}</td>
-                  <td>{{$source->dtformat($value->updated_at)}}</td>
                   <td>
-                    @if($value->status == 'Active')
-                    <span class="label label-success">{{$value->status}}</span>
-                    @elseif($value->status == 'Deactive')
-                    <span class="label label-warning">{{$value->status}}</span>
-                    @endif
+                    @foreach($value->departments as $val)
+                    <label class="label label-info">{{$val->name}}</label>
+                    @endforeach
+                  </td>
+                  <td><a href="{{route('student.view', [$value->id, 'batch'])}}" class="btn btn-info">{{$value->students()->count()}}</a></td>
+                  <td>
+                    <span class="label label-{{$value->status == 'Active'? 'success':'danger'}}">{{$value->status}}</span>
                   </td>
                   <td>
                     {{-- <a href="{{route('course.show',$value->id)}}" class="label label-info" title="course Details"><i class="fa fa-file-text"></i></a> --}}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use App\Models\Filter;
 use App\Models\SubFilter;
 use App\Models\Role;
@@ -292,6 +293,40 @@ class PaperCtrl extends Controller
         $paper = Paper::find($id);
         $exams = Exam::where('paper_id', $id)->orderBy('mark', 'DESC')->get();
         return view('layouts.papers.result', compact('paper', 'exams'));
+    }
+
+    public function resultCsv($id)
+    {
+        $paper = Paper::find($id);
+        $exams = Exam::where('paper_id', $id)->orderBy('mark', 'DESC')->get();
+
+        $csvFileName = 'Exam No. '.$paper->name.'_results.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
+        ];
+
+        $handle = fopen('php://output', 'w');
+        fputcsv($handle, ['SL No.', 'Student Name', 'Registration ID', 'Department', 'Correct', 'Wrong', 'Blank', 'Total Mark']); // Add more headers as needed
+
+        foreach ($exams as $key => $exam)
+        {
+            fputcsv($handle, [
+                $key+1, 
+                $exam->student->name, 
+                str_pad($exam->student->id, 6, '0', STR_PAD_LEFT), 
+                $exam->paper->department->name, 
+                $exam->correct, 
+                $exam->wrong, 
+                $exam->no_answer, 
+                $exam->mark
+            ]); // Add more fields as needed
+        }
+
+        fclose($handle);
+
+        return Response::make('', 200, $headers);
+        // return view('layouts.papers.result', compact('paper', 'exams'));
     }
     
 }

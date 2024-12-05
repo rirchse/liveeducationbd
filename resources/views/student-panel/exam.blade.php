@@ -24,26 +24,25 @@ if($user)
       <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> হোম</a></li>
         <li><a href="{{route('students.exam')}}">পরীক্ষা সমূহ</a></li>
-        {{-- <li class="active">Top Navigation</li> --}}
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      @if(!empty($student) && count($student->courses()->get()))
-      @foreach($student->courses()->get() as $course)
-      @if($course->paper)
+      @if( !empty($student) && $student->batches()->count() )
+      @foreach($student->batches()->get() as $batch)
+      @if($batch->paper)
       @php
-      $paper = $course->paper;
+      $paper = $batch->paper;
       @endphp
-      @if( $paper->permit == 'Course' && $student->courses->find($course->id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
+      @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
         <div class="col-md-3">
           <a href="{{route('students.check', $paper->id)}}">
           <div class="panel" style="min-height: 130px">
             <div class="panel-heading">Live Education BD</div>
             <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
             <div class="panel-footer">
-              Course: <b>{{$course->name}}<b>
+              batch: <b>{{$batch->name}}<b>
             </div>
           </div>
         </a>
@@ -59,7 +58,7 @@ if($user)
           <div class="panel-heading">Live Education BD</div>
           <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
           <div class="panel-footer">
-            Course: <b>{{$course->name}}<b>
+            For: <b>{{$paper->permit}}<b>
           </div>
         </div>
       </a>

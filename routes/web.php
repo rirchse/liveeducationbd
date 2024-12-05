@@ -68,6 +68,7 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/my-course', 'myCourse')->name('students.my-course');
 		Route::post('student/exam_add', 'examAdd')->name('student.exam.add');
 		Route::get('students/syllabus/{id}', 'syllabus')->name('student.syllabus');
+		Route::get('students/syllabus/{id}/pdf', 'generatePDF')->name('students.syllabus.pdf');
 	});
 });
 
@@ -147,6 +148,7 @@ Route::middleware(['auth'])->group(function()
 		Route::get('/paper/view/{id}', 'view')->name('paper.view');
 		Route::get('/paper/solution/{id}', 'solution')->name('paper.solution');
 		Route::get('/paper/result/{id}', 'result')->name('paper.result');
+		Route::get('/paper/result/csv/{id}', 'resultCsv')->name('paper.result.csv');
 	});
 
 	Route::controller(StudentCtrl::class)->group(function()
@@ -163,6 +165,7 @@ Route::middleware(['auth'])->group(function()
 		Route::get('add-question/{syllabus}/{paper_id}', 'addQuestion')->name('syllabus.add.question');
 		Route::post('syllabus/add_to_paper', 'addToPaper')->name('syllabus.addtopaper');
 		Route::get('syllabus/view/{id}', 'view')->name('syllabus.view');
+		Route::get('syllabus/pdf/{id}', 'pdf')->name('syllabus.pdf');
 	});
 	
 });

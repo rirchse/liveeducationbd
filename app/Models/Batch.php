@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Batch extends Model
 {
-    public function courses()
+    public function course()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsTo(Course::class);
     }
 
     public function departments()
@@ -29,5 +29,10 @@ class Batch extends Model
     public function students()
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function syllabus()
+    {
+        return $this->hasOne(Syllabus::class, 'batch_id');
     }
 }

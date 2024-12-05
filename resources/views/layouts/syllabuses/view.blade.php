@@ -32,11 +32,11 @@ $source = New SourceCtrl;
               <a href="{{route('syllabus.add.question', ['syllabus', $syllabus->id])}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
               <a href="{{route('syllabus.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
               {{-- <a href="{{route('syllabus.solution', $syllabus->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a> --}}
-              {{-- <a href="{{route('syllabus.result', $syllabus->id)}}" title="Result" class="label label-warning"><i class="fa fa-list-o"> Result</i></a> --}}
               <a href="{{route('syllabus.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
               {{-- <a href="{{route('syllabus.show', $syllabus->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a> --}}
               <a href="{{route('syllabus.edit', $syllabus->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a>
-              <a href="#" class="label label-info" title="Print" onclick="printDiv()"><i class="fa fa-print"></i></a>
+              {{-- <a href="#" class="label label-info" title="Print" onclick="printDiv()"><i class="fa fa-print"></i></a> --}}
+              <a href="{{route('syllabus.pdf', $syllabus->id)}}" title="PDF Download" class="label label-info"><i class="fa fa-file"> Print PDF</i></a>
             </div>
           </div>
         </div>

@@ -10,6 +10,16 @@ class Syllabus extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+    
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class);
+    }
     
     public function questions()
     {

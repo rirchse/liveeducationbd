@@ -7,9 +7,14 @@ use Mail;
 
 class SourceCtrl extends Controller
 {
-  public function uploadImage($file, $path)
+  public function uploadImage($file, $path, $size = null)
   {
     $file_name = uniqid().'.'.$file->getClientOriginalExtension();
+    // if($size)
+    // {
+    //   $file = Image::make($file->getRealPath());
+    //   $file->resize($size['w'], $size['h']);
+    // }
     $base_path = base_path('public/uploads/'.$path);
     $file->move($base_path, $file_name);
     return '/uploads/'.$path.$file_name;

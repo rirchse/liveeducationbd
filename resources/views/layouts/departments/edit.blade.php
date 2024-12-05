@@ -34,7 +34,7 @@ foreach($department->courses as $val)
                         <label for="name">Course Name</label>
                         <select class="form-control select2" multiple name="course_id[]" id="course_id[]" required>
                             @foreach($courses as $val)
-                            <option value="{{$val->id}}"  {{in_array($val->id, $course_ids)? 'selected':''}}>{{$val->name}}</option>
+                            <option value="{{$val->id}}" {{in_array($val->id, $course_ids)? 'selected':''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>

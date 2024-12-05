@@ -26,6 +26,7 @@ $source = New SourceCtrl;
             <a class="btn btn-info" onclick="printDiv()">
               <i class="fa fa-print"></i> Print
             </a>
+            <a href="{{route('paper.result.csv', $paper->id)}}" class="btn btn-success" title="File CSV"><i class="fa fa-download"></i> Export CSV</a>
           </div>
         </div>
         <!-- /.box-header -->

@@ -118,7 +118,7 @@ class CourseCtrl extends Controller
         $this->validate($request, [
             'name'      => 'required|max:255',
             'details'   => 'nullable|max:1000',
-            'banner'   => 'nullable|image|mimes:jpeg,jpg,png,pdf|max:1000',
+            'banner'    => 'nullable|image|mimes:jpeg,jpg,png,pdf|max:1000',
         ]);
         
         $data = $request->all();
@@ -137,6 +137,7 @@ class CourseCtrl extends Controller
 
         if(isset($data['banner']))
         {
+            // $size = ['w' => 400, 'h' => 600];
             $data['banner'] = $source->uploadImage($data['banner'], 'courses/');
         }
 

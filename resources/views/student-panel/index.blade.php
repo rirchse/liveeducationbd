@@ -28,12 +28,12 @@ if($user)
           <h3 class="box-title">কোর্স সমূহ</h3>
         </div>
       </div> <!-- /.box -->
-      <div class="row" style="margin-bottom:35px">
-        @foreach($courses as $value)
+      <div class="row" style="margin-bottom:35px;">
+        @foreach($batches as $value)
         <div class="col-md-2">
           <a href="{{route('home.course.show', $value->id)}}">
           <div class="panel panel-default">
-            <div class="penel-heading hover" style="text-align: center;padding:15px;min-height:150px">
+            <div class="penel-heading hover no-padding" style="text-align: center; padding: 15px; min-height:150px">
                 <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
             </div>
           </div>
@@ -42,18 +42,18 @@ if($user)
         @endforeach
       </div> <!-- /.row -->
 
-      @if(!empty($user) && count($mycourses))      
+      @if(!empty($user) && count($mybatches))      
       <div class="box box-warning">
         <div class="box-header with-border">
           <h3 class="box-title">আমার কোর্স</h3>
         </div>
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
-        @foreach($mycourses as $value)
+        @foreach($mybatches as $value)
         <div class="col-md-2">
           <a href="{{route('students.course.show', $value->id)}}">
           <div class="panel panel-default">
-            <div class="penel-heading" style="text-align: center;padding:15px">
+            <div class="penel-heading no-padding" style="text-align: center; padding:15px">
               <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
             </div>
             <div class="panel-heading"><b>{{$value->name}}</b></div>
@@ -64,27 +64,28 @@ if($user)
       </div> <!-- /.row -->
       @endif
 
-      @if(!empty($student) && count($student->courses()->get()))
+      @if(!empty($student) && count($student->batches()->get()))
       <div class="box box-danger">
         <div class="box-header with-border">
           <h3 class="box-title">পরীক্ষা</h3>
         </div>
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
+        {{-- $paper->permit == 'Course' && $student->courses->find($course->id) || --}}
           
-        @foreach($student->courses()->get() as $course)
+        @foreach($student->batches()->get() as $course)
         @if($course->paper)
         @php
         $paper = $course->paper;
         @endphp
-          @if( $paper->permit == 'Course' && $student->courses->find($course->id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
+          @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
           <div class="col-md-3">
             <a class="" href="{{route('students.check', $paper->id)}}">
             <div class="panel">
               <div class="panel-heading">Live Education BD</div>
               <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
               <div class="panel-footer">
-                Course: <b>{{$course->name}}<b>
+                Batch: <b>{{$course->name}}<b>
               </div>
             </div>
           </a>
@@ -100,7 +101,7 @@ if($user)
             <div class="panel-heading">Live Education BD</div>
             <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
             <div class="panel-footer">
-              Course: <b>{{$course->name}}<b>
+              For: <b>{{$paper->permit}}<b>
             </div>
           </div>
         </a>

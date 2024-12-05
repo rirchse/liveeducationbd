@@ -31,8 +31,18 @@ class Department extends Model
         return $this->belongsToMany(Question::class);
     }
 
+    public function batches()
+    {
+        return $this->belongsToMany(Batch::class);
+    }
+
     public function paper()
     {
         return $this->hasOne(Paper::class, 'department_id');
+    }
+
+    public function syllabus()
+    {
+        return $this->hasOne(Syllabus::class, 'department_id');
     }
 }

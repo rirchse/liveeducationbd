@@ -60,4 +60,15 @@ class Course extends Model
     {
         return $this->hasMany(Syllabus::class, 'course_id');
     }
+
+    public function batch()
+    {
+        return $this->hasOne(Batch::class, 'course_id');
+    }
+
+    public function batches()
+    {
+        return $this->belongsTo(Batch::class);
+    }
+    
 }

@@ -63,7 +63,7 @@ class StudentLogin extends Controller
             'status' => 'Active'
         ], $remember = true))
         {
-            return redirect()->route('homepage');
+            return redirect()->intended('students/my-course');
         }
         else
         {

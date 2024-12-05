@@ -2,6 +2,13 @@
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $value = $paper;
+
+// $deptIds = [];
+
+// foreach($paper->departments as $val)
+// {
+//     array_push($deptIds, $val->id);
+// }
 @endphp
 
 @extends('dashboard')
@@ -48,22 +55,22 @@ $value = $paper;
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Department</label>
-                        <select name="department_id" id="department_id" class="form-control select2">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($departments as $val)
-                            <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @foreach($batches as $val)
+                            <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Batch</label>
-                        <select name="batch_id" id="batch_id" class="form-control select2">
+                        <label for="">Department</label>
+                        <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($batches as $val)
-                            <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
+                            @foreach($departments as $val)
+                            <option value="{{$val->id}}" {{$value->department_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -204,9 +211,8 @@ $value = $paper;
                         <label for="permit">Exam Permission For Candidates?</label>
                         <select class="form-control" name="permit" id="permit" >
                             <option value="">Select One</option>
-                            <option value="Course" {{$value->permit == 'Course'? 'selected': ''}}>Course</option>
-                            <option value="Department" {{$value->permit == 'Department'? 'selected': ''}}>Department</option>
                             <option value="Batch" {{$value->permit == 'Batch'? 'selected': ''}}>Batch</option>
+                            <option value="Department" {{$value->permit == 'Department'? 'selected': ''}}>Department</option>
                             <option value="Group" {{$value->permit == 'Group'? 'selected': ''}}>Group</option>
                             <option value="Every One" {{$value->permit == 'Every One'? 'selected': ''}}>Every One</option>
                         </select>
@@ -271,26 +277,26 @@ $value = $paper;
         
     }
 
-//result view add setting
-function resultView(e)
-{
-    let result_message = document.getElementById('result_message');
-    console.log(e.options[e.selectedIndex].value == 'No');
-    if(e.options[e.selectedIndex].value == 'No')
+    //result view add setting
+    function resultView(e)
     {
-        result_message.innerHTML = '<div class="form-group">'+
-            '<label for="result_message">Write short message instead of result Publish</label>'+
-            '<input type="text" class="form-control" name="result_message" id="result_message" required>'+
-        '</div>';
-        result_message.style.display = 'block';
+        let result_message = document.getElementById('result_message');
+        console.log(e.options[e.selectedIndex].value == 'No');
+        if(e.options[e.selectedIndex].value == 'No')
+        {
+            result_message.innerHTML = '<div class="form-group">'+
+                '<label for="result_message">Write short message instead of result Publish</label>'+
+                '<input type="text" class="form-control" name="result_message" id="result_message" required>'+
+            '</div>';
+            result_message.style.display = 'block';
+        }
+        else
+        {
+            result_message.innerHTML = '';
+            result_message.style.display = 'none';
+        }
     }
-    else
-    {
-        result_message.innerHTML = '';
-        result_message.style.display = 'none';
-    }
-}
-function Status(e){
+    function Status(e){
         let timer = e.parentNode.parentNode.nextElementSibling;
         if(e.options[e.selectedIndex].value == 'Scheduled')
         {
@@ -317,34 +323,6 @@ function Status(e){
 
     // onload call to the status change
     Status(document.getElementById('status'));
-
-    function getsubcats(elm){
-
-        var catid = elm.options[elm.options.selectedIndex].value;
-
-        $.ajax({
-            type: 'GET', //THIS NEEDS TO BE GET
-            url: '/get_sub_cats/'+catid,
-            success: function (data) {
-
-                var obj = JSON.parse(JSON.stringify(data));
-                var sub_cat_html = "";
-
-                $.each(obj['subcats'], function (key, val) {
-                   sub_cat_html += "<option value="+val.id+">"+val.name+"</option>";
-                });
-
-                if(sub_cat_html != ""){
-                    $("#sub_cat").html('<option value="">Select SubCategory</option>'+sub_cat_html)
-                }else{
-                    $("#sub_cat").html('<option value="">No SubCategory</option>')
-                }
-            },
-            error: function(data) { 
-                 console.log('data error');
-            }
-        });
-    }
 
     //this script for text editor
     $(document).ready(function() {
