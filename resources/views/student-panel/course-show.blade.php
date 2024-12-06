@@ -34,13 +34,13 @@ $value = $batch;
       <div class="col-md-9">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4>Course: <b>{{$value->course?$value->course->name:''}}</b></h4>
+            <h4>Course: <b>{{$value->course ? $value->course->name:''}}</b></h4>
             <h5>Running Batch: <b>{{$value->name}}</b></h5>
           </div>
           <div class="panel-body" style="min-height: 420px">{!!$value->details!!}</div>
           <div class="panel-body  table-responsive">
-            {{-- {{dd($value->syllabus->get())}} --}}
-            @if($value->syllabus->count())
+            {{-- {{dd($value->syllabus)}} --}}
+            @if(!is_null($value->syllabus))
             <table class="table table-striped table-bordered">
               <tr>
                 <th colspan="4"><h4>Syllabuses & Routine</h4></th>

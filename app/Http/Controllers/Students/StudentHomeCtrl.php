@@ -32,18 +32,20 @@ class StudentHomeCtrl extends Controller
 
   public function home()
   {
-    $user = Auth::guard('student')->user();
-    // active courses
-    $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
+    // $user = Auth::guard('student')->user();
+    // // active courses
+    // $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
 
-    // autheticates user courses
-    $student = Student::find($user->id);
-    $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
+    // // autheticates user courses
+    // $student = Student::find($user->id);
+    // $mycourses = $student->courses()->orderBy('id', 'DESC')->get();
 
-    // authenticates user examps
-    // $batch_ids = $student->batches()->pluck('id')->toArray();
-    $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
-    return view('student-panel.home', compact('courses', 'mycourses', 'papers', 'student'));
+    // // authenticates user examps
+    // // $batch_ids = $student->batches()->pluck('id')->toArray();
+    // $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
+    // return view('student-panel.home', compact('courses', 'mycourses', 'papers', 'student'));
+
+    return redirect()->route('students.my-course');
   }
 
   public function course()
@@ -54,11 +56,11 @@ class StudentHomeCtrl extends Controller
 
   public function courseShow($id)
   {
-    $course = Batch::find($id);
-    $batches = Batch::where('status', 'Active')->get();
-    $departments = $course->departments()->where('status', 'Active')->get();
+    $batch = Batch::find($id);
+    // $batches = Batch::where('status', 'Active')->get();
+    $departments = $batch->departments()->where('status', 'Active')->get();
     $groups = Group::where('status', 'Active')->get();
-    return view('student-panel.course-show', compact('course', 'batches', 'departments', 'groups'));
+    return view('student-panel.course-show', compact('batch', 'departments', 'groups'));
   }
 
   public function applyCourse(Request $request)
