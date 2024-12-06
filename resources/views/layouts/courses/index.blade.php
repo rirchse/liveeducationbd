@@ -59,7 +59,7 @@ $source = New SourceCtrl;
                   </td>
                   <td>
                     <a href="{{route('course.show',$course->id)}}" class="btn btn-info" title="course Details"><i class="fa fa-file-text"></i></a>
-                    <a href="{{route('students.add', [$course->id, 'Course'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a>
+                    {{-- <a href="{{route('students.add', [$course->id, 'Course'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a> --}}
                     <a href="{{route('course.edit',$course->id)}}" class="btn btn-warning btn-sm" title="Edit this course"><i class="fa fa-edit"></i></a>
                     <form style="display: inline" action="{{route('course.destroy', $course->id)}}" method="POST">
                       @csrf
