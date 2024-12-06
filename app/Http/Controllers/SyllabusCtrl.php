@@ -164,10 +164,18 @@ class SyllabusCtrl extends Controller
         ]);
         
         $data = $request->all();
-        $batch = Batch::find($id);
+        $syllabus = Syllabus::find($id);
+        
         //get existing file
-        $xpdf = public_path($batch->pdf);
-        $xroutine = public_path($batch->routine);
+        $xpdf = $xroutine = '';
+        if(!is_null($syllabus->pdf))
+        {
+            $xpdf = public_path($syllabus->pdf);
+        }
+        if(!is_null($syllabus->routine))
+        {
+            $xroutine = public_path($syllabus->routine);
+        }
 
         if(isset($data['_token']))
         {

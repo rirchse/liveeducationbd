@@ -118,12 +118,18 @@ $value = $syllabus;
                         <label for="pdf">PDF</label>
                         <input type="file" name="pdf" class="form-control">
                     </div>
+                    @if($value->pdf)
+                    <a target="_blank" href="{{$value->pdf}}"><i class="fa fa-file"></i> PDF</a>
+                    @endif
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="routine">Routine</label>
                         <input type="file" name="routine" class="form-control">
                     </div>
+                    @if($value->routine)
+                    <a target="_blank" href="{{$value->routine}}"><i class="fa fa-file"></i> Routine</a>
+                    @endif
                 </div>
             </div> <!-- /.box body -->
             <div class="box-footer">

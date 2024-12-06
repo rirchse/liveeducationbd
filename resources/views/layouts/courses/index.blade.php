@@ -61,10 +61,13 @@ $source = New SourceCtrl;
                     <a href="{{route('course.show',$course->id)}}" class="btn btn-info" title="course Details"><i class="fa fa-file-text"></i></a>
                     {{-- <a href="{{route('students.add', [$course->id, 'Course'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a> --}}
                     <a href="{{route('course.edit',$course->id)}}" class="btn btn-warning btn-sm" title="Edit this course"><i class="fa fa-edit"></i></a>
+                    @if($course->status == 'Deactive')
                     <form style="display: inline" action="{{route('course.destroy', $course->id)}}" method="POST">
                       @csrf
                       @method('DELETE')
-                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one?')"><i class="fa fa-trash"></i></button></form>
+                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one?')"><i class="fa fa-trash"></i></button>
+                    </form>
+                    @endif
                   </td>
                 </tr>
                 @endforeach
