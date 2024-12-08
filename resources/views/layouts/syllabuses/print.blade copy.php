@@ -11,21 +11,7 @@ $source = New SourceCtrl;
     .mcqitems li{padding: 10px}
     .banner{margin-top:15px}
     .banner img{width:100%}
-    .questions{}
-    @media print {
-  * {
-        -webkit-print-color-adjust: exact;
-    }
-    body{
-      background:url('/img/logo.png');
-    }
-
- 
- /* container.style.backgroundImage = 'url(/img/logo.png)' */
- }
   </style>
-
-
   
   <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -38,41 +24,50 @@ $source = New SourceCtrl;
     <section class="content">
       <div class="row">
         <div class="col-md-12">
-          <div class="box" id="print" style="overflow: hidden">
-            {{-- <img src="/img/logo.png" alt="" style="position: abso/lute; top:20%; left:20%;"> --}}
+          <div class="box" id="print">
             <div class="col-md-12">
-              <div class="banner">
-                <img src="{{$syllabus->banner}}" alt="">
-              </div>
+              <div class="banner"><img src="{{$syllabus->banner}}" alt=""></div>
               <div class="header" style="text-align:center">{!! $syllabus->header !!} </div>
               <p style="text-align: center">Course Name: <b>{{$syllabus->course?$syllabus->course->name:''}}</b></p>
               <p style="text-align: center">Batch: <b>{{$syllabus->batch?$syllabus->batch->name:''}}</b></p>
               <hr>
-              <div class="questions" style="width:800px; column-width:390px;">
-                  @foreach($syllabus->questions as $key => $value)
-                  <div style="position: absolute; left:400px; max-height:200px;height:100%; width:1px; border-right:1px solid #888"></div>
-
-                      <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify;">প্রশ্ন {{$key+1}}.</div>
-                      <div style="display: inline">{!! $value->title !!}</div>
+              <table style="width: 100%">
+                <tr>
+                @foreach($syllabus->questions as $key => $value)
+                  <td style="width: 50%;padding:10px">
+                    <div style="display: inline; font-weight:bold;float:left; padding-right:15px; text-align:justify;">প্রশ্ন {{$key+1}}.</div>
+                    <div style="display: inline">{!! $value->title !!}</div>
+                    @php
+                    $correct_ans = '';
+                    @endphp
+                    <table class="mcqitems" style="width:100%">
+                      <tr>
+                      @foreach($value->mcqitems as $k => $val)
                       @php
-                      $correct_ans = '';
+                      if($val->correct_answer)
+                      {
+                        $correct_ans = $source->mcqlist()[$syllabus->format][$k].' '.$val->item;
+                      }
                       @endphp
-                      <div class="mcqitems" style="width:390px; column-width:180px">
-                        @foreach($value->mcqitems as $k => $val)
-                        @php
-                        if($val->correct_answer)
-                        {
-                          $correct_ans = $source->mcqlist()[$syllabus->format][$k].' '.$val->item;
-                        }
-                        @endphp
-                        <div style="padding:10px;">
-                          <span> {{$source->mcqlist()[$syllabus->format][$k]}} </span>{{$val->item}}
-                        </div>
-                        @endforeach
-                      </div>
-                      <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
-                  @endforeach
-              </div>
+                      <td style="padding:10px;">
+                        <span> {{$source->mcqlist()[$syllabus->format][$k]}} </span>{{$val->item}}
+                      </td>
+                      @if($k+1 == 2)
+                    </tr>
+                    <tr>
+                      @endif
+                      @endforeach
+                    </tr>
+                    </table>
+                    <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
+                  </td>
+                  @if($key % 2)
+                  </tr>
+                  <tr>
+                  @endif
+                {{-- <div class="{{$key % 2 ? 'clearfix':''}}"></div> --}}
+                @endforeach
+              </table>
             </div>
             <div class="clearfix"></div>
           </div><!--/.box -->

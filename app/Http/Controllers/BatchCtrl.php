@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Department;
+use App\Models\Teacher;
 use App\Models\Batch;
 use App\Models\Role;
 use Auth;
@@ -105,8 +106,9 @@ class BatchCtrl extends Controller
     {
         $courses = Course::where('status', 'Active')->get();
         $departments = Department::where('status', 'Active')->get();
+        $teachers = Teacher::where('status', 'Active')->get();
         $batch = Batch::find($id);
-        return view('layouts.batches.edit', compact('courses', 'departments', 'batch'));
+        return view('layouts.batches.edit', compact('courses', 'departments', 'teachers', 'batch'));
     }
 
     /**
@@ -122,6 +124,7 @@ class BatchCtrl extends Controller
         $this->validate($request, [
             'course_id'    => 'required|numeric',
             'department_id'=> 'required|array',
+            'teacher_id'   => 'required|array',
             'name'         => 'required|max:255',
             'price'        => 'nullable|numeric',
             'discount'     => 'nullable|numeric',
@@ -134,7 +137,7 @@ class BatchCtrl extends Controller
         $data = $request->all();
         $batch = Batch::find($id);
         $xbanner = public_path($batch->banner);
-        $departments = [];
+        $departments = $teachers = [];
 
         if(isset($data['_token']))
         {
@@ -162,6 +165,12 @@ class BatchCtrl extends Controller
 
         if(isset($data['teacher_id']))
         {
+            $teachers = $data['teacher_id'];
+            unset($data['teacher_id']);
+        }
+
+        if(isset($data['teacher_id']))
+        {
             unset($data['teacher_id']);
         }
 
@@ -179,6 +188,7 @@ class BatchCtrl extends Controller
             }
 
             $batch->departments()->sync($departments);
+            $batch->teachers()->sync($teachers);
         }
         catch(\E $e)
         {
@@ -216,6 +226,17 @@ class BatchCtrl extends Controller
 
         Session::flash('error', 'Permission restricted!');
         return back();
+    }
+
+    /** -------------- custom methods ------------- */
+    // Ajax Call
+    public function getBatches($batch_id)
+    {
+        $arr = explode(',', $batch_id);
+        $items = Batch::whereHas('course', function($q) use($arr) {
+            $q->whereIn('course_id', $arr);
+        })->get();
+        return response()->json(['data' => $items]);
     }
     
 }

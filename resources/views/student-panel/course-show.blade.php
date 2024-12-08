@@ -37,7 +37,9 @@ $value = $batch;
             <h4>Course: <b>{{$value->course ? $value->course->name:''}}</b></h4>
             <h5>Running Batch: <b>{{$value->name}}</b></h5>
           </div>
-          <div class="panel-body" style="min-height: 420px">{!!$value->details!!}</div>
+          <div class="panel-body" style="min-height: 420px">
+            {!!$value->details!!}
+          </div>
           <div class="panel-body  table-responsive">
             {{-- {{dd($value->syllabus)}} --}}
             @if(!is_null($value->syllabus))
@@ -90,8 +92,23 @@ $value = $batch;
             @endif
           </div>
         </div>
-      </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>Course Instructors</h4>
+          </div>
+          <div class="panel-body">
+            @if($value->teachers)
+              @foreach($value->teachers as $val)
+              <div class="col-md-6">
+                <img src="{{$val->image? $val->image:'/img/teacher.png'}}" alt="" style="max-width: 80px; padding:5px">{{$val->name}}
+              </div>
+              @endforeach
+            @endif
+          </div>
+        </div>
+      </div><!-- column -->
       <div class="col-md-3">
+        <!-- Apply to the course -->
         <form action="{{route('students.course.apply')}}" method="post">
           @csrf
           <input type="hidden" name="batch_id" value="{{$value->id}}">

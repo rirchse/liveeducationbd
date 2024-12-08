@@ -35,4 +35,9 @@ class Batch extends Model
     {
         return $this->hasOne(Syllabus::class, 'batch_id');
     }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class);
+    }
 }

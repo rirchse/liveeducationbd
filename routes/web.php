@@ -106,6 +106,7 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('group', 'GroupCtrl');
 	Route::resource('student', 'StudentCtrl');
 	Route::resource('syllabus', 'SyllabusCtrl');
+	Route::resource('teacher', 'TeacherCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()
@@ -149,6 +150,11 @@ Route::middleware(['auth'])->group(function()
 		Route::get('/paper/solution/{id}', 'solution')->name('paper.solution');
 		Route::get('/paper/result/{id}', 'result')->name('paper.result');
 		Route::get('/paper/result/csv/{id}', 'resultCsv')->name('paper.result.csv');
+	});
+
+	Route::controller(BatchCtrl::class)->group(function()
+	{
+		Route::get('get_batches/{batch_id}', 'getBatches');
 	});
 
 	Route::controller(StudentCtrl::class)->group(function()

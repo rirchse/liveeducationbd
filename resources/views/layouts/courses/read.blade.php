@@ -29,11 +29,21 @@ $source = new SourceCtrl;
           </div>
           <div class="col-md-12">
             <table class="table">
-                <tbody>
-                  <tr>
-                    <th style="width: 200px;">Name:</th>
-                    <td>{{$course->name}}</td>
-                  </tr>
+              <tbody>
+                <tr>
+                  <th style="width: 200px;">Name:</th>
+                  <td>{{$course->name}}</td>
+                </tr>
+                <tr>
+                  <th>Batches:</th>
+                  <td>
+                    @if($course->batches)
+                    @foreach($course->batches as $value)
+                    <label class="label label-primary">{{$value->name}}</label>
+                    @endforeach
+                    @endif
+                  </td>
+                </tr>
                 <tr>
                   <th>Departments:</th>
                   <td>

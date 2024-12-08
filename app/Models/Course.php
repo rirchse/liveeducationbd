@@ -68,7 +68,7 @@ class Course extends Model
 
     public function batches()
     {
-        return $this->belongsTo(Batch::class);
+        return $this->hasMany(Batch::class, 'course_id');
     }
     
 }

@@ -167,15 +167,8 @@ class SyllabusCtrl extends Controller
         $syllabus = Syllabus::find($id);
         
         //get existing file
-        $xpdf = $xroutine = '';
-        if(!is_null($syllabus->pdf))
-        {
-            $xpdf = public_path($syllabus->pdf);
-        }
-        if(!is_null($syllabus->routine))
-        {
-            $xroutine = public_path($syllabus->routine);
-        }
+        $xpdf = public_path($syllabus->pdf);
+        $xroutine = public_path($syllabus->routine);
 
         if(isset($data['_token']))
         {

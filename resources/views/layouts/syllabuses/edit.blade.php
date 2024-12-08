@@ -38,7 +38,7 @@ $value = $syllabus;
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Course</label>
-                        <select name="course_id" id="course_id" class="form-control select2">
+                        <select name="course_id" id="course_id" class="form-control select2" onchange="getBatches(this)">
                             <option value="">Select One</option>
                             @foreach($courses as $val)
                             <option value="{{$val->id}}" {{$value->course_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
@@ -49,7 +49,7 @@ $value = $syllabus;
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Batch</label>
-                        <select name="batch_id" id="batch_id" class="form-control select2">
+                        <select name="batch_id" id="batch_id" class="form-control select2" onchange="getDepartments(this)">
                             <option value="">Select One</option>
                             @foreach($batches as $val)
                             <option value="{{$val->id}}" {{$value->batch_id == $val->id? 'selected': ''}}>{{$val->name}}</option>
@@ -145,6 +145,65 @@ $value = $syllabus;
 @section('scripts')
 <script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
+
+    // on change course get batches
+    function getBatches(e)
+    {
+        let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    
+        $.ajax({
+            type: 'GET', //THIS NEEDS TO BE GET
+            url: '/get_batches/' + ids,
+            success: function (data) {
+    
+                var obj = JSON.parse(JSON.stringify(data));
+                var options = '<option value="">Select One</option>';
+    
+                $.each(obj['data'], function (key, val) {
+                    options += '<option value="'+val.id+'">'+val.name+'</option>';
+                });
+    
+                if(options != ""){
+                    $("#batch_id").html(options)
+                }else{
+                    $("#batch_id").html('')
+                    $("#department_id").html('')
+                }
+            },
+            error: function(data) { 
+                    console.log('data error');
+            }
+        });
+    }
+    
+    // on change batch get departments
+    function getDepartments(e)
+    {
+        let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    
+        $.ajax({
+            type: 'GET', //THIS NEEDS TO BE GET
+            url: '/get_departments/' + ids,
+            success: function (data) {
+    
+                var obj = JSON.parse(JSON.stringify(data));
+                var options = '<option value="">Select One</option>';
+    
+                $.each(obj['data'], function (key, val) {
+                    options += '<option value="'+val.id+'">'+val.name+'</option>';
+                });
+    
+                if(options != ""){
+                    $("#department_id").html(options)
+                }else{
+                    $("#department_id").html('')
+                }
+            },
+            error: function(data) { 
+                    console.log('data error');
+            }
+        });
+    }
 
 //result view add setting
 function resultView(e)

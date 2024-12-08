@@ -34,7 +34,7 @@ $source = New SourceCtrl;
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Course</label>
-                        <select name="course_id" id="course_id" class="form-control select2">
+                        <select name="course_id" id="course_id" class="form-control select2" onchange="getBatches(this)">
                             <option value="">Select One</option>
                             @foreach($courses as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
@@ -44,29 +44,29 @@ $source = New SourceCtrl;
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label for="">Batch</label>
+                        <select name="batch_id" id="batch_id" class="form-control select2" onchange="getDepartments(this)">
+                            <option value="">Select One</option>
+                            {{-- @foreach($batches as $val)
+                            <option value="{{$val->id}}">{{$val->name}}</option>
+                            @endforeach --}}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
                         <label for="">Department</label>
                         <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($departments as $val)
+                            {{-- @foreach($departments as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                {{-- <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Batch</label>
-                        <select name="batch_id" id="batch_id" class="form-control select2">
-                            <option value="">Select One</option>
-                            @foreach($batches as $val)
-                            <option value="{{$val->id}}">{{$val->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Group</label>
+                        <label for="">Group (Optional)</label>
                         <select name="group_id" id="group_id" class="form-control select2">
                             <option value="">Select One</option>
                             @foreach($groups as $val)
@@ -74,7 +74,7 @@ $source = New SourceCtrl;
                             @endforeach
                         </select>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="header">Header</label>
@@ -217,6 +217,70 @@ $source = New SourceCtrl;
 @section('scripts')
 <script src="/assets/summernote/summernote.min.js"></script>
 <script type="text/javascript">
+
+// on change course get batches
+function getBatches(e)
+{
+    let ids = Array.from(e.selectedOptions).map(({value}) => value);
+
+    $.ajax({
+        type: 'GET', //THIS NEEDS TO BE GET
+        url: '/get_batches/' + ids,
+        success: function (data) {
+
+            var obj = JSON.parse(JSON.stringify(data));
+            var options = '<option value="">Select One</option>';
+
+            $.each(obj['data'], function (key, val) {
+                options += '<option value="'+val.id+'">'+val.name+'</option>';
+            });
+
+            if(options != ""){
+                $("#batch_id").html(options)
+            }else{
+                $("#batch_id").html('')
+                // $("#semester_id").html('')
+                // $("#subject_id").html('')
+                // $("#chapter_id").html('')
+            }
+        },
+        error: function(data) { 
+                console.log('data error');
+        }
+    });
+}
+
+// on change batch get departments
+function getDepartments(e)
+{
+    let ids = Array.from(e.selectedOptions).map(({value}) => value);
+
+    $.ajax({
+        type: 'GET', //THIS NEEDS TO BE GET
+        url: '/get_departments/' + ids,
+        success: function (data) {
+
+            var obj = JSON.parse(JSON.stringify(data));
+            var options = '';
+
+            $.each(obj['data'], function (key, val) {
+                options += '<option value="'+val.id+'">'+val.name+'</option>';
+            });
+
+            if(options != ""){
+                $("#department_id").html(options)
+            }else{
+                $("#department_id").html('')
+                // $("#semester_id").html('')
+                // $("#subject_id").html('')
+                // $("#chapter_id").html('')
+            }
+        },
+        error: function(data) { 
+                console.log('data error');
+        }
+    });
+}
 
     // on upload show image
     function showImg(e)

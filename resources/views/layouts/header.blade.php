@@ -220,13 +220,14 @@
         <li class="treeview">
           <a href="#">
             <i class="fa fa-graduation-cap"></i>
-            <span>Teacher</span>
+            <span>Teachers</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> View Teachers</a></li>
+            <li><a href="{{route('teacher.create')}}"><i class="fa fa-plus"></i> Add Teacher</a></li>
+            <li><a href="{{route('teacher.index')}}"><i class="fa fa-circle-o"></i> View Teachers</a></li>
           </ul>
         </li>
 

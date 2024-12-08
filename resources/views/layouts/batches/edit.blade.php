@@ -1,8 +1,12 @@
 @php
-$department_ids = [];
+$department_ids = $teacher_ids = [];
 foreach($batch->departments as $val)
 {
     array_push($department_ids, $val->id);
+}
+foreach($batch->teachers as $val)
+{
+    array_push($teacher_ids, $val->id);
 }
 @endphp
 
@@ -76,8 +80,12 @@ foreach($batch->departments as $val)
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="teacher">Teachers</label>
-                        <input type="text" class="form-control" name="teacher_id[]" id="teacher">
+                        <label for="teacher_id">Teachers (*)</label>
+                        <select class="form-control select2" multiple name="teacher_id[]" id="teacher_id" required>
+                            @foreach($teachers as $val)
+                            <option value="{{$val->id}}"{{in_array($val->id, $teacher_ids)? 'selected':''}}>{{$val->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-12">

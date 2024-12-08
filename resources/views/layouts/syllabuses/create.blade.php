@@ -26,7 +26,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">Course Name</label>
-                        <select class="form-control select2" name="course_id" id="course_id" required >
+                        <select class="form-control select2" name="course_id" id="course_id" required onchange="getBatches(this)">
+                            <option value="">Select One</option>
                             @foreach($courses as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
                             @endforeach
@@ -36,11 +37,11 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Batch</label>
-                        <select name="batch_id" id="batch_id" class="form-control select2">
+                        <select name="batch_id" id="batch_id" class="form-control select2" required onchange="getDepartments(this)">
                             <option value="">Select One</option>
-                            @foreach($batches as $val)
+                            {{-- @foreach($batches as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                 </div>
@@ -49,9 +50,9 @@
                         <label for="">Department</label>
                         <select name="department_id" id="department_id" class="form-control select2">
                             <option value="">Select One</option>
-                            @foreach($departments as $val)
+                            {{-- @foreach($departments as $val)
                             <option value="{{$val->id}}">{{$val->name}}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                 </div>
@@ -92,6 +93,71 @@
 @section('scripts')
 <script src="/assets/summernote/summernote.min.js"></script>
 <script>
+
+    // on change course get batches
+    function getBatches(e)
+    {
+        let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    
+        $.ajax({
+            type: 'GET', //THIS NEEDS TO BE GET
+            url: '/get_batches/' + ids,
+            success: function (data) {
+    
+                var obj = JSON.parse(JSON.stringify(data));
+                var options = '<option value="">Select One</option>';
+    
+                $.each(obj['data'], function (key, val) {
+                    options += '<option value="'+val.id+'">'+val.name+'</option>';
+                });
+    
+                if(options != ""){
+                    $("#batch_id").html(options)
+                }else{
+                    $("#batch_id").html('')
+                    // $("#semester_id").html('')
+                    // $("#subject_id").html('')
+                    // $("#chapter_id").html('')
+                }
+            },
+            error: function(data) { 
+                    console.log('data error');
+            }
+        });
+    }
+    
+    // on change batch get departments
+    function getDepartments(e)
+    {
+        let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    
+        $.ajax({
+            type: 'GET', //THIS NEEDS TO BE GET
+            url: '/get_departments/' + ids,
+            success: function (data) {
+    
+                var obj = JSON.parse(JSON.stringify(data));
+                var options = '';
+    
+                $.each(obj['data'], function (key, val) {
+                    options += '<option value="'+val.id+'">'+val.name+'</option>';
+                });
+    
+                if(options != ""){
+                    $("#department_id").html(options)
+                }else{
+                    $("#department_id").html('')
+                    // $("#semester_id").html('')
+                    // $("#subject_id").html('')
+                    // $("#chapter_id").html('')
+                }
+            },
+            error: function(data) { 
+                    console.log('data error');
+            }
+        });
+    }
+    
     //this script for text editor
     $(document).ready(function() {
         $('.editor').summernote({
