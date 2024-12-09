@@ -1,4 +1,6 @@
 @php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
 $user = Auth::guard('student')->user();
 $student = [];
 if($user)
@@ -31,15 +33,37 @@ $value = $batch;
 
     <!-- Main content -->
     <section class="content">
-      <div class="col-md-9">
+      <div class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4>Course: <b>{{$value->course ? $value->course->name:''}}</b></h4>
-            <h5>Running Batch: <b>{{$value->name}}</b></h5>
+            <h2>{{$value->name}} <br><small>Course: <b>{{$value->course ? $value->course->name:''}}</b></small></h2>
+            
           </div>
-          <div class="panel-body" style="min-height: 420px">
+          <div class="panel-body" style="min-height: 200px">
             {!!$value->details!!}
           </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>কোর্স ইন্সট্রাক্টর</h4>
+          </div>
+          <div class="panel-body">
+            @if($value->teachers)
+              @foreach($value->teachers as $val)
+              <div class="col-md-6">
+                <img src="{{$val->image? $val->image:'/img/teacher.png'}}" alt="" style="max-width: 80px; padding:5px;float:left">
+                <div style="display:inline">
+                  <b>{{$val->name}}</b><br>
+                  {{$val->designation}}
+                </div>
+              </div>
+              @endforeach
+            @endif
+          </div>
+        </div>
+        <div class="panel panel-default">
+          
           <div class="panel-body  table-responsive">
             {{-- {{dd($value->syllabus)}} --}}
             @if(!is_null($value->syllabus))
@@ -92,22 +116,8 @@ $value = $batch;
             @endif
           </div>
         </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4>Course Instructors</h4>
-          </div>
-          <div class="panel-body">
-            @if($value->teachers)
-              @foreach($value->teachers as $val)
-              <div class="col-md-6">
-                <img src="{{$val->image? $val->image:'/img/teacher.png'}}" alt="" style="max-width: 80px; padding:5px">{{$val->name}}
-              </div>
-              @endforeach
-            @endif
-          </div>
-        </div>
       </div><!-- column -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <!-- Apply to the course -->
         <form action="{{route('students.course.apply')}}" method="post">
           @csrf
@@ -117,8 +127,8 @@ $value = $batch;
             <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
           </div>
           <div class="panel-heading">
-            <h4>{{$value->course? $value->course->name:''}}</h4>
-            <h5>{{$value->name}}</h5>
+            <h3> <del> &#2547;{{$source->point0($value->price)}}</del> &nbsp; <span class="label label-warning">{{$source->point0($value->discount)}} &#2547; ছাড়</span><b> &nbsp; &#2547;{{$source->point0($value->net_price)}}</b></h3>
+            <p>{{$value->subtitle}}</p>
           </div>
           @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
           <div class="panel-body">
@@ -139,9 +149,9 @@ $value = $batch;
           @endif
           <div class="panel-footer">
             @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
-            <button class="btn btn-default pull-right" disabled>Applied</button>
+            <button class="btn btn-success btn-block" disabled>আপনি কোর্সটি কিনেছেন</button>
             @else
-            <button class="btn btn-info pull-right" onsubmit="return confirm('Double check you provided information.')">Apply</button>
+            <button class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button>
             @endif
             <div class="clearfix"></div>
           </div>

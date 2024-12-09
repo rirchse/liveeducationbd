@@ -257,11 +257,11 @@ function getDepartments(e)
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
-        url: '/get_departments/' + ids,
+        url: '/get_departments_by_batch/' + ids,
         success: function (data) {
 
             var obj = JSON.parse(JSON.stringify(data));
-            var options = '';
+            var options = '<option value="">Select One</option>';
 
             $.each(obj['data'], function (key, val) {
                 options += '<option value="'+val.id+'">'+val.name+'</option>';

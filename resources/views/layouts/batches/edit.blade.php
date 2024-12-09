@@ -46,8 +46,14 @@ foreach($batch->teachers as $val)
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="name">Batch Name</label>
+                        <label for="name">Batch Title</label>
                         <input type="text" class="form-control" name="name" id="name" required value="{{$batch->name}}">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="subtitle">Batch Sub-Title</label>
+                        <input type="text" class="form-control" name="subtitle" id="subtitle" required value="{{$batch->subtitle}}">
                     </div>
                 </div>
                 <div class="col-md-12">

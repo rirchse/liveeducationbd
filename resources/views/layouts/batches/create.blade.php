@@ -22,8 +22,14 @@
             <div class="box-body">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="name">Batch Name</label>
+                        <label for="name">Batch Title</label>
                         <input type="text" class="form-control" name="name" id="name" required>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="subtitle">Batch Sub-Title</label>
+                        <input type="text" class="form-control" name="subtitle" id="subtitle" required>
                     </div>
                 </div>
                 <div class="clearfix"></div>

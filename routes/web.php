@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function()
 	Route::controller(DepartmentCtrl::class)->group(function()
 	{
 		Route::get('get_departments/{course_id}', 'getDepartments');
+		Route::get('get_departments_by_batch/{batch_id}', 'getDepartmentsByBatch');
 	});
 
 	Route::controller(SemesterCtrl::class)->group(function()

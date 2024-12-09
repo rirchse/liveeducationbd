@@ -25,18 +25,23 @@
         <div class="box-body">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="">Name</label>
+                    <label for="Name">Name</label>
                     <input type="text" name="name" class="form-control" required />
-                </div><div class="form-group">
-                    <label for="">Email Address</label>
+                </div>
+                <div class="form-group">
+                    <label for="designation" >Designation</label>
+                    <input type="text" name="designation" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
                     <input type="email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="" >Contact</label>
+                    <label for="contact" >Contact</label>
                     <input type="text" name="contact" class="form-control" required />
                 </div>
                 <div class="form-group">
-                    <label for="">Password</label>
+                    <label for="password">Password</label>
                     <div class="input-group">
                       <input type="text" name="password" class="form-control" required />
                       <span class="input-group-addon" onclick="showPassword(this)"><i class="fa fa-eye"></i></span>
@@ -45,7 +50,7 @@
             </div>
             <div class="col-md-12">
               <div class="form-group">
-                  <label for="">Photo</label>
+                  <label for="image">Photo</label>
                   <input type="file" name="image" class="form-control" />
               </div>
               <p class="text-danger">Image Dimension: 200x200px;<br> Types must be in: .jpeg, .jpg, .png and <br>Max size: 500KB</p>

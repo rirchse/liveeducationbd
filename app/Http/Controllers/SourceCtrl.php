@@ -94,4 +94,9 @@ class SourceCtrl extends Controller
     }
     return $host;
   }
+  
+  public function point0($data)
+  {
+    return number_format($data, 0);
+  }
 }

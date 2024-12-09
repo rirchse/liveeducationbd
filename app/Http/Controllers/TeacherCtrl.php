@@ -77,6 +77,7 @@ class TeacherCtrl extends Controller
         $source = new SourceCtrl;
        $this->validate($request, [
             'name'      => 'required|max:255',
+            'designation' => 'nullable|max:255',
             'email'     => 'required|unique:teachers',
             'contact'   => 'required|unique:teachers',
             'image'     => 'nullable|image|mimes:jpeg,jpg,png,gif|max:500'
@@ -84,6 +85,7 @@ class TeacherCtrl extends Controller
 
        $user = new Teacher;
        $user->name       = $request->name;
+       $user->designation = $request->designation;
        $user->contact    = $request->contact;
        $user->email      = $request->email;
        $user->password   = bcrypt($request->password);
@@ -143,6 +145,7 @@ class TeacherCtrl extends Controller
     {
         $this->validate($request, [
             'name'      => 'required|max:255',
+            'designation' => 'nullable|max:255',
             'contact'   => 'required',
             'email'     => 'required',
             'status'    => 'max:30',
@@ -151,6 +154,7 @@ class TeacherCtrl extends Controller
 
         $obj = Teacher::find($id);
         $obj->name       = $request->input('name');
+        $obj->designation = $request->input('designation');
         $obj->contact    = $request->input('contact');
         $obj->email      = $request->input('email');
         $obj->status     = $request->input('status') ?? 'Inactive';

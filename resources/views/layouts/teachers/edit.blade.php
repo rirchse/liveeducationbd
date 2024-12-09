@@ -36,6 +36,10 @@
                     <input type="text" name="name" class="form-control" required value="{{$user->name}}" />
                 </div>
                 <div class="form-group">
+                    <label for="designation" >Designation</label>
+                    <input type="text" name="designation" class="form-control" value="{{$user->designation}}" />
+                </div>
+                <div class="form-group">
                     <label for="">Email Address</label>
                     <input type="email" name="email" class="form-control" required value="{{$user->email}}" />
                 </div>
@@ -46,7 +50,7 @@
                 <div class="form-group">
                   <label for="image">Profile Image</label>
                   <input class="form-control" type="file" id="image" name="image" />
-                  <p class="text-danger">Image Dimension: 200x200px;<br> Types must be in: .jpeg, .jpg, .png and <br>Max size: 500KB</p>
+                  <p class="text-danger">Image Dimension: 200 x 200px;<br> Types must be in: .jpeg, .jpg, .png and <br>Max size: 500KB</p>
                 
                   <p class="text-center"><img src="{{$user->image}}" alt=""  style="max-width:150px" /></p>
                 </div>

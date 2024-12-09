@@ -204,5 +204,13 @@ class DepartmentCtrl extends Controller
         })->get();
         return response()->json(['data' => $items]);
     }
+    public function getDepartmentsByBatch($batch_id)
+    {
+        $arr = explode(',', $batch_id);
+        $items = Department::whereHas('batches', function($q) use($arr) {
+            $q->whereIn('batch_id', $arr);
+        })->get();
+        return response()->json(['data' => $items]);
+    }
     
 }

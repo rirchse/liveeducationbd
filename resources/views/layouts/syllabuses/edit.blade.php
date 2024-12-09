@@ -149,6 +149,16 @@ $value = $syllabus;
     // on change course get batches
     function getBatches(e)
     {
+        function check(id)
+        {
+            let deptId = '{{$value->batch_id}}';
+            if(deptId == id)
+            {
+                return 'selected';
+            }
+            return '';
+        }
+
         let ids = Array.from(e.selectedOptions).map(({value}) => value);
     
         $.ajax({
@@ -160,7 +170,7 @@ $value = $syllabus;
                 var options = '<option value="">Select One</option>';
     
                 $.each(obj['data'], function (key, val) {
-                    options += '<option value="'+val.id+'">'+val.name+'</option>';
+                    options += '<option value="'+val.id+'" '+check(val.id)+'>'+val.name+'</option>';
                 });
     
                 if(options != ""){
@@ -179,18 +189,28 @@ $value = $syllabus;
     // on change batch get departments
     function getDepartments(e)
     {
+        function check(id)
+        {
+            let deptId = '{{$value->department_id}}';
+            if(deptId == id)
+            {
+                return 'selected';
+            }
+            return '';
+        }
+
         let ids = Array.from(e.selectedOptions).map(({value}) => value);
     
         $.ajax({
             type: 'GET', //THIS NEEDS TO BE GET
-            url: '/get_departments/' + ids,
+            url: '/get_departments_by_batch/' + ids,
             success: function (data) {
     
                 var obj = JSON.parse(JSON.stringify(data));
                 var options = '<option value="">Select One</option>';
     
                 $.each(obj['data'], function (key, val) {
-                    options += '<option value="'+val.id+'">'+val.name+'</option>';
+                    options += '<option value="'+val.id+'" '+check(val.id)+'>'+val.name+'</option>';
                 });
     
                 if(options != ""){

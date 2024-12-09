@@ -115,9 +115,6 @@
                     $("#batch_id").html(options)
                 }else{
                     $("#batch_id").html('')
-                    // $("#semester_id").html('')
-                    // $("#subject_id").html('')
-                    // $("#chapter_id").html('')
                 }
             },
             error: function(data) { 
@@ -133,11 +130,11 @@
     
         $.ajax({
             type: 'GET', //THIS NEEDS TO BE GET
-            url: '/get_departments/' + ids,
+            url: '/get_departments_by_batch/' + ids,
             success: function (data) {
     
                 var obj = JSON.parse(JSON.stringify(data));
-                var options = '';
+                var options = '<option value="">Select One</option>';
     
                 $.each(obj['data'], function (key, val) {
                     options += '<option value="'+val.id+'">'+val.name+'</option>';
@@ -147,9 +144,6 @@
                     $("#department_id").html(options)
                 }else{
                     $("#department_id").html('')
-                    // $("#semester_id").html('')
-                    // $("#subject_id").html('')
-                    // $("#chapter_id").html('')
                 }
             },
             error: function(data) { 

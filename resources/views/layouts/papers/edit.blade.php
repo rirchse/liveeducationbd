@@ -262,6 +262,16 @@ $value = $paper;
 // on change course get batches
 function getBatches(e)
 {
+    function check(id)
+    {
+        let deptId = '{{$paper->batch_id}}';
+        if(deptId == id)
+        {
+            return 'selected';
+        }
+        return '';
+    }
+    
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
     $.ajax({
@@ -273,16 +283,13 @@ function getBatches(e)
             var options = '<option value="">Select One</option>';
 
             $.each(obj['data'], function (key, val) {
-                options += '<option value="'+val.id+'">'+val.name+'</option>';
+                options += '<option value="'+val.id+'" '+check(val.id)+'>'+val.name+'</option>';
             });
 
             if(options != ""){
                 $("#batch_id").html(options)
             }else{
                 $("#batch_id").html('')
-                // $("#semester_id").html('')
-                // $("#subject_id").html('')
-                // $("#chapter_id").html('')
             }
         },
         error: function(data) { 
@@ -294,20 +301,20 @@ function getBatches(e)
 // on change batch get departments
 function getDepartments(e)
 {
-    let deptid = '$paper->department->id';
     function check(id)
     {
-        if(deptid == id)
-    {
-        return 'selected';
-    }
-    return '';
+        let deptId = '{{$paper->department_id}}';
+        if(deptId == id)
+        {
+            return 'selected';
+        }
+        return '';
     }
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
-        url: '/get_departments/' + ids,
+        url: '/get_departments_by_batch/' + ids,
         success: function (data) {
 
             var obj = JSON.parse(JSON.stringify(data));

@@ -11,18 +11,7 @@ $source = New SourceCtrl;
     .mcqitems li{padding: 10px}
     .banner{margin-top:15px}
     .banner img{width:100%}
-    .questions{}
-    @media print {
-  * {
-        -webkit-print-color-adjust: exact;
-    }
-    body{
-      background:url('/img/logo.png');
-    }
-
- 
- /* container.style.backgroundImage = 'url(/img/logo.png)' */
- }
+    .questions{margin: auto}
   </style>
 
 
@@ -48,16 +37,17 @@ $source = New SourceCtrl;
               <p style="text-align: center">Course Name: <b>{{$syllabus->course?$syllabus->course->name:''}}</b></p>
               <p style="text-align: center">Batch: <b>{{$syllabus->batch?$syllabus->batch->name:''}}</b></p>
               <hr>
-              <div class="questions" style="width:800px; column-width:390px;">
+              <div class="questions" style="width:700px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888">
                   @foreach($syllabus->questions as $key => $value)
-                  <div style="position: absolute; left:400px; max-height:200px;height:100%; width:1px; border-right:1px solid #888"></div>
-
-                      <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify;">প্রশ্ন {{$key+1}}.</div>
-                      <div style="display: inline">{!! $value->title !!}</div>
+                  <div class="question">
+                    <p style="position: absolute; margin-top:150px; margin-left: 150px; transform:rotate(-30deg); opacity: 0.2 ; font-size:25px">LiveEducationBD.com</p>
+                    <div style="display: inline; font-weight:bold; float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.
+                    </div>
+                    <div style="display: inline; text-align:justify;">{!! $value->title !!}</div>
                       @php
                       $correct_ans = '';
                       @endphp
-                      <div class="mcqitems" style="width:390px; column-width:180px">
+                      <div class="mcqitems" style="width:300px; column-width:130px">
                         @foreach($value->mcqitems as $k => $val)
                         @php
                         if($val->correct_answer)
@@ -70,7 +60,8 @@ $source = New SourceCtrl;
                         </div>
                         @endforeach
                       </div>
-                      <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
+                      <div style="color:green; clear:top; padding:10px 0; padding-left:20px;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
+                    </div>
                   @endforeach
               </div>
             </div>
