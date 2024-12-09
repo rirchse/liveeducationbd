@@ -37,10 +37,10 @@ $source = New SourceCtrl;
               <p style="text-align: center">Course Name: <b>{{$syllabus->course?$syllabus->course->name:''}}</b></p>
               <p style="text-align: center">Batch: <b>{{$syllabus->batch?$syllabus->batch->name:''}}</b></p>
               <hr>
-              <div class="questions" style="width:700px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888">
+              <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888">
                   @foreach($syllabus->questions as $key => $value)
                   <div class="question">
-                    <p style="position: absolute; margin-top:150px; margin-left: 150px; transform:rotate(-30deg); opacity: 0.2 ; font-size:25px">LiveEducationBD.com</p>
+                    <p style="position: absolute; margin-top:150px; margin-left: 120px; transform:rotate(-30deg); opacity: 0.2 ; font-size:25px">LiveEducationBD.com</p>
                     <div style="display: inline; font-weight:bold; float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.
                     </div>
                     <div style="display: inline; text-align:justify;">{!! $value->title !!}</div>
