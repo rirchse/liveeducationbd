@@ -30,7 +30,7 @@ $user = Auth::guard('student')->user();
         @if(count($courses))
         @foreach($courses as $value)
         <div class="col-md-3">
-          <a href="{{route('students.course.show', $value->id)}}">
+          <a href="{{route('home.course.show', $value->id)}}">
           <div class="panel panel-default">
             <div class="penel-heading no-padding" style="text-align: center;padding:15px;min-height:150px">
               <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
