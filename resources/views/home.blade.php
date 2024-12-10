@@ -13,7 +13,7 @@
 </head>
 
 <body class="layout-top-nav">
-	<div class="wrapper" style="width:100%;padding-bottom: 50px">
+	<div class="wrapper no-padding" style="width:100%;padding-bottom: 50px">
     @include('layouts.homes.header')
 
 		@yield('content')

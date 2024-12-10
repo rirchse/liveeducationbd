@@ -12,6 +12,9 @@ foreach($batch->teachers as $val)
 
 @extends('dashboard')
 @section('title', 'Edit Batch')
+@section('stylesheets')
+<link href="/assets/summernote/summernote.min.css" rel="stylesheet">
+@endsection
 @section('content')
 <section class="content-header">
   <h1>Edit Batch</h1>
@@ -24,7 +27,7 @@ foreach($batch->teachers as $val)
 <!-- Main content -->
 <section class="content">
   <div class="row"> <!-- left column -->
-    <div class="col-md-8"> <!-- general form elements -->
+    <div class="col-md-10"> <!-- general form elements -->
       <div class="box box-primary">
         <div class="box-header with-border">
             <h3 style="color: #800" class="box-title">Batch Details</h3>
@@ -39,7 +42,7 @@ foreach($batch->teachers as $val)
                         <select class="form-control select2" name="course_id" id="course_id" required  onchange="getDepartments(this)">
                             <option value="">Select One</option>
                             @foreach($courses as $val)
-                            <option value="{{$val->id}}" {{$batch->id == $val->id? 'selected':''}}>{{$val->name}}</option>
+                            <option value="{{$val->id}}" {{$batch->course_id == $val->id? 'selected':''}}>{{$val->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -84,6 +87,18 @@ foreach($batch->teachers as $val)
                         <input type="number" class="form-control" name="net_price" id="net_price" value="{{$batch->net_price}}" step="0.01" placeholder="0.00 Tk.">
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="start_at">Start Date</label>
+                        <input type="date" class="form-control" name="start_at" id="start_at" value="{{$batch->start_at}}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="end_at">End Date</label>
+                        <input type="date" class="form-control" name="end_at" id="end_at" value="{{$batch->end_at}}">
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="teacher_id">Teachers (*)</label>
@@ -111,8 +126,36 @@ foreach($batch->teachers as $val)
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <div class="form-group">
+                        <label for="short">Short Description</label>
+                        <textarea class="form-control editor" name="short" id="short" rows="5">{{$batch->short}}</textarea>
+                    </div>
+                    <div class="form-group">
                         <label for="details">Details</label>
-                        <textarea class="form-control" name="details" id="details" rows="5">{{$batch->details}}</textarea>
+                        <textarea class="form-control editor" name="details" id="details" rows="5">{{$batch->details}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="what_is">What is in this course</label>
+                        <textarea class="form-control editor" name="what_is" id="what_is" rows="5">{{$batch->what_is}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="learn">What you will learn by doing the course</label>
+                        <textarea class="form-control editor" name="learn" id="learn" rows="5">{{$batch->learn}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="routine">Class routine</label>
+                        <textarea class="form-control editor" name="routine" id="routine" rows="5">{{$batch->routine}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="faq">Frequently Ask Question</label>
+                        <textarea class="form-control editor" name="faq" id="faq" rows="5">{{$batch->faq}}</textarea>
                     </div>
                 </div>
             </div> <!-- /.box body -->
@@ -127,6 +170,15 @@ foreach($batch->teachers as $val)
 @endsection
 
 @section('scripts')
+<script src="/assets/summernote/summernote.min.js"></script>
+<script type="text/javascript">
+//this script for text editor
+    $(document).ready(function() {
+        $('.editor').summernote({
+            height: 150
+        });
+    });
+</script>
 <script type="text/javascript">
     // on upload show image
     function showImg(e)

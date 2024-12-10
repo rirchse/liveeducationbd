@@ -131,7 +131,7 @@ class BatchCtrl extends Controller
             'net_price'    => 'nullable|numeric',
             'teacher_id'   => 'nullable|array',
             'status'       => 'nullable|string',
-            'details'      => 'nullable|max:1000',
+            'details'      => 'nullable|string',
         ]);
         
         $data = $request->all();

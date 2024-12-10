@@ -26,35 +26,38 @@ $user = Auth::guard('student')->user();
 
     <!-- Main content -->
     <section class="content">
-      @if(count($courses))
-      @foreach($courses as $value)
-      <div class="col-md-3">
-        <a href="{{route('students.course.show', $value->id)}}">
+      <div class="row">
+        @if(count($courses))
+        @foreach($courses as $value)
+        <div class="col-md-3">
+          <a href="{{route('students.course.show', $value->id)}}">
+          <div class="panel panel-default">
+            <div class="penel-heading no-padding" style="text-align: center;padding:15px;min-height:150px">
+              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
+            </div>
+            <div class="panel-heading"><b>{{$value->name}}</b></div>
+            <div class="panel-footer">
+              @if(!empty($user) && $value->students()->where('id', $user->id)->first())
+              <button class="btn btn-default pull-right" disabled>Applied</button>
+              @else
+              <a class="btn btn-info pull-right" href="{{route('students.course.show', $value->id)}}">View</a>
+              @endif
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </a>
+        </div>
+        @endforeach
+        @else
         <div class="panel panel-default">
-          <div class="penel-heading no-padding" style="text-align: center;padding:15px;min-height:150px">
-            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
-          </div>
-          <div class="panel-heading"><b>{{$value->name}}</b></div>
-          <div class="panel-footer">
-            @if(!empty($user) && $value->students()->where('id', $user->id)->first())
-            <button class="btn btn-default pull-right" disabled>Applied</button>
-            @else
-            <a class="btn btn-info pull-right" href="{{route('students.course.show', $value->id)}}">View</a>
-            @endif
-            <div class="clearfix"></div>
+          <div class="panel-body">
+            No Course Available
           </div>
         </div>
-      </a>
+        @endif
       </div>
-      @endforeach
-      @else
-      <div class="panel panel-default">
-        <div class="panel-body">
-          No Course Available
-        </div>
-      </div>
-      @endif
     </section> <!-- /.content -->
+
   </div> <!-- /.container -->
 </div>
 
