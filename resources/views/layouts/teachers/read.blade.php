@@ -78,8 +78,8 @@ $value = $teacher;
                       @endif
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="2"><h4>Purchases & Connections</h4></td>
+                  {{-- <tr>
+                    <td colspan="2"><h4>Sales & Connections</h4></td>
                   </tr>
                   <tr>
                     <th>Courses</th>
@@ -128,7 +128,7 @@ $value = $teacher;
                       @endforeach
                       @endif
                     </td>
-                  </tr>
+                  </tr> --}}
               </tbody>
             </table>
           </div>

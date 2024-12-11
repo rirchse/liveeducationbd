@@ -18,6 +18,8 @@ use DB;
 
 class TeacherCtrl extends Controller
 {
+    private $source;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -143,6 +145,7 @@ class TeacherCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
+        $source = new SourceCtrl;
         $this->validate($request, [
             'name'      => 'required|max:255',
             'designation' => 'nullable|max:255',
@@ -164,7 +167,7 @@ class TeacherCtrl extends Controller
         {
             $x_img_path = public_path($obj->image);
 
-            $user->image = $source->uploadImage($request->image, 'teachers/');
+            $obj->image = $source->uploadImage($request->image, 'teachers/');
 
             if (File::exists($x_img_path)) {
                 File::delete($x_img_path);
