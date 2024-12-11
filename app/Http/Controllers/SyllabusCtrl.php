@@ -159,7 +159,8 @@ class SyllabusCtrl extends Controller
             'name'      => 'required|max:255',
             'header'    => 'required|max:255',
             'details'   => 'nullable|max:1000',
-            'pdf'       => 'nullable|mimes:pdf|max:1000',
+            'sample_pdf'=> 'nullable|mimes:pdf|max:1000',
+            'pdf'       => 'nullable|mimes:pdf|max:5000',
             'routine'   => 'nullable|mimes:pdf|max:1000',
         ]);
         
@@ -167,6 +168,7 @@ class SyllabusCtrl extends Controller
         $syllabus = Syllabus::find($id);
         
         //get existing file
+        $xsamplepdf = public_path($syllabus->sample_pdf);
         $xpdf = public_path($syllabus->pdf);
         $xroutine = public_path($syllabus->routine);
 
@@ -181,6 +183,11 @@ class SyllabusCtrl extends Controller
 
         try{
             // upload pdf file
+            if($request->hasFile('sample_pdf'))
+            {
+                $data['sample_pdf'] = $source->uploadImage($data['sample_pdf'], 'syllabus/sample/');
+            }
+            // upload pdf file
             if($request->hasFile('pdf'))
             {
                 $data['pdf'] = $source->uploadImage($data['pdf'], 'syllabus/temp/');
@@ -191,6 +198,11 @@ class SyllabusCtrl extends Controller
                 $data['routine'] = $source->uploadImage($data['routine'], 'routine/');
             }
             Syllabus::where('id', $id)->update($data);
+
+            if(File::exists($xsamplepdf))
+            {
+                File::delete($xsamplepdf);
+            }
 
             if(File::exists($xpdf))
             {

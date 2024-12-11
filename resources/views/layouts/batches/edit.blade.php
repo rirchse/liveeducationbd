@@ -99,6 +99,18 @@ foreach($batch->teachers as $val)
                         <input type="date" class="form-control" name="end_at" id="end_at" value="{{$batch->end_at}}">
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reg_end_at">Registration Time</label>
+                        <input type="datetime-local" class="form-control" name="reg_end_at" id="reg_end_at" value="{{$batch->reg_end_at}}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="offer_end_at">Offer Time</label>
+                        <input type="datetime-local" class="form-control" name="offer_end_at" id="offer_end_at" value="{{$batch->offer_end_at}}">
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="teacher_id">Teachers (*)</label>
@@ -156,6 +168,12 @@ foreach($batch->teachers as $val)
                     <div class="form-group">
                         <label for="faq">Frequently Ask Question</label>
                         <textarea class="form-control editor" name="faq" id="faq" rows="5">{{$batch->faq}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="refund">Re-fund Policy</label>
+                        <textarea class="form-control editor" name="refund" id="refund" rows="5">{{$batch->refund}}</textarea>
                     </div>
                 </div>
             </div> <!-- /.box body -->

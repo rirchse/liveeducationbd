@@ -1,5 +1,8 @@
 @extends('dashboard')
 @section('title', 'Add New Teacher')
+@section('stylesheets')
+<link href="/assets/summernote/summernote.min.css" rel="stylesheet">
+@endsection
 @section('content')
 
  <section class="content-header">
@@ -30,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label for="designation" >Designation</label>
-                    <input type="text" name="designation" class="form-control" />
+                    <textarea name="designation" class="form-control editor" ></textarea>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
@@ -67,19 +70,30 @@
         </div> <!--/.col (left) -->
       </div> <!-- /.row -->
     </section> <!-- /.content -->
+@endsection
 
-    <script>
-      function showPassword(e)
+@section('scripts')
+<script src="/assets/summernote/summernote.min.js"></script>
+  <script>
+    function showPassword(e)
+    {
+      if(e.previousElementSibling.getAttribute('type') == 'password')
       {
-        if(e.previousElementSibling.getAttribute('type') == 'password')
-        {
-          e.previousElementSibling.setAttribute('type', 'text');
-        }
-        else
-        {
-          e.previousElementSibling.setAttribute('type', 'password');
-        }
-        
+        e.previousElementSibling.setAttribute('type', 'text');
       }
-    </script>
+      else
+      {
+        e.previousElementSibling.setAttribute('type', 'password');
+      }
+      
+    }
+
+    //this script for text editor
+    $(document).ready(function() {
+      $('.editor').summernote({
+        // height: 150
+        toolbar: []
+      });
+    });
+  </script>
 @endsection

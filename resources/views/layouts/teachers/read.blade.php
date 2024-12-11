@@ -41,6 +41,10 @@ $value = $teacher;
                     <td>{{$value->name}}</td>
                   </tr>
                   <tr>
+                    <th>Designation:</th>
+                    <td>{!! $value->designation !!}</td>
+                  </tr>
+                  <tr>
                     <th>Email:</th>
                     <td>{{$value->email}}</td>
                   </tr>

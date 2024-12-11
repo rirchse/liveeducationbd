@@ -115,11 +115,20 @@ $value = $syllabus;
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="pdf">PDF</label>
+                        <label for="sample_pdf">Sample PDF</label>
+                        <input type="file" name="sample_pdf" class="form-control">
+                    </div>
+                    @if($value->sample_pdf)
+                    <a target="_blank" href="{{$value->sample_pdf}}"><i class="fa fa-file"></i> Sample PDF</a>
+                    @endif
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pdf">Full PDF</label>
                         <input type="file" name="pdf" class="form-control">
                     </div>
                     @if($value->pdf)
-                    <a target="_blank" href="{{$value->pdf}}"><i class="fa fa-file"></i> PDF</a>
+                    <a target="_blank" href="{{$value->pdf}}"><i class="fa fa-file"></i> Full PDF</a>
                     @endif
                 </div>
                 <div class="col-md-6">

@@ -116,7 +116,7 @@ class RegisterController extends Controller
         $emailData = [
             'email_to' => $data['email'],
             'subject' => 'Email Verification | Sign Up at Live Education BD',
-            'comments' => 'Hello '.$data['name'].',<br> Your email verification link below. On click the link verify your account. <a target="_blank" href="'.$source->host().'/account_verify/'.$data['remember_token'].'">Click Here</a>'
+            'comments' => 'Hello '.$data['name'].',<br> Your email verification link below. Click on the link verify your account. <a target="_blank" href="'.$source->host().'/account_verify/'.$data['remember_token'].'">'.$source->host().'/account_verify/'.$data['remember_token'].'</a> Otherwise, browse the URL. '
         ];
 
         $source->sendMail($emailData);

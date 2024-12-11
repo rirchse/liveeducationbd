@@ -227,6 +227,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
     }
     // console.log(e.parentNode.parentNode.nextElementSibling);
   }
+  
   // Set the date we're counting down to
   // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
   var countDownDate = new Date("{{$source->dtcformat($end_time)}}").getTime();

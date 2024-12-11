@@ -18,6 +18,8 @@ $value = $batch;
   .panel ::-webkit-scrollbar{width: 5px;}
   ::-webkit-scrollbar-thumb{background-color: #ddd}
   .course-image{width:100%}
+  .teacher-title p{margin:0}
+  .box-title {display: block;width:100%}
   @media(min-width: 769px){
     .pricing{float: right;}
     .info{}
@@ -52,7 +54,15 @@ $value = $batch;
                 <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
               </div>
               <div class="panel-heading">
-                <h3> <del> &#2547;{{$source->point0($value->price)}}</del> &nbsp; <span class="label label-warning">{{$source->point0($value->discount)}} &#2547; ছাড়</span><b> &nbsp; &#2547;{{$source->point0($value->net_price)}}</b></h3>
+                @if($value->offer_end_at)
+                <p style="color: red">ডিস্কাউন্ট অফারের মেয়াদ <b>{{$source->dtformat($value->offer_end_at)}}</b></p>
+                @endif
+                <h3>
+                  @if($value->discount) 
+                  <del> &#2547;{{$source->point0($value->price)}}</del> &nbsp; <span class="label label-warning"> &#2547;{{$source->point0($value->discount)}} ছাড়</span>
+                  @endif
+                  <b> &nbsp; &#2547;{{$source->point0($value->net_price)}}</b>
+                  </h3>
                 <p>{{$value->subtitle}}</p>
               </div>
               @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
@@ -80,64 +90,112 @@ $value = $batch;
                 @endif
                 <div class="clearfix"></div>
               </div>
+              @if($value->what_is)
               <div class="panel-body">
                 <h3>এই কোর্সে যা থাকছে</h3>
-                {!! $value->what_is !!}</div>
+                {!! $value->what_is !!}
+              </div>
+              @endif
             </div>
           </form>
           <div class="clearfix"></div>
         </div>
         <div class="col-md-8 info">
-          <div class="panel panel-default">
+          <div class="panel panel-info">
             <div class="panel-heading">
-              <h2>{{$value->name}} <br><small>Course: <b>{{$value->course ? $value->course->name:''}}</b></small></h2>
-              
+              <h3>{{$value->name}} <br><small>Course: <b>{{$value->course ? $value->course->name:''}}</b></small></h3>
+              @if($value->reg_end_at)
+              <p style="text-align: center; color:red">রেজিস্ট্রেশনের মেয়াদ  আছে: <b><span id="timer"></span></b>
+              </p>
+              @endif
             </div>
             <div class="panel-body" style="min-height: 200px">
               {!!$value->short!!}
             </div>
           </div>
-  
+          
+          <div class="panel panel-warning">
+            <div class="panel-heading"><h4>কোর্সটির মেয়াদ ও অন্যান্য</h4></div>
+            <div class="panel-body table-responsive">
+              <table class="table table-bordered">
+                @if($value->start_at)
+                <tr>
+                  <td>কোর্সটি শুরু হয়েছে</td>
+                  <th>{{$source->dformat($value->start_at)}}</th>
+                </tr>
+                @endif
+                @if($value->end_at)
+                <tr>
+                  <td>কোর্সটি শেষ হবে</td>
+                  <th>{{$source->dformat($value->end_at)}}</th>
+                </tr>
+                @endif
+                @if($value->reg_end_at)
+                <tr>
+                  <td>রেজিস্ট্রেশনের মেয়াদ শেষ হবে</td>
+                  <th>{{$source->dtformat($value->reg_end_at)}}</th>
+                </tr>
+                @endif
+                @if($value->offer_end_at)
+                <tr>
+                  <td>বর্তমান অফারের মেয়াদ</td>
+                  <th>{{$source->dtformat($value->offer_end_at)}}</th>
+                </tr>
+                @endif
+              </table>
+            </div>
+          </div>
+          
+          @if($value->teachers)
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4>কোর্স ইন্সট্রাক্টর</h4>
             </div>
             <div class="panel-body">
               <div class="row">
-                @if($value->teachers)
                   @foreach($value->teachers as $val)
                   <div class="col-md-6">
                     <div class="image">
                       <img src="{{$val->image? $val->image:'/img/teacher.png'}}" alt="" style="max-width: 80px; padding:5px; float:left; padding-right: 15px">
                     </div>
-                    <div>
-                      <b style="font-size:16px">{{$val->name}}</b><br>
-                      {{$val->designation}}
+                    <div class="teacher-title">
+                      <b style="font-size:16px">{{$val->name}}</b>
+                      {!! $val->designation !!}
                     </div>
                     <div class="clearfix"></div>
                   </div>
                   @endforeach
-                @endif
               </div>
             </div>
           </div>
+          @endif
+          @if($value->learn)
           <div class="panel panel-default">
-            <div class="panel-heading"><h3>কোর্সটি করে যা শিখবেন</h3></div>
+            <div class="panel-heading"><h4>কোর্সটি করে যা শিখবেন</h4></div>
             <div class="panel-body">{!! $value->learn !!}</div>
           </div>
+          @endif
+          @if($value->routine)
           <div class="panel panel-default">
-            <div class="panel-heading"><h3>ক্লাস রুটিন</h3></div>
+            <div class="panel-heading"><h4>ক্লাস রুটিন</h4></div>
             <div class="panel-body">{!! $value->routine !!}</div>
           </div>
+          @endif
+          @if($value->departments)
           <div class="panel panel-default">
-            <div class="panel-heading"><h3>কোর্স সিলেবাস</h3></div>
-            @if($value->departments)
+            <div class="panel-heading"><h4>কোর্স সিলেবাস</h4></div>
             <div class="box-group" id="accordion">
               @foreach($value->departments as $key => $department)
               <div class="panel box box-primary">
                 <div class="box-header with-border">
                   <div class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#dept{{$key}}">{{$department->name}}</a></div>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#dept{{$key}}">
+                      {{$department->name}}
+                      <span class="pull-right-container">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                      </span>
+                    </a>
+                  </div>
                 </div>
                 <div id="dept{{$key}}" class="panel-collapse collapse">
                   <div class="box-body">
@@ -145,8 +203,22 @@ $value = $batch;
                     <table class="table table-bordered">
                       <tr>
                         <td><b><a href="{{route('student.syllabus', $department->syllabus->id)}}">{{$department->syllabus->name}}</a></b></td>
-                        <td>Routine <a href="{{$department->syllabus->routine}}" class="btn btn-warning"><i class="fa fa-download"></i></a></td>
-                        <td>PDF <a href="{{$department->syllabus->pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a></td>
+                        <td>রুটিন ডাউনলোড করুন <a href="{{$department->syllabus->routine}}" class="btn btn-warning"><i class="fa fa-download"></i></a></td>
+                        <td>
+                          @if(!empty($student))
+                          
+                          @if($department->syllabus->pdf)
+                          সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                          @endif
+
+                          @else
+
+                          @if($department->syllabus->sample_pdf)
+                          স্যাম্পল সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                          @endif
+
+                          @endif
+                        </td>
                       </tr>
                     </table>
                     @else
@@ -157,32 +229,103 @@ $value = $batch;
               </div>
               @endforeach
             </div>
-            @endif
-            
           </div>
+          @endif
+          @if($value->details)
           <div class="panel panel-default">
-            <div class="panel-heading"><h3>কোর্স সম্পর্কে বিস্তারিত</h3></div>
+            <div class="panel-heading"><h4>কোর্স সম্পর্কে বিস্তারিত</h4></div>
             <div class="panel-body">{!! $value->details !!}</div>
           </div>
+          @endif
+          @if($value->details)
           <div class="panel panel-default">
-            <div class="panel-heading"><h3>সচরাচর জিজ্ঞাসা</h3></div>
+            <div class="panel-heading"><h4>সাধারণ জিজ্ঞাসা সমূহ</h4></div>
             <div class="panel-body">{!! $value->faq !!}</div>
           </div>
+          @endif
+          @if($value->refund)
+          <div class="panel panel-danger">
+            <div class="panel-heading"><h4>রিফান্ড পলিসি</h4></div>
+            <div class="panel-body">{!! $value->refund !!}</div>
+          </div>
+          @endif
         </div><!-- column -->
       </div>
     </section> <!-- /.content -->
   </div> <!-- /.container -->
 </div>
-
+@endsection
+@section('scripts')
 <script>
-  window.location.hash = "no-back-button";
-
-    // Again because Google Chrome doesn't insert
-    // the first hash into the history
-    window.location.hash = "Again-No-back-button"; 
-
-    window.onhashchange = function(){
-        window.location.hash = "no-back-button";
+  // Set the date we're counting down to
+  // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
+  var countDownDate = new Date("{{$source->dtcformat($value->reg_end_at)}}").getTime();
+  // var countDownDate = new Date().getTime();
+  
+  // Update the count down every 1 second
+  var x = setInterval(function()
+  {
+    let timer = document.getElementById("timer");
+  
+    // Get today's date and time
+    var now = new Date().getTime();
+    // var now = new Date("{{$source->dtcformat($value->end_time)}}").getTime();
+      
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now;
+      
+    // Time calculations for days, hours, minutes and seconds
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+    // Output the result in an element with id="demo"
+    let d = h = m = s = 0;
+    if(days != 0)
+    {
+      d = days+" ";
     }
+    if(hours != 0)
+    {
+      h = hours+" ";
+    }
+    if(minutes != 0)
+    {
+      m = minutes+" ";
+    }
+    if(seconds != 0)
+    {
+      s = seconds+" ";
+    }
+    // timer.innerHTML = hours + "h "
+    // + minutes + "m " + seconds + "s ";
+    if(m != null || s != null)
+    {
+    timer.innerHTML = d + "দিন " + h + "ঘণ্টা "
+    + m + "মিনিট " + s + "সেকেন্ড ";
+    }
+    else
+    {
+      timer.innerHTML = '00:00:00';
+    }
+
+    // console.log(distance);
+      
+    // If the count down is over, write some text 
+    if (distance < 60000 && distance > 59000)
+    {
+      timer.style.color='red';
+
+    }
+
+    if (distance < 0) {
+      clearInterval(x);
+      timer.innerHTML = '<span style="color:#d00">সময় শেষ</span>';
+      // document.getElementById('questions_panel').innerHTML = '<div class="box box-warning"><a class="btn btn-warning" href="{{route("students.exam")}}">Back</div>';
+      // submit the form automatically
+      // submitExam();
+    }
+  }, 1000);
 </script>
 @endsection

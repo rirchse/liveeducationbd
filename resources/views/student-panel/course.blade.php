@@ -40,7 +40,7 @@ $user = Auth::guard('student')->user();
               @if(!empty($user) && $value->students()->where('id', $user->id)->first())
               <button class="btn btn-default pull-right" disabled>Applied</button>
               @else
-              <a class="btn btn-info pull-right" href="{{route('students.course.show', $value->id)}}">View</a>
+              <a class="btn btn-info pull-right" href="{{route('home.course.show', $value->id)}}">View</a>
               @endif
               <div class="clearfix"></div>
             </div>

@@ -1,5 +1,8 @@
 @extends('dashboard')
 @section('title', 'Edit Teacher')
+@section('stylesheets')
+<link href="/assets/summernote/summernote.min.css" rel="stylesheet">
+@endsection
 @section('content')
 
     <!-- Content Header (Page header) -->
@@ -37,7 +40,7 @@
                 </div>
                 <div class="form-group">
                     <label for="designation" >Designation</label>
-                    <input type="text" name="designation" class="form-control" value="{{$user->designation}}" />
+                    <textarea type="text" name="designation" class="form-control editor" >{{$user->designation}}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="">Email Address</label>
@@ -69,4 +72,17 @@
         </div> <!--/.col (left) -->
       </div> <!-- /.row -->
     </section> <!-- /.content -->
+@endsection
+
+@section('scripts')
+<script src="/assets/summernote/summernote.min.js"></script>
+<script>
+//this script for text editor
+$(document).ready(function() {
+  $('.editor').summernote({
+    // height: 150,
+    toolbar: []
+  });
+});
+</script>
 @endsection
