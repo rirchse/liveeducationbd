@@ -280,12 +280,14 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
       document.getElementById('timer').style.color='red';
 
     }
-    if (distance < 0) {
+    if (distance < 0)
+    {      
+      // submit the form automatically
+      submitExam();
+
       clearInterval(x);
       document.getElementById("timer").innerHTML = '<span style="color:#d00">সময় শেষ</span>';
       document.getElementById('questions_panel').innerHTML = '<div class="box box-warning"><a class="btn btn-warning" href="{{route("students.exam")}}">Back</div>';
-      // submit the form automatically
-      submitExam();
     }
   }, 1000);
 
@@ -363,6 +365,8 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
       }
     }
 
+    console.log(mcqids);
+
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -383,7 +387,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
       contentType: false,
       processData: false,
       success: function(data){
-        console.log(data);
+        // console.log(data);
         if(data.success == true)
         {
           let content = document.getElementById('content');
@@ -395,14 +399,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
           let no_answer = document.getElementById('no_answer');
           let marks = document.getElementById('marks');
           let message = document.getElementById('message');
-          let msg = 'Exam Completed';
-
-          // question.innerHTML = data.questions;
-          // answer.innerHTML = data.answered;
-          // correct.innerHTML = data.correct;
-          // wrong.innerHTML = data.wrong;
-          // no_answer.innerHTML = data.no_answered;
-          // marks.innerHTML = data.marks;
+          let msg = 'পরীক্ষা সম্পূর্ণ হয়েছে, পরবর্তী ধাপে যাওয়ার জন্য ok তে করুন';
 
           if(data.message != null)
           {

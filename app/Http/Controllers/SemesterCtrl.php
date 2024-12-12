@@ -214,7 +214,7 @@ class SemesterCtrl extends Controller
         $items = Semester::whereHas('departments', function($query) use($arr)
         {
             $query->whereIn('department_id', $arr);
-        })->get();
+        })->select('id', 'name')->get();
         return response()->json(['data' => $items]);
     }
     

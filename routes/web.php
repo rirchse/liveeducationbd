@@ -69,6 +69,8 @@ Route::middleware('auth:student')->group(function()
 		Route::post('student/exam_add', 'examAdd')->name('student.exam.add');
 		Route::get('students/syllabus/{id}', 'syllabus')->name('student.syllabus');
 		Route::get('students/syllabus/{id}/pdf', 'generatePDF')->name('students.syllabus.pdf');
+		Route::get('students/complain', 'complain')->name('students.complain');
+		Route::post('students/complain', 'complainStore')->name('students.complain.store');
 	});
 });
 
@@ -107,6 +109,7 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('student', 'StudentCtrl');
 	Route::resource('syllabus', 'SyllabusCtrl');
 	Route::resource('teacher', 'TeacherCtrl');
+	Route::resource('complain', 'ComplainCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()

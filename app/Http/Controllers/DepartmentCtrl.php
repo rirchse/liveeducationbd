@@ -201,7 +201,7 @@ class DepartmentCtrl extends Controller
         $arr = explode(',', $course_id);
         $items = Department::whereHas('courses', function($q) use($arr) {
             $q->whereIn('course_id', $arr);
-        })->get();
+        })->select('id', 'name')->get();
         return response()->json(['data' => $items]);
     }
     public function getDepartmentsByBatch($batch_id)
@@ -209,7 +209,7 @@ class DepartmentCtrl extends Controller
         $arr = explode(',', $batch_id);
         $items = Department::whereHas('batches', function($q) use($arr) {
             $q->whereIn('batch_id', $arr);
-        })->get();
+        })->select('id', 'name')->get();
         return response()->json(['data' => $items]);
     }
     

@@ -16,6 +16,7 @@ use App\Models\Group;
 use App\Models\McqItem;
 use App\Models\Choice;
 use App\Models\Syllabus;
+use App\Models\Complain;
 use Auth;
 use Session;
 use Mail;
@@ -373,5 +374,41 @@ class StudentHomeCtrl extends Controller
     // return $pdf->stream('document.pdf');
 
     // return view('student-panel.syllabus-pdf', compact('syllabus'));
+  }
+
+  public function complain()
+  {
+    return view('student-panel.complain');
+  }
+
+  public function complainStore(Request $request)
+  {
+    $this->validate($request, [
+      'name' => 'required|string',
+      'email' => 'required|string',
+      'contact' => 'required|string',
+      'department' => 'required|string',
+      'details' => 'required|string',
+    ]);
+
+    $data = $request->all();
+    if(isset($data['_token']))
+    {
+      unset($data['_token']);
+    }
+
+    $data['status'] = 'New';
+
+    $data['created_at'] = date('Y-m-d H:i:s');
+
+    try {
+      Complain::insert($data);
+      Session::flash('success', 'আমরা আপনের মতামতটি গ্রহণ করেছি। আপনার বিনয়ী মতামতের জন্য ধন্যবাদ।');
+      return redirect()->route('students.complain');
+    }
+    catch(\E $e)
+    {
+      return $e;
+    }
   }
 }

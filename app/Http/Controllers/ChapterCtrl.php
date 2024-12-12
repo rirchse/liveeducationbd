@@ -253,7 +253,7 @@ class ChapterCtrl extends Controller
         $arr = explode(',', $subject_id);
         $items = Chapter::whereHas('subjects', function($query) use($arr) {
             $query->whereIn('subject_id', $arr);
-        })->get();
+        })->select('id', 'name')->get();
         return response()->json(['data' => $items]);
     }
     

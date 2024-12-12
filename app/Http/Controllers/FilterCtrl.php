@@ -197,7 +197,7 @@ class FilterCtrl extends Controller
     public function getFilters($course_id)
     {
         $course = Course::find($course_id);
-        $filters = $course->filters()->with(['SubFilter'])->orderBy('id', 'ASC')->get();
+        $filters = $course->filters()->with(['SubFilter'])->orderBy('id', 'ASC')->select('filters.id', 'filters.name')->get();
         return response()->json(['data' => $filters]);
     }
     

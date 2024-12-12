@@ -54,15 +54,15 @@ $value = $batch;
                 <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
               </div>
               <div class="panel-heading">
-                @if($value->offer_end_at)
-                <p style="color: red">ডিস্কাউন্ট অফারের মেয়াদ <b>{{$source->dtformat($value->offer_end_at)}}</b></p>
-                @endif
                 <h3>
                   @if($value->discount) 
                   <del> &#2547;{{$source->point0($value->price)}}</del> &nbsp; <span class="label label-warning"> &#2547;{{$source->point0($value->discount)}} ছাড়</span>
                   @endif
                   <b> &nbsp; &#2547;{{$source->point0($value->net_price)}}</b>
                   </h3>
+                  @if($value->offer_end_at)
+                  <p style="color: red">ডিস্কাউন্ট অফারের মেয়াদ <b>{{$source->dtformat($value->offer_end_at)}}</b></p>
+                  @endif
                 <p>{{$value->subtitle}}</p>
               </div>
               @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
@@ -249,6 +249,7 @@ $value = $batch;
             <div class="panel-body">{!! $value->refund !!}</div>
           </div>
           @endif
+          <a href="{{route('students.complain')}}" class="btn btn-info">আপনার মতামত/অভিযোগ দিন</a>
         </div><!-- column -->
       </div>
     </section> <!-- /.content -->
