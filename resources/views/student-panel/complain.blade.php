@@ -76,13 +76,17 @@ if($user)
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label class="">আপনার মতামত লিখুন</label>
+                      <label class="details">আপনার অভিযোগ লিখুন</label>
                       <textarea name="details" id="" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label class="solution">সমাধানে আপনার মতামত দিন</label>
+                      <textarea name="solution" id="" cols="30" rows="10" class="form-control"></textarea>
                     </div>
                   </div>
                   <!-- /.col -->
                   <div class="col-xs-12">
-                    <button type="submit" class="btn btn-info btn-submit btn-block">Submit</button>
+                    <button type="submit" class="btn btn-info btn-submit btn-block">সাবমিট করুন</button>
                   </div>
                   
                 </div><!-- /.col -->

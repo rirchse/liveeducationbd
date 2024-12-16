@@ -78,10 +78,31 @@ class StudentHomeCtrl extends Controller
     if($student->courses()->find($request->course_id))
     {
       Session::flash('error', 'You already applied to the course.');
-      // return back();
       return redirect()->route('students.my-course');
     }
-    
+
+    Session::put('_confirm', [
+      'batch_id' => $data['batch_id'],
+      'department_id' => $data['department_id'],
+    ]);
+
+    return redirect()->route('students.course.confirm');
+  }
+
+  public function confirm()
+  {
+    if(Session::get('_confirm'))
+    {
+      $data = Session::get('_confirm');
+      $batch = Batch::find($data['batch_id']);
+      $department = Department::find($data['department_id']);
+      return view('student-panel.course-confirm', compact('batch', 'department'));
+    }
+    return redirect()->route('students.course');
+  }
+
+  public function courseApplied()
+  {
     $student->batches()->attach($request->batch_id);
     $student->departments()->attach($request->department_id);
 

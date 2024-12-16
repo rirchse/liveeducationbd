@@ -1,6 +1,7 @@
 @php
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
+$subject = '';
 @endphp
 
 @extends('dashboard')
@@ -37,8 +38,13 @@ $source = New SourceCtrl;
               <p style="text-align: center">Course Name: <b>{{$syllabus->course?$syllabus->course->name:''}}</b></p>
               <p style="text-align: center">Batch: <b>{{$syllabus->batch?$syllabus->batch->name:''}}</b></p>
               <hr>
-              <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888">
+              <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888; font-size:12px">
                   @foreach($syllabus->questions as $key => $value)
+
+                  {{-- @if($subject == '' && $value->subjects->first() && $subject != $value->subjects->first()->name)
+                  <h4 style="text-align: center">Subject: {{$value->subjects->first()?$value->subjects->first()->name:''}}</h4>
+                  @endif --}}
+
                   <div class="question">
                     <p style="position: absolute; margin-top:150px; margin-left: 120px; transform:rotate(-30deg); opacity: 0.2 ; font-size:25px">LiveEducationBD.com</p>
                     <div style="display: inline; font-weight:bold; float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.
@@ -47,7 +53,7 @@ $source = New SourceCtrl;
                       @php
                       $correct_ans = '';
                       @endphp
-                      <div class="mcqitems" style="width:300px; column-width:130px">
+                      <div class="mcqitems" style="width:360px; column-width:140px">
                         @foreach($value->mcqitems as $k => $val)
                         @php
                         if($val->correct_answer)
@@ -62,6 +68,10 @@ $source = New SourceCtrl;
                       </div>
                       <div style="color:green; clear:top; padding:10px 0; padding-left:20px;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
                     </div>
+
+                    {{-- @php
+                    $subject = $value->subjects->first()?$value->subjects->first()->name:'';
+                    @endphp --}}
                   @endforeach
               </div>
             </div>

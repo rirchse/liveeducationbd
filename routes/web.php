@@ -65,12 +65,31 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/course', 'course')->name('students.course');
 		Route::get('students/course/{id}', 'courseShow')->name('students.course.show');
 		Route::post('students/course-apply', 'applyCourse')->name('students.course.apply');
+		Route::get('students/confirm', 'confirm')->name('students.course.confirm');
 		Route::get('students/my-course', 'myCourse')->name('students.my-course');
 		Route::post('student/exam_add', 'examAdd')->name('student.exam.add');
 		Route::get('students/syllabus/{id}', 'syllabus')->name('student.syllabus');
 		Route::get('students/syllabus/{id}/pdf', 'generatePDF')->name('students.syllabus.pdf');
 		Route::get('students/complain', 'complain')->name('students.complain');
 		Route::post('students/complain', 'complainStore')->name('students.complain.store');
+	});
+
+	Route::controller(SslCommerzPaymentController::class)->group(function()
+	{
+		// SSLCOMMERZ Start
+		Route::get('/example1', 'exampleEasyCheckout');
+		// Route::get('/example2', 'exampleHostedCheckout');
+		Route::get('/payment-proceed', 'exampleHostedCheckout');
+	
+		Route::post('/pay', 'index')->name('payment.proceed');
+		Route::post('/pay-via-ajax', 'payViaAjax');
+	
+		Route::post('/success', 'success');
+		Route::post('/fail', 'fail');
+		Route::post('/cancel', 'cancel');
+	
+		Route::post('/ipn', 'ipn');
+		//SSLCOMMERZ END
 	});
 });
 
