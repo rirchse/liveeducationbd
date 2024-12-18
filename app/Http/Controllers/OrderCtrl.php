@@ -34,18 +34,10 @@ class OrderCtrl extends Controller
 
   public function destroy($id)
   {
-      $file = AnswerFile::find($id);
-      $xfile = public_path($file->file);
-         
-      if (File::exists($xfile)) {
-          File::delete($xfile);
-      }
+      $file = Order::find($id);
       $file->delete();
 
-      return response()->json([
-          'success' => true,
-          'message' => 'File successfully deleted!',
-          'file' => $file
-      ]);
+      Session::flash('success', 'The order item successfully deleted!');
+      return redirect()->route('order.index');
   }
 }
