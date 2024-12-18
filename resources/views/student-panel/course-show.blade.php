@@ -70,7 +70,8 @@ $value = $batch;
                 <button class="btn btn-success btn-block" disabled>আপনি কোর্সটি কিনেছেন</button>
                 @else
                 {{-- <button class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button> --}}
-                <button type="button" data-toggle="modal" data-target="#paymentConfirm" class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button>
+                {{-- data-toggle="modal" data-target="#paymentConfirm" --}}
+                <button onclick="checkLogin()" type="button" class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button>
                 @endif
                 <div class="clearfix"></div>
               </div>
@@ -254,9 +255,9 @@ $value = $batch;
           <input type="hidden" name="student_id" value="{{$user ? $user->id : null}}">
           <input type="hidden" name="batch_id" value="{{$value->id}}">
           
-          <input type="hidden" name="name" value="{{$student->name}}" />
-          <input type="hidden" name="email" value="{{$student->email}}" />
-          <input type="hidden" name="phone" value="{{$student->contact}}" />
+          <input type="hidden" name="name" value="{{$student? $student->name:''}}" />
+          <input type="hidden" name="email" value="{{$student? $student->email:''}}" />
+          <input type="hidden" name="phone" value="{{$student? $student->contact:''}}" />
           <input type="hidden" name="address1" value="" />
           <input type="hidden" name="total" value="{{$value->net_price}}" />
 
@@ -324,6 +325,24 @@ $value = $batch;
 @endsection
 @section('scripts')
 <script>
+  //eheck login
+  function checkLogin()
+  {
+    let login = '{{$user ? $user->id : ''}}';
+    if(login)
+    {
+      $(document).ready(function()
+      {
+        // $("#myBtn").click(function(){
+          $("#paymentConfirm").modal();
+        // });
+      });
+    }
+    else
+    {
+      window.location.href = '/students/login';
+    }
+  }
   // Set the date we're counting down to
   // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
   var countDownDate = new Date("{{$source->dtcformat($value->reg_end_at)}}").getTime();
