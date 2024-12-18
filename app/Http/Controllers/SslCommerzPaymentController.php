@@ -32,6 +32,9 @@ class SslCommerzPaymentController extends Controller
         $post_data['tran_id'] = uniqid(); // tran_id must be unique
 
         # CUSTOMER INFORMATION
+        $post_data['cus_student'] = $data['student_id'];
+        $post_data['cus_batch'] = $data['batch_id'];
+        $post_data['cus_department'] = $data['department_id'];
         $post_data['cus_name'] = $data['name'];
         $post_data['cus_email'] = $data['email'];
         $post_data['cus_add1'] = $data['address1'];
@@ -68,6 +71,9 @@ class SslCommerzPaymentController extends Controller
         $update_product = DB::table('orders')
             ->where('transaction_id', $post_data['tran_id'])
             ->updateOrInsert([
+                'student_id' => $post_data['cus_student'],
+                'batch_id' => $post_data['cus_batch'],
+                'department_id' => $post_data['cus_department'],
                 'name' => $post_data['cus_name'],
                 'email' => $post_data['cus_email'],
                 'phone' => $post_data['cus_phone'],
@@ -187,7 +193,8 @@ class SslCommerzPaymentController extends Controller
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
 
-                echo "<br >Transaction is successfully Completed";
+                echo "<br >Transaction is successfully Completed. Back to the homepage or <p>It will automatic redirect to you ... ";
+                echo "<script> setTimeout('window.location.href=\"/\"', 5000);</script>";
             }
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             /*

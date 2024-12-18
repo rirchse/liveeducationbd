@@ -71,8 +71,6 @@ if($user)
         </div>
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
-        {{-- $paper->permit == 'Course' && $student->courses->find($course->id) || --}}
-          
         @foreach($student->batches()->get() as $course)
         @if($course->paper)
         @php
@@ -110,6 +108,42 @@ if($user)
         @endif
       </div> <!-- /.row -->
       @endif
+      
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">বুক স্টোরেজ</h3>
+        </div>
+      </div> <!-- /.box -->
+      <div class="box" style="margin-bottom:35px">
+        <div class="col-md-12">
+          <h3>Coming soon!</h3>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">আপডেট তথ্য</h3>
+        </div>
+      </div> <!-- /.box -->
+      <div class="box" style="margin-bottom:35px">
+        <div class="col-md-12">
+          <h3>Coming soon!</h3>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">নিয়োগ বিজ্ঞপ্তি</h3>
+        </div>
+      </div> <!-- /.box -->
+      <div class="box" style="margin-bottom:35px">
+        <div class="col-md-12">
+          <h3>Coming soon!</h3>
+        </div>
+        <div class="clearfix"></div>
+      </div>
     </section> <!-- /.content -->
   </div> <!-- /.container -->
 </div>

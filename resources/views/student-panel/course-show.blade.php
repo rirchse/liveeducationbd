@@ -65,28 +65,12 @@ $value = $batch;
                   @endif
                 <p>{{$value->subtitle}}</p>
               </div>
-              @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
-              <div class="panel-body">
-                @if($departments->count())
-                <div class="form-group">
-                  <label for="">Department</label>
-                  <select id="department_id" name="department_id" class="form-control" required>
-                    <option value="">Select One</option>
-                    @foreach($departments as $val)
-                    <option value="{{$val->id}}">{{$val->name}}</option>
-                    @endforeach
-                  </select>
-                </div>
-                @else
-                No Departments for The course
-                @endif
-              </div>
-              @endif
               <div class="panel-footer">
                 @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
                 <button class="btn btn-success btn-block" disabled>আপনি কোর্সটি কিনেছেন</button>
                 @else
-                <button class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button>
+                {{-- <button class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button> --}}
+                <button type="button" data-toggle="modal" data-target="#paymentConfirm" class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button>
                 @endif
                 <div class="clearfix"></div>
               </div>
@@ -255,6 +239,88 @@ $value = $batch;
     </section> <!-- /.content -->
   </div> <!-- /.container -->
 </div>
+
+<div class="modal fade" id="paymentConfirm" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="{{route('payment.proceed')}}" method="post">
+        @csrf
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">{{$value->name}}</h4>
+      </div>
+      <div class="modal-body">
+          <input type="hidden" name="student_id" value="{{$user ? $user->id : null}}">
+          <input type="hidden" name="batch_id" value="{{$value->id}}">
+          
+          <input type="hidden" name="name" value="{{$student->name}}" />
+          <input type="hidden" name="email" value="{{$student->email}}" />
+          <input type="hidden" name="phone" value="{{$student->contact}}" />
+          <input type="hidden" name="address1" value="" />
+          <input type="hidden" name="total" value="{{$value->net_price}}" />
+
+            <div class="penel-heading no-padding" style="text-align: center;padding:15px">
+              {{-- <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" /> --}}
+            </div>
+              <h3>
+                @if($value->discount) 
+                <del> &#2547;{{$source->point0($value->price)}}</del> &nbsp; <span class="label label-warning"> &#2547;{{$source->point0($value->discount)}} ছাড়</span>
+                @endif
+                <b> &nbsp; &#2547;{{$source->point0($value->net_price)}}</b>
+                </h3>
+                @if($value->offer_end_at)
+                <p style="color: red">ডিস্কাউন্ট অফারের মেয়াদ <b>{{$source->dtformat($value->offer_end_at)}}</b></p>
+                @endif
+              <p>{{$value->subtitle}}</p>
+              <br>
+            @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <td>ডিপার্টমেন্ট নির্বাচন করুন </td>
+                  <th>
+                    @if(!empty($user->id) && !$value->students()->where('id', $user->id)->first())
+                      @if($departments->count())
+                        <select id="department_id" name="department_id" class="form-control" required>
+                          <option value="">Select One</option>
+                          @foreach($departments as $val)
+                          <option value="{{$val->id}}">{{$val->name}}</option>
+                          @endforeach
+                        </select>
+                      @else
+                      No Departments for The course
+                      @endif
+                    @endif</th>
+                </tr>
+                <tr>
+                  <td>কোর্সটির মূল্য </td>
+                  <th>&#2547; {{$source->point0($value->net_price)}}</th>
+                </tr>
+                <tr>
+                  <td>অন্যান্য ফী </td>
+                  <th>&#2547; 0</th>
+                </tr>
+                <tr style="font-size:18px">
+                  <th>মোট =</th>
+                  <th>&#2547; {{$source->point0($value->net_price)}}</th>
+                </tr>
+              </table>
+            @endif
+          </div>
+        <div class="modal-footer">
+          {{-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> --}}
+          
+          <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$source->point0($value->net_price)}} পেমেন্ট করুন</button>
+          <div class="clearfix"></div>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 @endsection
 @section('scripts')
 <script>

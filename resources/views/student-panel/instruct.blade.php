@@ -3,6 +3,11 @@ use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
 $value = $paper;
+$student = [];
+if($user)
+{
+  $student = \App\Models\Student::find($user->id);
+}
 @endphp
 
 @extends('student')
@@ -27,6 +32,8 @@ $value = $paper;
     <!-- Main content -->
     <section class="content">
         <div class="col-md-6 col-md-offset-3">
+          @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id) || $paper->permit == 'Every One')
+
           @if($value->status == 'Scheduled')
           <div class="panel panel-warning">
             <div class="panel-heading">
@@ -52,6 +59,14 @@ $value = $paper;
             <div class="panel-footer">
               <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">শুরু করুন</a>
               <div class="clearfix"></div>
+            </div>
+          </div>
+          @endif
+          @else
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <p>This exam is not match with you!</p>
+              <a href="{{route('homepage')}}">Back</a>
             </div>
           </div>
           @endif
