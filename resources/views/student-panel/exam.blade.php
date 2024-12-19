@@ -42,7 +42,7 @@ if($user)
             <div class="panel-heading">Live Education BD</div>
             <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
             <div class="panel-footer">
-              batch: <b>{{$batch->name}}<b>
+              batch: <b>{{substr($batch->name, 0, 45)}} ...<b>
             </div>
           </div>
         </a>

@@ -100,6 +100,12 @@ class ComplainCtrl extends Controller
     public function show($id)
     {
         $complain = Complain::find($id);
+
+        if($complain->status == "New")
+        {
+            Complain::where('id', $id)->update(['status' => 'Read']);
+        }
+
         return view('layouts.complains.read', compact('complain'));
     }
 

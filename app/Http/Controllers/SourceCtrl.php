@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Image;
 use File;
 use Mail;
+use DateTime;
 
 class SourceCtrl extends Controller
 {
@@ -98,5 +99,47 @@ class SourceCtrl extends Controller
   public function point0($data)
   {
     return number_format($data, 0);
+  }
+
+  public function reminder($date)
+  {
+    $y = $m = $d = $h = $i = $s = '';
+    $returnable = '';
+    $datetime1 = new DateTime($date);
+    $datetime2 = new DateTime(date('Y-m-d H:i:s'));
+    $interval  = $datetime1->diff($datetime2);
+    // return $interval->format('%y years %m months and %d days');
+
+    if($interval->format('%y'))
+    {
+      $y = $interval->format('%y Year ');
+      $returnable = $returnable.$y;
+    }
+
+    if($interval->format('%m'))
+    {
+      $m = $interval->format('%m Month ');
+      $returnable = $returnable.$m;
+    }
+
+    if($interval->format('%d'))
+    {
+      $d = $interval->format('%d Day ');
+      $returnable = $returnable.$d;
+    }
+
+    if($interval->format('%h'))
+    {
+      $h = $interval->format('%h Hour ');
+      $returnable = $returnable.$h;
+    }
+
+    if($interval->format('%i'))
+    {
+      $i = $interval->format('%i Minute ');
+      $returnable = $returnable.$i;
+    }
+
+    return $returnable;
   }
 }

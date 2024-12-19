@@ -30,11 +30,11 @@ if($user)
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px;">
         @foreach($batches as $value)
-        <div class="col-md-2">
+        <div class="col-md-3">
           <a href="{{route('home.course.show', $value->id)}}">
           <div class="panel panel-default">
             <div class="penel-heading hover no-padding" style="text-align: center; padding: 15px; min-height:150px">
-                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
+                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
             </div>
           </div>
         </a>
@@ -50,13 +50,13 @@ if($user)
       </div> <!-- /.box -->
       <div class="row" style="margin-bottom:35px">
         @foreach($mybatches as $value)
-        <div class="col-md-2">
+        <div class="col-md-3">
           <a href="{{route('students.course.show', $value->id)}}">
           <div class="panel panel-default">
             <div class="penel-heading no-padding" style="text-align: center; padding:15px">
-              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
+              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
             </div>
-            <div class="panel-heading"><b>{{$value->name}}</b></div>
+            <div class="panel-heading"><b>{{substr($value->name, 0, 55)}} ...</b></div>
           </div>
           </a>
         </div>
@@ -83,7 +83,7 @@ if($user)
               <div class="panel-heading">Live Education BD</div>
               <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
               <div class="panel-footer">
-                Batch: <b>{{$course->name}}<b>
+                Batch: <b>{{substr($course->name, 0, 45)}} ...<b>
               </div>
             </div>
           </a>

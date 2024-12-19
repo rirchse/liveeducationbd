@@ -27,6 +27,7 @@ $value = $complain;
           <div class="col-md-12 text-right toolbar-icon">
             {{-- <a href="{{route('complain.create')}}" title="Add New" class="label label-info"><i class="fa fa-plus"></i></a> --}}
             {{-- <a href="{{route('complain.edit', $value->id)}}" class="label label-warning" title="Edit this"><i class="fa fa-edit"></i></a> --}}
+            <a href="{{route('complain.index')}}" class="label label-success" title="View List"><i class="fa fa-list"></i></a>
           </div>
           <div class="col-md-12">
             <table class="table">
@@ -36,14 +37,32 @@ $value = $complain;
                     <td>{{$value->name}}</td>
                   </tr>
                   <tr>
+                    <th>Batch:</th>
+                    <td>{{$value->batch ? $value->batch->name : ''}}</td>
+                  </tr>
+                  <tr>
+                    <th>Department:</th>
+                    <td>{{$value->department}}</td>
+                  </tr>
+                  <tr>
                     <th>Details:</th>
-                    <td>{{$value->details}}</td>
+                    <td>{!! $value->details !!}</td>
+                  </tr>
+                  <tr>
+                    <th>Solution:</th>
+                    <td>{!! $value->solution !!}</td>
                   </tr>
                 
                    <tr>
                     <th>Status:</th>
                     <td>
+                      @if($value->status == 'Replied')
+                      <span class="label label-success">{{$value->status}}</span>
+                      @elseif($value->status == 'New')
                       <span class="label label-warning">{{$value->status}}</span>
+                      @elseif($value->status == 'Read')
+                      <span class="label label-primary">{{$value->status}}</span>
+                      @endif
                     </td>
                   </tr>
                   <tr>

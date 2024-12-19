@@ -1,4 +1,12 @@
-<?php $user = Auth::user(); ?>
+<?php
+$user = Auth::user();
+$notifications = [];
+$complains = \App\Models\Complain::where('status', 'New')->limit(15)->get();
+if($complains)
+{
+  $notifications = $complains;
+}
+?>
   <header class="main-header">
     <!-- Logo -->
     <a href="/home" class="logo">
@@ -24,28 +32,33 @@
             </a>
             
           </li>
+          @if($notifications->count())
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-danger"></span>
+              <span class="label label-danger">{{$notifications->count()}}</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have notifications</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
+                  @foreach($notifications as $k => $val)
                   <li>
-                    <a href="">
-                      <i class="fa fa-circle-o text-aqua"></i> 
+                    <a href="{{route('complain.show', $val->id)}}">
+                      <i class="fa fa-circle-o text-aqua"></i>
+                      {{substr($val->details, 0, 25)}}
                     </a>
                   </li>
+                  @endforeach
                 </ul>
               </li>
-              <li class="footer"><a href="/view_notifications">View all</a></li>
+              <li class="footer"><a href="{{route('complain.index')}}">View all</a></li>
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->
+          @endif
          
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">

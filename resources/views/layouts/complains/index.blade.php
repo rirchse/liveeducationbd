@@ -59,6 +59,8 @@ $source = New SourceCtrl;
                     <span class="label label-success">{{$val->status}}</span>
                     @elseif($val->status == 'New')
                     <span class="label label-warning">{{$val->status}}</span>
+                    @elseif($val->status == 'Read')
+                    <span class="label label-primary">{{$val->status}}</span>
                     @endif
                   </td>
                   <td>

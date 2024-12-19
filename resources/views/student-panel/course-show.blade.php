@@ -51,16 +51,16 @@ $value = $batch;
             <input type="hidden" name="batch_id" value="{{$value->id}}">
             <div class="panel panel-default">
               <div class="penel-heading no-padding" style="text-align: center;padding:15px">
-                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
+                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
               </div>
               <div class="panel-heading">
                 <h3>
-                  @if($value->discount) 
+                  @if($value->discount && $value->offer_end_at && $value->offer_end_at > date('Y-m-d H:i:s')) 
                   <del> &#2547;{{$source->point0($value->price)}}</del> &nbsp; <span class="label label-warning"> &#2547;{{$source->point0($value->discount)}} ছাড়</span>
                   @endif
                   <b> &nbsp; &#2547;{{$source->point0($value->net_price)}}</b>
                   </h3>
-                  @if($value->offer_end_at)
+                  @if($value->offer_end_at && $value->offer_end_at > date('Y-m-d H:i:s'))
                   <p style="color: red">ডিস্কাউন্ট অফারের মেয়াদ <b>{{$source->dtformat($value->offer_end_at)}}</b></p>
                   @endif
                 <p>{{$value->subtitle}}</p>
@@ -69,9 +69,11 @@ $value = $batch;
                 @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
                 <button class="btn btn-success btn-block" disabled>আপনি কোর্সটি কিনেছেন</button>
                 @else
-                {{-- <button class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button> --}}
-                {{-- data-toggle="modal" data-target="#paymentConfirm" --}}
-                <button onclick="checkLogin()" type="button" class="btn btn-success btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">কোর্সটি কিনুন</button>
+                  @if($value->reg_end_at && date('Y-m-d H:i:s') > $value->reg_end_at )
+                  <p class="text-danger">রেজিস্ট্রেশানের মেয়াদ শেষ</p>
+                  @else
+                  <button onclick="checkLogin()" type="button" class="btn btn-success btn-block btn-lg">কোর্সটি কিনুন</button>
+                  @endif
                 @endif
                 <div class="clearfix"></div>
               </div>
@@ -89,7 +91,7 @@ $value = $batch;
           <div class="panel panel-info">
             <div class="panel-heading">
               <h3>{{$value->name}} <br><small>Course: <b>{{$value->course ? $value->course->name:''}}</b></small></h3>
-              @if($value->reg_end_at)
+              @if($value->reg_end_at && $value->reg_end_at > date('Y-m-d H:i:s'))
               <p style="text-align: center; color:red">রেজিস্ট্রেশনের মেয়াদ  আছে: <b><span id="timer"></span></b>
               </p>
               @endif
@@ -100,28 +102,24 @@ $value = $batch;
           </div>
           
           <div class="panel panel-warning">
-            <div class="panel-heading"><h4>কোর্সটির মেয়াদ ও অন্যান্য</h4></div>
+            <div class="panel-heading">
+              <h4>কোর্সটির মেয়াদ ও অন্যান্য</h4>
+            </div>
             <div class="panel-body table-responsive">
               <table class="table table-bordered">
-                @if($value->start_at)
-                <tr>
-                  <td>কোর্সটি শুরু হয়েছে</td>
-                  <th>{{$source->dformat($value->start_at)}}</th>
-                </tr>
-                @endif
                 @if($value->end_at)
                 <tr>
-                  <td>কোর্সটি শেষ হবে</td>
-                  <th>{{$source->dformat($value->end_at)}}</th>
+                  <td>কোর্সটি চলবে</td>
+                  <th>{!! $source->reminder($value->end_at) !!}</th>
                 </tr>
                 @endif
-                @if($value->reg_end_at)
+                @if($value->reg_end_at && $value->reg_end_at > date('Y-m-d H:i:s'))
                 <tr>
                   <td>রেজিস্ট্রেশনের মেয়াদ শেষ হবে</td>
                   <th>{{$source->dtformat($value->reg_end_at)}}</th>
                 </tr>
                 @endif
-                @if($value->offer_end_at)
+                @if( $value->offer_end_at && $value->offer_end_at > date('Y-m-d H:i:s') )
                 <tr>
                   <td>বর্তমান অফারের মেয়াদ</td>
                   <th>{{$source->dtformat($value->offer_end_at)}}</th>

@@ -30,9 +30,9 @@
       <div class="col-md-3">
         <div class="panel panel-default">
           <div class="penel-heading no-padding" style="text-align: center;padding:15px;min-height:150px">
-            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
+            <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
           </div>
-          <div class="panel-heading"><b>{{$value->name}}</b></div>
+          <div class="panel-heading"><b>{{substr($value->name, 0, 55)}} ...</b></div>
         </div>
       </div>
       </a>

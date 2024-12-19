@@ -15,6 +15,7 @@ use App\Models\Question;
 use App\Models\McqItem;
 use App\Models\Label;
 use App\Models\AnswerFile;
+use App\Models\User;
 use Auth;
 use Image;
 use Toastr;
@@ -47,6 +48,7 @@ class QuestionCtrl extends Controller
         $semesters = Semester::where('status', 'Active')->get();
         $subjects = Subject::where('status', 'Active')->get();
         $chapters = Chapter::where('status', 'Active')->get();
+        $users = User::where('status', 'Active')->get();
 
         $filters = Filter::with(['SubFilter'])->get();
 
@@ -57,6 +59,7 @@ class QuestionCtrl extends Controller
             'subject_id' => null,
             'chapter_id' => null,
             'type' => null,
+            'created_by' => null,
         ];
 
         $questions = Question::orderBy('id', 'DESC')
@@ -64,7 +67,7 @@ class QuestionCtrl extends Controller
         ->where('created_at', 'like', '%'.date('Y-m-d').'%')
         ->paginate(25);
 
-        return view('layouts.questions.view', compact('courses', 'departments', 'semesters', 'subjects', 'chapters', 'cat', 'questions', 'filters'));
+        return view('layouts.questions.view', compact('courses', 'departments', 'semesters', 'subjects', 'chapters', 'cat', 'questions', 'filters', 'users'));
     }
 
     public function viewQuestionPost(Request $request)
@@ -80,6 +83,7 @@ class QuestionCtrl extends Controller
         $semesters = Semester::where('status', 'Active')->get();
         $subjects = Subject::where('status', 'Active')->get();
         $chapters = Chapter::where('status', 'Active')->get();
+        $users = User::where('status', 'Active')->get();
 
         $filters = Filter::with(['SubFilter'])->get();
 
@@ -124,6 +128,11 @@ class QuestionCtrl extends Controller
             });
         }
 
+        if(isset($data['created_by']))
+        {
+            $questions = $questions->where('created_by', $data['created_by']);
+        }
+
         $questions = $questions->paginate(25);
 
         $cat = [
@@ -133,6 +142,7 @@ class QuestionCtrl extends Controller
             'subject_id' => isset($data['subject_id']) ? $data['subject_id'] : null,
             'chapter_id' => isset($data['chapter_id']) ? $data['chapter_id'] : null,
             'type' => isset($data['type']) ? $data['type'] : null,
+            'created_by' => isset($data['created_by']) ? $data['created_by'] : null,
         ];
 
         if($request->ajax())
@@ -140,7 +150,7 @@ class QuestionCtrl extends Controller
             return view('layouts.questions.paginate', compact('questions'))->render();
         }
 
-        return view('layouts.questions.view', compact('courses', 'departments', 'semesters', 'subjects', 'chapters', 'questions', 'cat', 'filters'));
+        return view('layouts.questions.view', compact('courses', 'departments', 'semesters', 'subjects', 'chapters', 'questions', 'cat', 'filters', 'users'));
     }
 
     /**

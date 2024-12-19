@@ -137,6 +137,17 @@ $url = route('paper.addtopaper');
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
+                    <label for="">Created By</label>
+                    <select name="created_by" id="created_by" class="form-control select2">
+                      <option value="">Select One</option>
+                      @foreach($users as $value)
+                      <option value="{{$value->id}}" {{$cat['created_by'] == $value->id ? 'selected':''}}>{{$value->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
                     <br>
                     <input class="btn btn-primary" type="submit" value="Submit">
                   </div>

@@ -40,4 +40,9 @@ class Batch extends Model
     {
         return $this->belongsToMany(Teacher::class);
     }
+
+    public function complain()
+    {
+        return $this->hasOne(Complain::class, 'batch_id');
+    }
 }
