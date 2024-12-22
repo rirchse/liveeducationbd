@@ -60,7 +60,7 @@ $source = New SourceCtrl;
             <td>{{$key+1}}</td>
             <td>{{$value->student->name}}</td>
             <td>{{str_pad($value->student->id, 6, '0', STR_PAD_LEFT)}}</td>
-            <td>{{$value->paper->department->name}}</td>
+            <td>{{$value->paper->department ? $value->paper->department->name : ''}}</td>
             <td style="text-align: right">{{$value->correct}}</td>
             <td style="text-align: right">{{$value->wrong}}</td>
             <td style="text-align: right">{{$value->no_answer}}</td>
