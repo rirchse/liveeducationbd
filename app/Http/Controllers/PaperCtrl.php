@@ -315,7 +315,7 @@ class PaperCtrl extends Controller
                 $key+1, 
                 $exam->student->name, 
                 str_pad($exam->student->id, 6, '0', STR_PAD_LEFT), 
-                $exam->paper->department->name, 
+                $exam->paper->department ? $exam->paper->department->name : '', 
                 $exam->correct, 
                 $exam->wrong, 
                 $exam->no_answer, 
