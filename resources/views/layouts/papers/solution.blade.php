@@ -62,8 +62,8 @@ $source = New SourceCtrl;
               @endphp
               
               <div class="question">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify">প্রশ্ন {{$key+1}}.</div>
-                <div style="display: inline">{!! $value->title !!}</div>
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline; text-align:justify">{!! $value->title !!}</div>
 
                 <div class="mcqitems" style="list-style: none; width:360px; column-width:140px">
                   @foreach($value->mcqitems as $k => $val)
