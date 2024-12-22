@@ -47,6 +47,7 @@ $subject = '';
 
                   <div class="question">
                     <p style="position: absolute; margin-top:150px; margin-left: 120px; transform:rotate(-30deg); opacity: 0.2 ; font-size:25px">LiveEducationBD.com</p>
+                    
                     <div style="display: inline; font-weight:bold; float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.
                     </div>
                     <div style="display: inline; text-align:justify;">{!! $value->title !!}</div>

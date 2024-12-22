@@ -11,6 +11,7 @@ $source = New SourceCtrl;
   .mcqitems li{padding: 10px}
   .banner{margin-top:15px}
   .banner img{width:100%}
+  .questions{margin: auto}
 </style>
   <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -54,14 +55,17 @@ $source = New SourceCtrl;
           <h3 style="text-align: center;border-bottom:2px solid #ddd; padding-bottom:15px">
             Solution Paper
           </h3>
-            <div class="row">
+            <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888; font-size:12px">
               @foreach($paper->questions as $key => $value)
-              <div class="panel col-md-12">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify">প্রশ্ন {{$key+1}}.</div><div style="display: inline">{!! $value->title !!}</div>
-                @php
-                $correct_ans = '';
-                @endphp
-                <ul class="mcqitems" style="list-style: none">
+              @php
+              $correct_ans = '';
+              @endphp
+              
+              <div class="question">
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline">{!! $value->title !!}</div>
+
+                <div class="mcqitems" style="list-style: none; width:360px; column-width:140px">
                   @foreach($value->mcqitems as $k => $val)
                   @php
                   if($val->correct_answer)
@@ -69,13 +73,13 @@ $source = New SourceCtrl;
                     $correct_ans = $source->mcqlist()[$paper->format][$k].' '.$val->item;
                   }
                   @endphp
-                  <li style="width:50%; float:left">
+                  <div style="padding:10px;">
                     <span> {{$source->mcqlist()[$paper->format][$k]}} </span>{{$val->item}}
-                  </li>
+                  </div>
                   @endforeach
                   <div class="clearfix"></div>
-                </ul>
-                <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
+                </div>
+                <div style="color:green; clear:top; padding:10px 0;padding-left:20px">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
               </div>
               @php
               $correct_ans = '';

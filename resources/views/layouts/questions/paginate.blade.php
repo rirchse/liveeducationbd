@@ -44,7 +44,8 @@ if(!is_null(Session::get('_paper')))
         <ul class="list" style="padding-left:10px; padding-top:15px">
           @foreach($value->mcqitems as $k => $val)
           @php
-          if($val->correct_answer){
+          if($val->correct_answer)
+          {
             $correct = $format[$k].' '.$val->item;
           }
           @endphp
