@@ -17,6 +17,7 @@ if(!is_null(Session::get('_paper')))
 .panel-body label{white-space: normal;}
 .tools{text-align: right}
 .check{float: left; height: 20px; width:20px; margin-right: 10px !important; }
+.correct{font-weight: bold; font-size:16px; color:green}
 </style>
 <div class="box-header">
   <h3 class="box-title">Questions ({{$questions->total()}})</h3>
@@ -49,7 +50,7 @@ if(!is_null(Session::get('_paper')))
             $correct = $format[$k].' '.$val->item;
           }
           @endphp
-          <li>{{$format[$k]}} {!!$val->item!!}</li>
+          <li><span class="{{$val->correct_answer ? 'correct' : ''}}">{{$format[$k]}} {!!$val->item!!}</span></li>
           @endforeach
         </ul>
         <div class="col-md-12 no-padding">

@@ -171,6 +171,7 @@ Route::middleware(['auth'])->group(function()
 		Route::get('paper/add-question/{paper_id}', 'addQuestion')->name('paper.add.question');
 		Route::post('paper/add_to_paper', 'addToPaper')->name('paper.addtopaper');
 		Route::get('/paper/view/{id}', 'view')->name('paper.view');
+		Route::get('/paper/exam/{id}', 'exam')->name('paper.exam');
 		Route::get('/paper/solution/{id}', 'solution')->name('paper.solution');
 		Route::get('/paper/result/{id}', 'result')->name('paper.result');
 		Route::get('/paper/result/csv/{id}', 'resultCsv')->name('paper.result.csv');
