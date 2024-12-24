@@ -50,6 +50,7 @@ $source = New SourceCtrl;
             <th>Student Name</th>
             <th>Registration ID</th>
             <th>Department</th>
+            <th>Start & End Time</th>
             <th>Status</th>
             <th style="text-align: right">Correct</th>
             <th style="text-align: right">Wrong</th>
@@ -62,6 +63,7 @@ $source = New SourceCtrl;
             <td>{{$value->student->name}}</td>
             <td>{{str_pad($value->student->id, 6, '0', STR_PAD_LEFT)}}</td>
             <td>{{$value->paper->department ? $value->paper->department->name : ''}}</td>
+            <td>{{$source->tformat($value->start_at).' - '.$source->tformat($value->end_at)}}</td>
             <td>{{$value->status}}</td>
             <td style="text-align: right">{{$value->correct}}</td>
             <td style="text-align: right">{{$value->wrong}}</td>

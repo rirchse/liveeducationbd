@@ -18,7 +18,7 @@ class Batch extends Model
 
     public function papers()
     {
-        return $this->belongsToMany(Paper::class);
+        return $this->hasMany(Paper::class, 'batch_id');
     }
 
     public function paper()

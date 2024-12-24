@@ -45,4 +45,9 @@ class Department extends Model
     {
         return $this->hasOne(Syllabus::class, 'department_id');
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class);
+    }
 }

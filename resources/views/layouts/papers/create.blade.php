@@ -357,13 +357,13 @@ function getDepartments(e)
             timer.innerHTML = '<div class="col-md-6">'+
                             '<div class="form-group">'+
                                 '<label for="open">Publish Time</label>'+
-                                '<input type="time" class="form-control" name="open" id="open" >'+
+                                '<input type="datetime-local" class="form-control" name="open" id="open" >'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-md-6">'+
                             '<div class="form-group">'+
                                 '<label for="close">Close Time</label>'+
-                                '<input type="time" class="form-control" name="close" id="close" >'+
+                                '<input type="datetime-local" class="form-control" name="close" id="close" >'+
                             '</div>'+
                         '</div>';
         }

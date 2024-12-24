@@ -41,6 +41,7 @@ $value = $paper;
               <div class="clearfix"></div>
             </div>
           </div>
+
           @elseif(isset($check['result-exam']))
           <div class="panel panel-warning">
             <div class="panel-heading">
@@ -48,9 +49,13 @@ $value = $paper;
             </div>
             <div class="panel-footer">
                 <a href="{{route('students.result', $value->id)}}" class="btn btn-warning cst-btn">ফলাফল দেখুন</a>
+                @if($value->close && $value->close < date('Y-m-d H:i:s'))
+                @else
                 <a class="btn btn-info cst-btn" href="{{route('students.instruction', $value->id)}}">পুনরায় পরীক্ষা দিন</a>
+                @endif
             </div>
           </div>
+
           @elseif($value->status == 'Published')
           <div class="panel panel-warning">
             <div class="panel-heading">

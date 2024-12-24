@@ -55,6 +55,10 @@ $source = New SourceCtrl;
               <div class="panel col-md-6">
                 <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify">প্রশ্ন {{$key+1}}.</div>
                 <div style="display: inline">{!! $value->title !!}</div>
+                @foreach($value->getlabels as $val)
+                <label style="border:1px solid #aaa; padding:0 5px; color:brown">{{$val->label}}</label>
+                @endforeach
+
                 @php
                 $correct_ans = '';
                 @endphp

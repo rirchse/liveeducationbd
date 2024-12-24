@@ -30,6 +30,15 @@ class SourceCtrl extends Controller
     return '';
   }
 
+  public function tformat($date)
+  {
+    if($date)
+    {
+      return date('h:i:s A', strtotime($date));
+    }
+    return '';
+  }
+
   public function dtformat($date)
   {
     if($date)

@@ -30,26 +30,29 @@ if($user)
     <!-- Main content -->
     <section class="content">
       @if( !empty($student) && $student->batches()->count() )
-      @foreach($student->batches()->get() as $batch)
-      @if($batch->paper)
-      @php
-      $paper = $batch->paper;
-      @endphp
-      @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
-        <div class="col-md-3">
-          <a href="{{route('students.check', $paper->id)}}">
-          <div class="panel" style="min-height: 130px">
-            <div class="panel-heading">Live Education BD</div>
-            <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
-            <div class="panel-footer">
-              batch: <b>{{substr($batch->name, 0, 45)}} ...<b>
-            </div>
-          </div>
-        </a>
-        </div>
-        @endif
-      @endif
-      @endforeach
+        @foreach($student->batches()->get() as $batch)
+        @php
+        $batch_papers = $batch->papers->whereIn('status', ['Published', 'Scheduled']);
+        @endphp
+          @if($batch_papers)
+            @foreach($batch_papers as $paper)
+              @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
+                <div class="col-md-3">
+                  <a href="{{route('students.check', $paper->id)}}">
+                  <div class="panel" style="min-height: 130px">
+                    <div class="panel-heading">Live Education BD</div>
+                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
+                    <div class="panel-footer">
+                      batch: <b>{{substr($batch->name, 0, 45)}} ...<b>
+                    </div>
+                  </div>
+                </a>
+                </div>
+              @endif
+            @endforeach
+          @endif
+        @endforeach
+
       @if($papers)
       @foreach($papers as $paper)
       <div class="col-md-3">

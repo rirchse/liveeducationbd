@@ -107,21 +107,21 @@ class RegisterController extends Controller
         
         try{
             Student::insert($data);
+
+            $emailData = [
+                'email_to' => $data['email'],
+                'subject' => 'Email Verification | Sign Up at Live Education BD',
+                'comments' => 'Hello '.$data['name'].',<br> Your email verification link below. Click on the link to verify your account. <a target="_blank" href="'.$source->host().'/account_verify/'.$data['remember_token'].'">'.$source->host().'/account_verify/'.$data['remember_token'].'</a> Otherwise, browse the URL. '
+            ];
+    
+            $source->sendMail($emailData);
+    
+            Session::flash('success', 'রেজিস্ট্রেশন সফলভাবে সম্পন্ন হয়েছে। আমাদের সঙ্গে যোগ দেওয়ার জন্য আপনাকে ধন্যবাদ! একটি যাচাইকরণ ইমেল '.$data['email'].' ঠিকানায় পাঠানো হয়েছে। অনুগ্রহ করে আপনার অ্যাকাউন্টটি যাচাই করুন। যাচাইকরণের সময় কোনো সমস্যা হলে, আমাদের সহায়তা টিমের সাথে যোগাযোগ করুন।');
         }
         catch(\E $e)
         {
             return $e;
         }
-
-        $emailData = [
-            'email_to' => $data['email'],
-            'subject' => 'Email Verification | Sign Up at Live Education BD',
-            'comments' => 'Hello '.$data['name'].',<br> Your email verification link below. Click on the link verify your account. <a target="_blank" href="'.$source->host().'/account_verify/'.$data['remember_token'].'">'.$source->host().'/account_verify/'.$data['remember_token'].'</a> Otherwise, browse the URL. '
-        ];
-
-        $source->sendMail($emailData);
-
-        Session::flash('success', 'Registration completed successfully. Thank you for joining us! A verification email has been sent to '.$data['email'].'. Please verify your account. If you encounter any issues during the verification process, feel free to contact our support team.');
 
         return redirect()->route('register');
     }

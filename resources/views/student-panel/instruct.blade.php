@@ -33,42 +33,56 @@ if($user)
     <section class="content">
         <div class="col-md-6 col-md-offset-3">
           @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id) || $paper->permit == 'Every One')
+          
+            @if($paper->close && $paper->close < date('Y-m-d H:i:s'))
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <b>Exam No. {{$value->name}}</b>
+              </div>
+              <div class="panel-body">
+                <p class="text-danger">পরীক্ষার সময় শেষ...</p>
+              </div>
+              <div class="panel-footer">
+                <a class="btn btn-danger pull-right" href="{{route('students.exam')}}">হোম এ ফিরে যান</a>
+                <div class="clearfix"></div>
+              </div>
+            </div>
 
-          @if($value->status == 'Scheduled')
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <b>Exam No. {{$value->name}}</b>
+            @elseif($value->status == 'Scheduled')
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <b>Exam No. {{$value->name}}</b>
+              </div>
+              <div class="panel-body">
+                <p> পরীক্ষা শুরু হবে <b>{{ $source->dtformat($value->open)}}</b> এবং শেষ হবে <b>{{ $source->dtformat($value->close)}}</b></p>
             </div>
-            <div class="panel-body">
-              <p> পরীক্ষা শুরু হবে <b>{{ $source->dtformat($value->open)}}</b> এবং শেষ হবে <b>{{ $source->dtformat($value->close)}}</b></p>
-          </div>
-            <div class="panel-footer">
-              <a class="btn btn-info pull-right" href="{{route('students.exam', $value->id)}}">Back</a>
-              <div class="clearfix"></div>
+              <div class="panel-footer">
+                <a class="btn btn-info pull-right" href="{{route('students.exam', $value->id)}}">Back</a>
+                <div class="clearfix"></div>
+              </div>
             </div>
-          </div>
-          @endif
-          @if($value->status == 'Published')
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <b>Exam No. {{$value->name}}</b>
+
+            @elseif($value->status == 'Published')
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <b>Exam No. {{$value->name}}</b>
+              </div>
+              <div class="panel-body">
+                <p>{!! $value->details !!}</p>
+              </div>
+              <div class="panel-footer">
+                <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">শুরু করুন</a>
+                <div class="clearfix"></div>
+              </div>
             </div>
-            <div class="panel-body">
-              <p>{!! $value->details !!}</p>
-          </div>
-            <div class="panel-footer">
-              <a class="btn btn-info pull-right" href="{{route('students.exam.show', $value->id)}}">শুরু করুন</a>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-          @endif
+            @endif
           @else
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <p>This exam is not match with you!</p>
-              <a href="{{route('homepage')}}">Back</a>
+            <div class="panel panel-danger">
+              <div class="panel-heading">
+                <p>This exam is not match with you!</p>
+                <a href="{{route('homepage')}}">Back</a>
+              </div>
             </div>
-          </div>
           @endif
         </div>
     </section> <!-- /.content -->

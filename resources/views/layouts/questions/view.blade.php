@@ -10,8 +10,8 @@ $url = route('paper.addtopaper');
 @section('title', 'View Questions')
 @section('content')
 <style>
-  ::-webkit-scrollbar{width: 5px;}
-  ::-webkit-scrollbar-thumb{background-color: #ddd}
+  .scroll ::-webkit-scrollbar{width: 5px;}
+  .scroll ::-webkit-scrollbar-thumb{background-color: #ddd}
   ul.list li{padding: 10px 0; list-style: none;}
   .hide{display: none}
   .filter{padding-left: 10px;}
@@ -157,7 +157,7 @@ $url = route('paper.addtopaper');
           </div>
         </div>
       </div>
-      <div class="col-md-4" style="padding-left: 0">
+      <div class="col-md-4 scroll" style="padding-left: 0">
         <div class="box filter-parent" id="filter-parent">
           @if(!is_null(Session::get('_paper')))
           @php

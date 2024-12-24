@@ -53,7 +53,9 @@ $source = New SourceCtrl;
                     <label class="label label-info">{{$val->name}}</label>
                     @endforeach
                   </td> --}}
-                  <td><a href="{{route('student.view', [$value->id, 'batch'])}}" class="btn btn-info">{{$value->students()->count()}}</a></td>
+                  <td>
+                    <a href="{{route('student.view', [$value->id, 'batch'])}}" class="btn btn-info">{{$value->students()->count()}}</a>
+                  </td>
                   <td>
                     <span class="label label-{{$value->status == 'Active'? 'success':'danger'}}">{{$value->status}}</span>
                   </td>

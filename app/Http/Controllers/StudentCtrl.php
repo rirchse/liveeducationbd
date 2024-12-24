@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\Department;
 use App\Models\Batch;
 use App\Models\Group;
 use App\Models\Role;
@@ -286,6 +287,10 @@ class StudentCtrl extends Controller
             {
                 $object = Course::find($id);
             }
+            elseif($name == 'Department')
+            {
+                $object = Department::find($id);
+            }
 
             if(!is_null($object))
             {
@@ -365,6 +370,19 @@ class StudentCtrl extends Controller
                     $msg = 'A student removed';
                 }
             }
+            elseif($object['type'] == 'Department')
+            {
+                if($data['action'] == 'add')
+                {
+                    $student->departments()->attach($object['id']);
+                    $msg = 'A student added';
+                }
+                elseif($data['action'] == 'remove')
+                {
+                    $student->departments()->detach($object['id']);
+                    $msg = 'A student removed';
+                }
+            }
 
             $this->addStudent($object['id'], $object['type']);
             // dd($object);
@@ -374,7 +392,7 @@ class StudentCtrl extends Controller
                 'message' => $msg
             ]);
         }
-        dd($data);
+        // dd($data);
     }
 
     public function addStudentComplete()
@@ -386,6 +404,10 @@ class StudentCtrl extends Controller
             if($object['type'] == 'Batch')
             {
                 return redirect()->route('batch.index');
+            }
+            elseif($object['type'] == 'Department')
+            {
+                return redirect()->route('department.index');
             }
             elseif($object['type'] == 'Group')
             {

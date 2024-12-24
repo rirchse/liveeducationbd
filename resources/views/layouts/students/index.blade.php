@@ -20,6 +20,7 @@ function check($id)
 
 <style>
   .object{position: fixed;right: 0; bottom: 0; max-width: 300px}
+  .add_checkbox{width:20px;height: 20px;}
 </style>
 
   <!-- Content Header (Page header) -->
@@ -69,7 +70,9 @@ function check($id)
               @foreach($students as $value)
 
               <tr>
-                <td><input type="checkbox" onchange="check(this)" value="{{$value->id}}" {{check($value->id)}}/></td>
+                <td>
+                  <input class="add_checkbox" type="checkbox" onchange="check(this)" value="{{$value->id}}" {{check($value->id)}}/>
+                </td>
                 <td>{{$value->id}}</td>
                 <td>{{$value->name}}</td>
                 <td>{{$value->email}}</td>

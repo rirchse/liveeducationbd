@@ -41,15 +41,19 @@ $source = New SourceCtrl;
                 <tr>
                   <th>Id</th>
                   <th>Name</th>
+                  <th>Students</th>
                   <th>Course Name</th>
                   <th>Created At</th>
                   <th>Status</th>
-                  <th width="110">Action</th>
+                  <th width="130">Action</th>
                 </tr>
                 @foreach($departments as $val)
                 <tr>
                   <td>{{$val->id}}</td>
                   <td>{{$val->name}}</td>
+                  <td>
+                    <a href="{{route('student.view', [$val->id, 'batch'])}}" class="btn btn-info">{{$val->students()->count()}}</a>
+                  </td>
                   <td>
                     @foreach($val->courses as $value)
                     <label class="label label-primary"> {{$value->name}}</label>
@@ -64,6 +68,7 @@ $source = New SourceCtrl;
                     @endif
                   </td>
                   <td>
+                    <a href="{{route('students.add', [$val->id, 'Department'])}}" class="btn btn-primary btn-sm" title="Add Students"><i class="fa fa-user-plus"></i></a>
                     {{-- <a href="{{route('filter.show',$val->id)}}" class="label label-info" title="filter Details"><i class="fa fa-file-text"></i></a> --}}
                     <a href="{{route('department.edit', $val->id)}}" class="btn btn-warning btn-sm" title="Edit this filter"><i class="fa fa-edit"></i></a>
                     <form style="display: inline" action="{{route('department.destroy', $val->id)}}" method="POST">
