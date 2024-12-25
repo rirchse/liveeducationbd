@@ -23,7 +23,7 @@ $source = New SourceCtrl;
           <h3 class="box-title">List of Results</h3>
           <div class="box-tools">
             <a href="{{route('paper.view', $paper->id)}}" title="View" class="btn btn-info"><i class="fa fa-arrow-left"></i> Back</a>
-            <a href="{{route('paper.index', $paper->id)}}" title="View" class="btn btn-primary"><i class="fa fa-list"></i></a>
+            <a href="{{route('paper.index', $paper->id)}}" title="View" class="btn btn-success"><i class="fa fa-list"></i></a>
             <a class="btn btn-info" onclick="printDiv()">
               <i class="fa fa-print"></i> Print
             </a>
@@ -42,9 +42,12 @@ $source = New SourceCtrl;
               {!! $paper->header !!}
             </th>
           </tr>
+        
+          @if($exams->count())
           <tr>
             <th colspan="4">Exam No. {{$paper->name}}</th>
-            <th colspan="4" style="text-align: right">Exam Date: {{$exams?$source->dformat($exams[0]->created_at):''}}</th>
+            <th colspan="4" style="text-align: right">Exam Date: {{$source->dformat($exams[0]->created_at)}}
+            </th>
           </tr>
           <tr>
             <th>SL No.</th>
@@ -68,6 +71,11 @@ $source = New SourceCtrl;
             <td style="text-align: right">{{$value->mark}}</td>
           </tr>
           @endforeach
+          @else
+          <tr>
+            <th colspan="2" style="text-align: center;color:red">No Exams found!</th>
+          </tr>
+          @endif
         </table>
       </div> <!-- /.box-body -->
     </div> <!-- /.box -->
