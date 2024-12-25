@@ -309,12 +309,15 @@ class PaperCtrl extends Controller
         $output = fopen('php://temp', 'r+');
         fputcsv($output, ['SL No.', 'Student Name', 'Registration ID', 'Department', 'Correct', 'Wrong', 'Blank', 'Total Mark']);
         
-        foreach ($exams as $key => $exam) {
+        foreach ($exams as $key => $exam)
+        {
+            $department = $exam->paper->department ? $exam->paper->department->name : '';
+            
             fputcsv($output, [
                 $key + 1,
                 $exam->student->name,
                 str_pad($exam->student->id, 6, '0', STR_PAD_LEFT),
-                $exam->paper->department ? $exam->paper->department->name : '',
+                $department,
                 $exam->correct,
                 $exam->wrong,
                 $exam->no_answer,
@@ -332,43 +335,6 @@ class PaperCtrl extends Controller
         
         return Response::make($csvContent, 200, $headers);
         // return view('layouts.papers.result', compact('paper', 'exams'));
-    }
-
-    public function result___Csv($id)
-    {
-        $paper = Paper::find($id);
-        $exams = Exam::where('paper_id', $id)->orderBy('mark', 'DESC')->get();
-
-        $filename = 'Exam No. '.$paper->name.'_results.csv';
-
-        return response()->stream(function () {
-            $file = fopen('php://output', 'w');
-
-            // Add CSV headers
-            fputcsv($file, ['SL No.', 'Student Name', 'Registration ID', 'Department', 'Correct', 'Wrong', 'Blank', 'Total Mark']);
-
-            // Add data rows
-            // fputcsv($file, ['John Doe', 'john@example.com', '25']);
-            // fputcsv($file, ['Jane Smith', 'jane@example.com', '30']);
-            foreach ($exams as $key => $exam)
-            {
-                fputcsv($file, [
-                    $key+1, 
-                    $exam->student->name, 
-                    str_pad($exam->student->id, 6, '0', STR_PAD_LEFT), 
-                    $exam->paper->department ? $exam->paper->department->name : '', 
-                    $exam->correct, 
-                    $exam->wrong, 
-                    $exam->no_answer, 
-                    $exam->mark
-                ]);
-            }
-
-            fclose($file);
-        }, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ]);
     }
     
     public function exam($id)
