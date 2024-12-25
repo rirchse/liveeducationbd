@@ -22,7 +22,8 @@ $source = New SourceCtrl;
         <div class="box-header">
           <h3 class="box-title">List of Results</h3>
           <div class="box-tools">
-            <a href="{{route('paper.view', $paper->id)}}" title="View" class="btn btn-primary"><i class="fa fa-th"></i></a>
+            <a href="{{route('paper.view', $paper->id)}}" title="View" class="btn btn-info"><i class="fa fa-arrow-left"></i> Back</a>
+            <a href="{{route('paper.index', $paper->id)}}" title="View" class="btn btn-primary"><i class="fa fa-list"></i></a>
             <a class="btn btn-info" onclick="printDiv()">
               <i class="fa fa-print"></i> Print
             </a>
@@ -43,7 +44,7 @@ $source = New SourceCtrl;
           </tr>
           <tr>
             <th colspan="4">Exam No. {{$paper->name}}</th>
-            <th colspan="4" style="text-align: right">Exam Date: {{$source->dformat($exams[0]->created_at)}}</th>
+            <th colspan="4" style="text-align: right">Exam Date: {{$exams?$source->dformat($exams[0]->created_at):''}}</th>
           </tr>
           <tr>
             <th>SL No.</th>
