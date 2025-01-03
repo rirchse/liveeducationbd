@@ -48,10 +48,13 @@ $value = $paper;
               <b>Exam No. {{$value->name}}</b>
             </div>
             <div class="panel-footer">
+              @if($value->exam)
                 <a href="{{route('students.result', $value->id)}}" class="btn btn-warning cst-btn">ফলাফল দেখুন</a>
+                @endif
                 @if($value->close && $value->close < date('Y-m-d H:i:s'))
+                পরীক্ষার সময় শেষ ...
                 @else
-                <a class="btn btn-info cst-btn" href="{{route('students.instruction', $value->id)}}">পুনরায় পরীক্ষা দিন</a>
+                <a class="btn btn-info cst-btn" href="{{route('students.instruction', $value->id)}}">পরীক্ষা দিন</a>
                 @endif
             </div>
           </div>

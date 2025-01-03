@@ -130,8 +130,19 @@ $value = $paper;
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-12 no-padding hide">
-                        
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="open">Published Time</label>
+                                <input type="datetime-local" class="form-control" name="open" id="open" value="{{$value->open}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="close">Exam Finished Time</label>
+                                <input type="datetime-local" class="form-control" name="close" id="close" value="{{$value->close}}">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -147,7 +158,7 @@ $value = $paper;
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="time">Time (in minute)</label>
+                        <label for="time">Exam Running Time (in minute)</label>
                         <input type="number" class="form-control" name="time" id="time" required value="{{$value->time}}">
                     </div>
                 </div>
@@ -162,18 +173,6 @@ $value = $paper;
                         <label for="minus">Mark (Negative for wrong Answer)</label>
                         <input type="number" class="form-control" name="minus" id="minus" value="{{$value->minus}}" step="0.01">
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="result_view">Student Can View Result After Exam?</label>
-                        <select class="form-control" name="result_view" id="result_view" onchange="resultView(this)" required>
-                            <option value="">Select One</option>
-                            <option value="Yes" {{$value->result_view == 'Yes'? 'selected': ''}}>Yes</option>
-                            <option value="No" {{$value->result_view == 'No'? 'selected': ''}}>No</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6" id="result_message" style="display: none">
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -238,7 +237,19 @@ $value = $paper;
                         </select>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="result_view">Student Can View Result After Exam?</label>
+                        <select class="form-control" name="result_view" id="result_view" onchange="resultView(this)" required>
+                            <option value="">Select One</option>
+                            <option value="Yes" {{$value->result_view == 'Yes'? 'selected': ''}}>Yes</option>
+                            <option value="No" {{$value->result_view == 'No'? 'selected': ''}}>No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 no-padding" id="result_message" style="display: none">
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="message">Message After Exam</label>
                         <textarea class="form-control" name="message" id="message" rows="3">{{$value->message}}</textarea>
@@ -292,8 +303,8 @@ function getBatches(e)
                 $("#batch_id").html('')
             }
         },
-        error: function(data) { 
-                console.log('data error');
+        error: function(data) {
+            console.log('data error');
         }
     });
 }
@@ -328,9 +339,6 @@ function getDepartments(e)
                 $("#department_id").html(options)
             }else{
                 $("#department_id").html('')
-                // $("#semester_id").html('')
-                // $("#subject_id").html('')
-                // $("#chapter_id").html('')
             }
         },
         error: function(data) { 
@@ -364,9 +372,14 @@ function getDepartments(e)
         console.log(e.options[e.selectedIndex].value == 'No');
         if(e.options[e.selectedIndex].value == 'No')
         {
-            result_message.innerHTML = '<div class="form-group">'+
-                '<label for="result_message">Write short message instead of result Publish</label>'+
-                '<input type="text" class="form-control" name="result_message" id="result_message" required>'+
+            result_message.innerHTML = ''+
+            '<div class="form-group">'+
+                '<label for="result_message">Result Publish Date & Time</label>'+
+                '<input type="datetime-local" class="form-control" name="result_at" id="result_at" required onchange="setTime(this)" value="{{$value->result_at}}">'+
+            '</div>'+
+            '<div class="form-group">'+
+                '<label for="result_message">Write short message instead of result publish</label>'+
+                '<textarea type="text" class="form-control" name="result_message" id="result_message" required rows="3">{{$value->result_message}}</textarea>'+
             '</div>';
             result_message.style.display = 'block';
         }
@@ -376,33 +389,41 @@ function getDepartments(e)
             result_message.style.display = 'none';
         }
     }
-    function Status(e){
-        let timer = e.parentNode.parentNode.nextElementSibling;
-        if(e.options[e.selectedIndex].value == 'Scheduled')
-        {
-            timer.classList.remove('hide');
-            timer.innerHTML = '<div class="col-md-6">'+
-                            '<div class="form-group">'+
-                                '<label for="open">Publish Time</label>'+
-                                '<input type="datetime-local" class="form-control" name="open" id="open" value="{{$value->open}}">'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-md-6">'+
-                            '<div class="form-group">'+
-                                '<label for="close">Close Time</label>'+
-                                '<input type="datetime-local" class="form-control" name="close" id="close" value="{{$value->close}}">'+
-                            '</div>'+
-                        '</div>';
-        }
-        else
-        {
-            timer.innerHTML = '';
-            timer.classList.add('hide');
-        }
-    }
+    resultView(document.getElementById('result_view'));
+    // set result publish time to message
+    // function setTime(e)
+    // {
+    //     // console.log(e.value);
+    //     // let message_field = document.getElementById('result_message');
+    //     document.getElementById('result_message').value = 'ফলাফল প্রকাশিত হবে ';
+    // }
+    // function Status(e){
+    //     let timer = e.parentNode.parentNode.nextElementSibling;
+    //     if(e.options[e.selectedIndex].value == 'Scheduled')
+    //     {
+    //         timer.classList.remove('hide');
+    //         timer.innerHTML = '<div class="col-md-6">'+
+    //                         '<div class="form-group">'+
+    //                             '<label for="open">Publish Time</label>'+
+    //                             '<input type="datetime-local" class="form-control" name="open" id="open" value="{{$value->open}}">'+
+    //                         '</div>'+
+    //                     '</div>'+
+    //                     '<div class="col-md-6">'+
+    //                         '<div class="form-group">'+
+    //                             '<label for="close">Close Time</label>'+
+    //                             '<input type="datetime-local" class="form-control" name="close" id="close" value="{{$value->close}}">'+
+    //                         '</div>'+
+    //                     '</div>';
+    //     }
+    //     else
+    //     {
+    //         timer.innerHTML = '';
+    //         timer.classList.add('hide');
+    //     }
+    // }
 
     // onload call to the status change
-    Status(document.getElementById('status'));
+    // Status(document.getElementById('status'));
 
     //this script for text editor
     $(document).ready(function() {

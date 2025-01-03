@@ -43,7 +43,7 @@ if($user)
                 <p class="text-danger">পরীক্ষার সময় শেষ...</p>
               </div>
               <div class="panel-footer">
-                <a class="btn btn-danger pull-right" href="{{route('students.exam')}}">হোম এ ফিরে যান</a>
+                <a class="btn btn-danger pull-right" href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> এক্সাম পেজ ফিরে যান</a>
                 <div class="clearfix"></div>
               </div>
             </div>

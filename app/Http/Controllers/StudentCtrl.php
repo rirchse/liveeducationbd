@@ -31,7 +31,10 @@ class StudentCtrl extends Controller
      */
     public function index()
     {
-        $students = Student::orderBy('id','DESC')->paginate(25);
+        $students = Student::leftJoin('users', 'users.id', 'students.created_by')
+        ->orderBy('students.id','DESC')
+        ->select('students.*', 'users.name as admin_name')
+        ->paginate(25);
         return view('layouts.students.index', compact('students'));
     }
 

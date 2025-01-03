@@ -1,92 +1,127 @@
 @php
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
-$user = Auth::guard('student')->user();
 @endphp
 
 @extends('student')
-@section('title', 'Course')
+@section('title', 'Solution')
 @section('content')
-{{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style>
-  .checkbox{padding-left: 25px}
-  .panel ::-webkit-scrollbar{width: 5px;}
-  ::-webkit-scrollbar-thumb{background-color: #ddd}
   .mcqitems{list-style: none; padding-left: 10px}
-  .mcqitems li{padding:5px; margin: 10px; max-width: 300px;}
-  .mcqitems li label{ display: bl/ock;border-radius: 15px;border:1px solid #ddd; padding: 5px 15px; color: #444; cursor: pointer; font-weight: normal; min-width: 270px;}
-  .mcqitems li input[type="radio"]{width: 20px;height: 20px; margin-right: 5px; padding-top:5px}
-  .mcqitems li span{vertical-align: top}
+  .mcqitems li{padding: 10px}
   .banner{margin-top:15px}
   .banner img{width:100%}
-  .timer{font-weight: bold; font-size: 20px; text-align: center; color:#666; border:2px solid; border-radius:10px}
-  .time span{ border:2px solid #444; color:ddd}
-  .sticky{position: fixed; top:50px; left: 0; right: 0; z-index: 999999;}
-  #fixed{text-align: center}
-  .selected{background:lightblue;}
-  .selected input[type="radio"]{background:lightblue;}
-  .result table th{text-align: right}
+  .questions{margin: auto}
 </style>
-
 <div class="content-wrapper">
   <div class="container">
-    <!-- Content Header (Page header) -->
-    <section class="content-header"></section>
+  <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Solution</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Solution</a></li>
+        <li class="active">Details</li>
+      </ol>
+    </section>
 
     <!-- Main content -->
-    <section class="content" id="content">
-      <div class="row">
-          <div class="panel panel-heading"><h3 class="no-margin">Solution</h3></div>
-        <div class="col-md-12 no-padding">
-          @foreach($paper->questions as $key => $value)
-          @php
-          $choice = $right_answer = $correct_id = '';
-          if(!empty($choices[$value->id]))
-          {
-            $choice = $choices[$value->id];
-          }
-          @endphp
-          <div class="panel panel-default">
-            <div class="panel-heading" style="background-color:none">
-              <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
-              <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
-            </div>
-            <ul class="panel-body mcqitems" id="{{$value->id}}">
-              @foreach($value->mcqitems as $k => $val)
-              @php
-              if($val->correct_answer)
-              {
-                $right_answer = $source->mcqlist()[$paper->format][$k].' '. $val->item;
-                $correct_id = $val->id;
-              }
-              @endphp
-              <li>
-                <label class="{{ $choice == $val->id ? 'selected':''}}">
-                  @if($choice == $val->id && $correct_id != $choice)
-                  <span style="font-size: 22px; color:red;"><i class="fa fa-times"></i></span>
-                  @endif
-                  <input {{ $choice != $val->id ? 'disabled':'checked'}} type="radio" />
-                  <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
-                </label>
-              </li>
-              @endforeach
-            </ul>
-            <div class="panel-footer" style="color: #0a0">
-              সঠিক উত্তরঃ <b>{{$right_answer}}</b>
+  <section class="content">
+    <div class="row"><!-- left column -->
+      <div class="col-md-12"><!-- general form elements -->
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h4 class="box-title" style="display: inline">Solution (<b>{{count($paper->questions)}}</b>)</h4>
+            <div class="text-right toolbar-icon pull-right" style="display: inline">
+              {{-- <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a> --}}
+              {{-- <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a> --}}
+              {{-- <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a> --}}
+              {{-- <a href="{{route('paper.view', $paper->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a> --}}
+              <a href="#" class="label label-info" title="Print" onclick="printDiv()"><i class="fa fa-print"></i></a>
             </div>
           </div>
-          @endforeach
-        </div> <!--/.col -->
-        <div class="col-md-12">
-          <a href="{{route('students.result', $paper->id)}}" class="btn btn-default pull-right">Back</a>
         </div>
-      </div><!-- /.row -->
-    </section> <!-- /.content -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+      <div class="box" id="print">
+        @if($paper->banner)
+        <div class="banner">
+          <img src="{{$paper->banner}}" alt="" style="width:100%">
+        </div>
+        @endif
+        <div class="col-md-12">
+          <div class="header" style="text-align:center">{!! $paper->header !!} </div>
+          <p style="text-align: center">
+            {{$paper->name}}</p>
+          <h3 style="text-align: center;border-bottom:2px solid #ddd; padding-bottom:15px">
+            Solution Paper
+          </h3>
+            <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888; font-size:12px">
+              @foreach($paper->questions as $key => $value)
+              @php
+              $correct_ans = '';
+              @endphp
+              
+              <div class="question">
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline; text-align:justify">{!! $value->title !!}</div>
 
-  </div> <!-- /.container -->
-</div> <!-- /.content-wrapper -->
+                <div class="mcqitems" style="list-style: none; width:360px; column-width:140px">
+                  @foreach($value->mcqitems as $k => $val)
+                  @php
+                  if($val->correct_answer)
+                  {
+                    $correct_ans = $source->mcqlist()[$paper->format][$k].' '.$val->item;
+                  }
+                  @endphp
+                  <div style="padding:10px;">
+                    <span> {{$source->mcqlist()[$paper->format][$k]}} </span>{{$val->item}}
+                  </div>
+                  @endforeach
+                  <div class="clearfix"></div>
+                </div>
+                <div style="color:green; clear:top; padding:10px 0;padding-left:20px">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
+                @if($value->explanation)
+                <div style="border-bottom:1px solid #ddd; margin-bottom:15px; margin-left:20px"><b style="float:left"> ব্যাখ্যাঃ &nbsp; </b> <p> {!! $value->explanation !!}</p></div>
+                @endif
+              </div>
+              @php
+              $correct_ans = '';
+              @endphp
+              @endforeach
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div><!--/.col -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </section><!-- /.content -->
+  </div>
+</div>
+   
 @endsection
 @section('scripts')
 <script>
-  </script>
+  function printDiv()
+  {
+    // document.getElementById('heading').style.display = 'block';
+    var divToPrint = document.getElementById('print');
+    var htmlToPrint = '' +
+        '<style type="text/css">' +
+        '.heading{display:block}'+
+        '.pageheader{font-size:15px}'+
+        'table { border-collapse:collapse; font-size:15px;width:100%}' +
+        '.table tr th, .table tr td { padding: 10px; border:1px solid #ddd; text-align:left}' +
+        'table tr{background: #ddd}'+
+        '.receipt{display:none}'+
+        '</style>';
+    htmlToPrint += divToPrint.outerHTML;
+    newWin = window.open(htmlToPrint);
+    newWin.document.write(htmlToPrint);
+    newWin.print();
+    newWin.close();
+    // document.getElementById('heading').style.display = 'none';
+  }
+</script>
 @endsection

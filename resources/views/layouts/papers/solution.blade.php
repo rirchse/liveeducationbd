@@ -51,7 +51,7 @@ $source = New SourceCtrl;
         <div class="col-md-12">
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
           <p style="text-align: center">
-            Exam No. {{$paper->name}}</p>
+            {{$paper->name}}</p>
           <h3 style="text-align: center;border-bottom:2px solid #ddd; padding-bottom:15px">
             Solution Paper
           </h3>
@@ -80,6 +80,9 @@ $source = New SourceCtrl;
                   <div class="clearfix"></div>
                 </div>
                 <div style="color:green; clear:top; padding:10px 0;padding-left:20px">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
+                @if($value->explanation)
+                <div style="border-bottom:1px solid #ddd; margin-bottom:15px; margin-left:20px"><b style="float:left"> ব্যাখ্যাঃ &nbsp; </b> <p> {!! $value->explanation !!}</p></div>
+                @endif
               </div>
               @php
               $correct_ans = '';

@@ -175,6 +175,7 @@ class StudentHomeCtrl extends Controller
     $user = Auth::guard('student')->user();
     $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
     $paper = Paper::find($id);
+    // if on the paper settings has exam limitation and exam limitation number is less than already examed count on this paper. So it will redirect to the result page. Otherwise it will redirect to the exam start page.
     if($paper->exam_limit && $paper->exam_limit <= $exams)
     {
       //find paper
@@ -203,8 +204,26 @@ class StudentHomeCtrl extends Controller
 
       return view('student-panel.exam-show', compact('paper', 'result', 'exams'));
     }
+
+    //insert exam to the database with status 'live'
+    try{
+      Exam::insert([
+        'student_id' => $user->id,
+        'paper_id' => $id,
+        'start_at' => date('Y-m-d H:i:s'),
+        'status' => 'Live',
+        'created_at' => date('Y-m-d H:i:s')
+      ]);
+    }
+    catch(\Exception $e)
+    {
+      return $e;
+    }
+
+    // find out the last exam entry for this user
+    $exam = Exam::orderBy('id', 'DESC')->where('student_id', $user->id)->first();
     
-    return view('student-panel.exam-show', compact('paper'));
+    return view('student-panel.exam-show', compact('paper', 'exam'));
   }
 
   public function result($id, $value = null)
@@ -230,14 +249,20 @@ class StudentHomeCtrl extends Controller
     return view('student-panel.result', compact('exams', 'paper', 'result'));
   }
 
-  public function solution($id)
+  public function examPaper($id)
   {
     $user = Auth::guard('student')->user();
     $exam = Exam::find($id);
     $paper = Paper::find($exam->paper_id);
     $choices = Choice::where('exam_id', $id)->pluck('mcq_id', 'question_id')->toArray();
     // dd($choices);
-    return view('student-panel.solution', compact('paper', 'choices'));
+    return view('student-panel.your-exam-paper', compact('paper', 'choices'));
+  }
+
+  public function solution($id)
+  {
+    $paper = Paper::find($id);
+    return view('student-panel.solution', compact('paper'));
   }
 
   public function examAdd(Request $request)
@@ -245,6 +270,7 @@ class StudentHomeCtrl extends Controller
     $user = Auth::guard('student')->user();
     $this->validate($request, [
       'paper_id' => 'required|numeric',
+      'exam_id' => 'required|numeric',
       'question_id' => 'nullable|string',
       'mcq_id' => 'nullable|string',
     ]);
@@ -273,25 +299,36 @@ class StudentHomeCtrl extends Controller
 
     }
 
-    try{
-      $exam = new Exam;
-      $exam->student_id = $user->id;
-      $exam->paper_id = $request->paper_id;
-      $exam->start_at = date('Y-m-d H:i:s', $request->start_at);
-      $exam->end_at = date('Y-m-d H:i:s');
-      $exam->answer = $answered;
-      $exam->correct = $correct;
-      $exam->wrong = $wrong;
-      $exam->no_answer = $no_answered;
-      $exam->mark = $marks;
-      $exam->save();
+    try {
+      // $exam = new Exam;
+      // $exam->student_id = $user->id;
+      // $exam->paper_id = $request->paper_id;
+      // $exam->start_at = date('Y-m-d H:i:s', $request->start_at);
+      // $exam->end_at = date('Y-m-d H:i:s');
+      // $exam->answer = $answered;
+      // $exam->correct = $correct;
+      // $exam->wrong = $wrong;
+      // $exam->no_answer = $no_answered;
+      // $exam->mark = $marks;
+      // $exam->save();
+
+      Exam::where('id', $request->exam_id)->update([
+        'end_at'    => date('Y-m-d H:i:s'),
+        'answer'    => $answered,
+        'correct'   => $correct,
+        'wrong'     => $wrong,
+        'no_answer' => $no_answered,
+        'mark'      => $marks,
+        'status'    => 'Completed',
+        'updated_at' => date('Y-m-d H:i:s')
+      ]);
 
       if($mcq_ids)
       {
         for($x = 0; $x < count($question_ids); $x++)
         {
           Choice::insert([
-            'exam_id' => $exam->id,
+            'exam_id' => $request->exam_id,
             'question_id' => $question_ids[$x],
             'mcq_id' => $mcq_ids[$x]
           ]);
@@ -302,7 +339,7 @@ class StudentHomeCtrl extends Controller
       return $e;
     }
     
-    $exam = Exam::where('student_id', $user->id)->orderBy('id', 'DESC')->first();
+    $exam = Exam::find($request->exam_id);
     if($paper->email == 'Yes')
     {
       $this->resultSendToMail($paper, $exam);

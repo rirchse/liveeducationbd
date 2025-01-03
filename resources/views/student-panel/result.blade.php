@@ -125,7 +125,7 @@ $percentage = $score = 0;
             <div class="panel-footer">
               <p style="text-align: center">
                 <a href="{{route('students.exam')}}" class="btn btn-warning pull-left"><i class="fa fa-arrow-left"></i> Back</a>
-                <a href="{{route('students.solution', $value->id)}}" class="btn btn-info pull-right"><i class="fa fa-file-o"></i> Your Exam Paper</a>
+                {{-- <a href="{{route('students.solution', $value->id)}}" class="btn btn-info pull-right"><i class="fa fa-file-o"></i> Your Exam Paper</a> --}}
               </p>
               <div class="clearfix"></div>
             </div>
@@ -139,7 +139,10 @@ $percentage = $score = 0;
         <div class="panel-body" style="text-align: center">
           <p>{{$paper->result_message}}</p>
           <hr>
-          <p><a href="/">Back</a></p>
+          <p>
+            <a href="{{route('students.exam')}}" class="btn btn-warning"> <i class="fa fa-arrow-left"></i> Back</a>
+            <a href="{{route('students.complain')}}" class="btn btn-info">আপনার মতামত/অভিযোগ দিন</a>
+          </p>
         </div>
       </div>
       @else

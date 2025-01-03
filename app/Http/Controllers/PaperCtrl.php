@@ -339,9 +339,26 @@ class PaperCtrl extends Controller
     
     public function exam($id)
     {
+        $students = []; 
         $paper = Paper::find($id);
+        if($paper->permit == 'Batch')
+        {
+            $batch = Batch::find($paper->batch_id);
+            $students = $batch->students()->pluck('id')->toArray();
+        }
+        if($paper->permit == 'Department')
+        {
+            $department = Department::find($paper->department_id);
+            $students = $department->students()->pluck('id')->toArray();
+        }
+        if($paper->permit == 'Group')
+        {
+            $group = Group::find($paper->group_id);
+            $students = $group->students()->pluck('id')->toArray();
+        }
+        // dd($students);
         $exams = Exam::where('paper_id', $id)->orderBy('mark', 'DESC')->get();
-        return view('layouts.papers.exam', compact('paper', 'exams'));
+        return view('layouts.papers.exam', compact('paper', 'exams', 'students'));
     }
     
 }

@@ -86,7 +86,8 @@ $value = $batch;
             </div>
           </form>
           <div class="clearfix"></div>
-        </div>
+        </div> <!--/.col-left-->
+        
         <div class="col-md-8 info">
           <div class="panel panel-info">
             <div class="panel-heading">

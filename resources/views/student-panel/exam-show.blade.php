@@ -121,7 +121,9 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
               </table>
             </div>
             <div class="panel-footer">
-              <p style="text-align: center"><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+              <p style="text-align: center">
+                <a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a>
+              </p>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -365,7 +367,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
       }
     }
 
-    console.log(mcqids);
+    // console.log(mcqids);
 
     $.ajaxSetup({
       headers: {
@@ -375,6 +377,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
 
     let formData = new FormData();
     formData.append('paper_id', '{{$paper->id}}');
+    formData.append('exam_id', '{{$exam->id}}');
     formData.append('question_id', qids);
     formData.append('mcq_id', mcqids);
     formData.append('start_at', '{{$start_at}}');
@@ -399,7 +402,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
           let no_answer = document.getElementById('no_answer');
           let marks = document.getElementById('marks');
           let message = document.getElementById('message');
-          let msg = 'পরীক্ষা সম্পূর্ণ হয়েছে, পরবর্তী ধাপে যাওয়ার জন্য ok তে করুন';
+          let msg = 'পরীক্ষা সম্পূর্ণ হয়েছে, পরবর্তী ধাপে যাওয়ার জন্য ok করুন';
 
           if(data.message != null)
           {
@@ -417,7 +420,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
         console.log(data);
       },
     });
-    console.log(qids);
+    // console.log(qids);
   }
 
   // show result
@@ -426,5 +429,39 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
     let content = document.getElementById('content');
     //
   }
+  
   </script>
+
+  <script type="text/javascript">
+  document.addEventListener("keydown", function (e)
+  {
+    if ((e.ctrlKey && e.key === 'r') || e.key === 'F5')
+    {
+      e.preventDefault();
+      alert("Page reload is disabled.");
+    }
+  });
+
+  //reload block
+  // window.onbeforeunload = function() { return "Your work will be lost."; };
+//   window.addEventListener("beforeunload", function (e) {
+//     e.preventDefault();
+//     e.returnValue = ''; // Required for most browsers.
+// });
+
+//back button navigation is disabled
+history.pushState(null, null, window.location.href);
+window.onpopstate = function () {
+    history.pushState(null, null, window.location.href);
+    alert("Back button navigation is disabled.");
+};
+
+  </script>
+  {{-- <script type="text/javascript">
+    function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82) e.preventDefault(); };
+    
+    $(document).ready(function(){
+         $(document).on("keydown", disableF5);
+    });
+    </script> --}}
 @endsection

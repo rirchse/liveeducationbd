@@ -52,23 +52,29 @@ $source = New SourceCtrl;
             <th>Department</th>
             <th>Start & End Time</th>
             <th>Status</th>
-            <th style="text-align: right">Correct</th>
+            {{-- <th style="text-align: right">Correct</th>
             <th style="text-align: right">Wrong</th>
             <th style="text-align: right">Blank</th>
-            <th style="text-align: right">Total Mark</th>
+            <th style="text-align: right">Total Mark</th> --}}
           </tr>
           @foreach($exams as $key => $value)
-          <tr>
+          <tr style="color:{{in_array($value->student->id, $students)?'':'red'}}">
             <td>{{$key+1}}</td>
             <td>{{$value->student->name}}</td>
             <td>{{str_pad($value->student->id, 6, '0', STR_PAD_LEFT)}}</td>
             <td>{{$value->paper->department ? $value->paper->department->name : ''}}</td>
             <td>{{$source->tformat($value->start_at).' - '.$source->tformat($value->end_at)}}</td>
-            <td>{{$value->status}}</td>
-            <td style="text-align: right">{{$value->correct}}</td>
+            <td>
+              @if($value->status == 'Live')
+              <label class="label label-info">{{$value->status}}</label>
+              @elseif($value->status == 'Completed')
+              <label class="label label-success"> {{$value->status}}</label>
+              @endif
+            </td>
+            {{-- <td style="text-align: right">{{$value->correct}}</td>
             <td style="text-align: right">{{$value->wrong}}</td>
             <td style="text-align: right">{{$value->no_answer}}</td>
-            <td style="text-align: right">{{$value->mark}}</td>
+            <td style="text-align: right">{{$value->mark}}</td> --}}
           </tr>
           @endforeach
         </table>
