@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('teacher', 'TeacherCtrl');
 	Route::resource('complain', 'ComplainCtrl');
 	Route::resource('order', 'OrderCtrl');
+	Route::resource('exam', 'ExamCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()

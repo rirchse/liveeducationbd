@@ -54,7 +54,7 @@ if($user)
                 <b>Exam No. {{$value->name}}</b>
               </div>
               <div class="panel-body">
-                <p> পরীক্ষা শুরু হবে <b>{{ $source->dtformat($value->open)}}</b> এবং শেষ হবে <b>{{ $source->dtformat($value->close)}}</b></p>
+                <p> পরীক্ষা শুরু হবে <b>{{ $source->dtformat($value->open)}}</b></p>
             </div>
               <div class="panel-footer">
                 <a class="btn btn-info pull-right" href="{{route('students.exam', $value->id)}}">Back</a>

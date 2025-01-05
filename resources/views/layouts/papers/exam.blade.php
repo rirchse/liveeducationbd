@@ -52,6 +52,7 @@ $source = New SourceCtrl;
             <th>Department</th>
             <th>Start & End Time</th>
             <th>Status</th>
+            <th>Actions</th>
             {{-- <th style="text-align: right">Correct</th>
             <th style="text-align: right">Wrong</th>
             <th style="text-align: right">Blank</th>
@@ -75,6 +76,15 @@ $source = New SourceCtrl;
             <td style="text-align: right">{{$value->wrong}}</td>
             <td style="text-align: right">{{$value->no_answer}}</td>
             <td style="text-align: right">{{$value->mark}}</td> --}}
+            <td>
+              @if(Auth::user()->authorizeRoles(['SuperAdmin']))
+              <form style="display: inline" action="{{route('exam.destroy', $value->id)}}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one? If you delete this exam, the candidate will lose his/her result that\'s will not get back later.')" title="Delete This!"><i class="fa fa-trash"></i></button>
+              </form>
+              @endif
+            </td>
           </tr>
           @endforeach
         </table>

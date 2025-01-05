@@ -36,7 +36,7 @@ $user = Auth::guard('student')->user();
     <!-- Main content -->
     <section class="content" id="content">
       <div class="row">
-          <div class="panel panel-heading"><h3 class="no-margin">Solution</h3></div>
+          <div class="panel panel-heading"><h3 class="no-margin">আপনার এক্সাম পেপার</h3></div>
         <div class="col-md-12 no-padding">
           @foreach($paper->questions as $key => $value)
           @php

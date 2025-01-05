@@ -133,7 +133,7 @@ $value = $paper;
                     <div class="col-md-12 no-padding">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="open">Published Time</label>
+                                <label for="open">Exam Start Time</label>
                                 <input type="datetime-local" class="form-control" name="open" id="open" value="{{$value->open}}">
                             </div>
                         </div>

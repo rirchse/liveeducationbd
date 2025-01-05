@@ -149,6 +149,7 @@ class StudentCtrl extends Controller
             'name'      => 'required|max:255',
             'contact'   => 'required',
             'email'     => 'required',
+            'password'  => 'nullable|min:8|max:32',
             'status'    => 'max:30',
             'image'     => 'nullable|image|mimes:jpeg,jpg,png,gif|max:500'
         ]);
@@ -157,6 +158,10 @@ class StudentCtrl extends Controller
         $student->name       = $request->input('name');
         $student->contact    = $request->input('contact');
         $student->email      = $request->input('email');
+        if($request->password)
+        {
+            $student->password   = bcrypt($request->input('password'));
+        }
         $student->status     = $request->input('status') ?? 'Inactive';
         $student->updated_by = Auth::id();
 

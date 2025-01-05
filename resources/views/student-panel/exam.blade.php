@@ -58,7 +58,7 @@ if($user)
                             <div id="dept{{$paper->id}}" class="panel-collapse collapse">
                               <div class="box-body">
                                 @if($paper->exam)
-                                <a href="{{route('students.exam.paper', $paper->id)}}" class="btn btn-info btn-block"><i class="fa fa-file-o"></i> আপনার এক্সাম পেপার</a>
+                                <a href="{{route('students.exam.paper', $paper->exam->id)}}" class="btn btn-info btn-block"><i class="fa fa-file-o"></i> আপনার এক্সাম পেপার</a>
                                 <a href="{{route('students.solution', $paper->id)}}" class="btn btn-success btn-block"><i class="fa fa-check"></i> সলূশন পেপার</a>
                                 @endif
                                 @if($paper->exam && $paper->result_at < date('Y-m-d'))

@@ -46,8 +46,11 @@
                 <div class="form-group">
                   <label for="image">Profile Image</label>
                   <input class="form-control" type="file" id="image" name="image" />
-                
                   <p class="text-center"><img src="{{$user->image}}" alt=""  style="max-width:150px" /></p>
+                </div>
+                <div class="form-group">
+                  <label for="" >Change Password</label>
+                  <input type="text" name="password" class="form-control"/>
                 </div>
                 <div class="checkbox"><b>Status: &nbsp; </b>
                   <label><input type="checkbox" name="status" value="Active" {{$user->status == 'Active'? 'checked': ''}}> Active</label>
