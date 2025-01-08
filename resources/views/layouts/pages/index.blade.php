@@ -23,7 +23,7 @@ $source = New SourceCtrl;
         <div class="box-header">
           <h3 class="box-title">List of Pages</h3>
               <div class="box-tools">
-                {{-- <a href="{{route('page.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a> --}}
+                <a href="{{route('page.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a>
                 {{-- <div class="input-group input-group-sm" style="float:right; width: 150px;margin-left:15px">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 

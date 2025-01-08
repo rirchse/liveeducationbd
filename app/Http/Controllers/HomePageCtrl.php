@@ -262,16 +262,16 @@ class HomePageCtrl extends Controller
     ]);
   }
 
-  public function page($slug)
-  {
-    $page = Page::where('slug', $slug)->first();
-    if(is_null($page))
-    {
-      // return redirect()->route('homepage');
-      return 'Page Not Found!';
-    }
-    return view('student-panel.single-page', compact('page'));
-  }
+  // public function page($slug)
+  // {
+  //   $page = Page::where('slug', $slug)->first();
+  //   // if(is_null($page))
+  //   // {
+  //   //   // return redirect()->route('homepage');
+  //   //   return 'Page Not Found!';
+  //   // }
+  //   return view('student-panel.single-page', compact('page'));
+  // }
 
   // public function notFound()
   // {

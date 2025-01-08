@@ -26,7 +26,7 @@ Route::controller(HomePageCtrl::class)->group(function()
 	Route::get('/', 'index')->name('homepage');
 	Route::get('home/course', 'course')->name('home.course');
 	Route::get('home/course/{id}', 'courseShow')->name('home.course.show');
-	Route::get('/page/{slug}', 'page')->name('home.page');
+	// Route::get('/page/{slug}', 'page')->name('home.page');
 	// Route::get('/not-found', 'notFound')->name('home.not-found');
 });
 Route::get('/login', function()
