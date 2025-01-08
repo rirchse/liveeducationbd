@@ -308,6 +308,7 @@ if($complains)
           <ul class="treeview-menu">
             <li><a href="{{ route('profile') }}"><i class="fa fa-user"></i> Profile</a></li>
             <li><a href="/change_password"><i class="fa fa-lock"></i> Change Password</a></li>
+            <li><a href="/page"><i class="fa fa-copy"></i> Pages</a></li>
           </ul>
         </li>
         

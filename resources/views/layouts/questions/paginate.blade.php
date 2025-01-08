@@ -20,7 +20,12 @@ if(!is_null(Session::get('_paper')))
 .correct{font-weight: bold; font-size:16px; color:green}
 </style>
 <div class="box-header">
-  <h3 class="box-title">Questions ({{$questions->total()}})</h3>
+  <h3 class="box-title">
+    <label for="checkAll">
+      <input type="checkbox" onclick="checkAll(this)" style="width:20px; height:20px" id="checkAll" /> Check All
+      Questions ({{$questions->total()}})
+    </label>
+  </h3>
 </div><!-- /.box-header -->
 <div class="box-body">
   @foreach($questions as $key => $value)

@@ -654,5 +654,21 @@ $url = route('paper.addtopaper');
   });
 
     prevNext();
+
+  // check all add to the question paper
+  function checkAll()
+  {
+    let checkAll = document.getElementById('checkAll');
+    let allQ = document.getElementsByClassName('check');
+    // let ids = Array.from(allQ).map(({value}) => value);
+    // let ids = [];
+    // allQ.forEach(e => {
+    //   if(e.checked == true)
+    //   {
+    //     ids.push(e.value);
+    //   }
+    // });
+    console.log(checkAll.checked);
+  }
 </script>
 @endsection

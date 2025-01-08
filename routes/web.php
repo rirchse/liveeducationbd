@@ -26,6 +26,8 @@ Route::controller(HomePageCtrl::class)->group(function()
 	Route::get('/', 'index')->name('homepage');
 	Route::get('home/course', 'course')->name('home.course');
 	Route::get('home/course/{id}', 'courseShow')->name('home.course.show');
+	Route::get('/{slug}', 'page')->name('home.page');
+	// Route::get('/not-found', 'notFound')->name('home.not-found');
 });
 Route::get('/login', function()
 {
@@ -132,6 +134,7 @@ Route::middleware(['auth'])->group(function()
 	Route::resource('complain', 'ComplainCtrl');
 	Route::resource('order', 'OrderCtrl');
 	Route::resource('exam', 'ExamCtrl');
+	Route::resource('page', 'PageCtrl');
 
 	/** -------------------- Custom Routes ------------------ */
 	Route::controller(DepartmentCtrl::class)->group(function()
@@ -200,6 +203,12 @@ Route::middleware(['auth'])->group(function()
 		Route::get('syllabus/view/{id}', 'view')->name('syllabus.view');
 		Route::get('syllabus/pdf/{id}', 'pdf')->name('syllabus.pdf');
 	});
+
+	// Route::controller(SettingCtrl::class)->group(function()
+	// {
+	// 	Route::get('/page-edit', 'edit')->name('page.edit');
+	// 	Route::post('/page-update', 'update')->name('page.update');
+	// });
 	
 });
 

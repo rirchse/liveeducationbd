@@ -7,6 +7,11 @@
       <!-- <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li> -->
       <!-- <li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li> -->
     </ul>
+    <p style="color:#fff; text-align:center">
+      <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> |
+      <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a> | 
+      <a href="{{route('home.page', 'delivery-policy')}}">Delivery Policy</a>
+    </p>
     <p style="text-align: center;">Copyright &copy; {{date('Y')}} {{config('app.name')}}. All rights reserved.</p>
   </div>
 </footer>
