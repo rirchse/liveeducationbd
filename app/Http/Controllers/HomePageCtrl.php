@@ -267,7 +267,8 @@ class HomePageCtrl extends Controller
     $page = Page::where('slug', $slug)->first();
     if(is_null($page))
     {
-      return redirect()->route('homepage');
+      // return redirect()->route('homepage');
+      return 'Page Not Found!';
     }
     return view('student-panel.single-page', compact('page'));
   }
