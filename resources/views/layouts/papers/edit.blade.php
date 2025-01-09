@@ -251,6 +251,12 @@ $value = $paper;
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="candidate">Max Candidates</label>
+                        <input type="number" class="form-control" name="candidate" id="candidate" value="{{$value->candidate}}"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="message">Message After Exam</label>
                         <textarea class="form-control" name="message" id="message" rows="3">{{$value->message}}</textarea>
                     </div>

@@ -103,6 +103,10 @@ $percentage = $score = 0;
                   <th>{{$value->mark}}</th>
                 </tr>
                 <tr>
+                  <td><b>Your Position</b></td>
+                  <th>{{$position}}/{{$paper->candidate? $paper->candidate:$candidates}}</th>
+                </tr>
+                <tr>
                   <td>Result Percentage</td>
                   <th>{{number_format($percentage, 2)}}%</th>
                 </tr>

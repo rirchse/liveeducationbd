@@ -229,6 +229,7 @@ class StudentHomeCtrl extends Controller
   public function result($id, $value = null)
   {
     $result = [];
+    $position = '';
     $user = Auth::guard('student')->user();
     $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->get();
     $paper = Paper::find($id);
@@ -236,6 +237,21 @@ class StudentHomeCtrl extends Controller
     {
       $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->orderBy('id', 'DESC')->limit(1)->get();
     }
+
+    $all_exams = Exam::orderBy('mark', 'DESC')
+    ->where('paper_id', $paper->id)
+    ->get();
+    foreach($all_exams as $key => $value)
+    {
+      if($user->id == $value->student_id)
+      {
+        $position = $key+1;
+        break;
+      }
+    }
+    // dd($position);
+
+    $candidates = $all_exams->count();
     
     if($paper->result_view == 'Yes')
     {
@@ -246,7 +262,7 @@ class StudentHomeCtrl extends Controller
       $result['message'] = 'Yes';
     }
 
-    return view('student-panel.result', compact('exams', 'paper', 'result'));
+    return view('student-panel.result', compact('exams', 'paper', 'result', 'position', 'candidates'));
   }
 
   public function examPaper($id)
@@ -256,7 +272,7 @@ class StudentHomeCtrl extends Controller
     $paper = Paper::find($exam->paper_id);
     $choices = Choice::where('exam_id', $id)->pluck('mcq_id', 'question_id')->toArray();
     // dd($choices);
-    return view('student-panel.your-exam-paper', compact('paper', 'choices'));
+    return view('student-panel.your-exam-paper', compact('paper', 'choices', 'exam'));
   }
 
   public function solution($id)

@@ -22,6 +22,7 @@ $source = New SourceCtrl;
         <div class="box-header">
           <h3 class="box-title">List of Exams</h3>
           <div class="box-tools">
+            <a href="{{route('paper.index')}}" title="View" class="btn btn-success"><i class="fa fa-list"></i></a>
             <a href="{{route('paper.view', $paper->id)}}" title="View" class="btn btn-primary"><i class="fa fa-th"></i></a>
             <a class="btn btn-info" onclick="printDiv()">
               <i class="fa fa-print"></i> Print

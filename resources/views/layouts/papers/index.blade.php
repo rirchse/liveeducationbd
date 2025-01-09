@@ -79,7 +79,49 @@ $source = New SourceCtrl;
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <br>
+              <table id="example1" class="table table-bordered table-hover">
+                <tr>
+                  <th>Id</th>
+                  <th>Paper No.</th>
+                  <th>Questions</th>
+                  <th>Department</th>
+                  <th>Batch</th>
+                  <th>Course</th>
+                  <th>Exams</th>
+                  <th>Status</th>
+                  <th width="130">Action</th>
+                </tr>
+                @foreach($papers as $key => $value)
+                <tr>
+                  <td>{{ $value->id }}</td>
+                  <td>{{ $value->name }}</td>
+                  <td>{{ $value->questions->count() }}</td>
+                  <td>{{ $value->department ? $value->department->name:'' }}</td>
+                  <td>{{ $value->batch ? $value->batch->name : '' }}</td>
+                  <td>{{ $value->course ? $value->course->name : '' }}</td>
+                  <td>{{ $value->exams->count() }}</td>
+                  <td>
+                    @if($value->status == 'Published')
+                    <span class="label label-success">{{$value->status}}</span>
+                    @elseif($value->status == 'Scheduled')
+                    <span class="label label-warning">{{$value->status}}</span>
+                    @elseif($value->status == 'Unpublished')
+                    <span class="label label-danger">{{$value->status}}</span>
+                    @endif
+                  </td>
+                  <td>
+                    <a href="{{route('paper.show', $value->id)}}" class="btn btn-info" title="Details"><i class="fa fa-file-text"></i></a>
+                    <a href="{{route('paper.edit', $value->id)}}" class="btn btn-warning btn-sm" title="Edit this value"><i class="fa fa-edit"></i></a>
+                    {{-- <form style="display: inline" action="{{route('paper.destroy', $value->id)}}" method="POST">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this one?')"><i class="fa fa-trash"></i></button>
+                    </form> --}}
+                  </td>
+                </tr>
+                @endforeach
+              </table>
+              {{-- <br>
               @foreach($papers as $key => $value)
               <a href="{{route('paper.view', $value->id)}}">
                 <div class="col-md-6">
@@ -92,7 +134,7 @@ $source = New SourceCtrl;
                   </div>
                 </div>
               </a>
-              @endforeach
+              @endforeach --}}
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">

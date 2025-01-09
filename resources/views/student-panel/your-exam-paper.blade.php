@@ -2,6 +2,7 @@
 use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
+// dd($exam->choices->where('question_id', 65)->where('mcq_id', 139));
 @endphp
 
 @extends('student')
@@ -36,15 +37,22 @@ $user = Auth::guard('student')->user();
     <!-- Main content -->
     <section class="content" id="content">
       <div class="row">
-          <div class="panel panel-heading"><h3 class="no-margin">আপনার এক্সাম পেপার</h3></div>
+        <div class="panel panel-heading">
+          <h3 class="no-margin">আপনার এক্সাম পেপার</h3>
+        </div>
         <div class="col-md-12 no-padding">
           @foreach($paper->questions as $key => $value)
           @php
           $choice = $right_answer = $correct_id = '';
-          if(!empty($choices[$value->id]))
+          $choiced_mcq = $exam->choices->where('question_id', $value->id)->first();
+          if($choiced_mcq)
           {
-            $choice = $choices[$value->id];
+            $choice = $choiced_mcq->mcq_id;
           }
+          // if(!empty($choices[$value->id]))
+          // {
+          //   $choice = $choices[$value->id];
+          // }
           @endphp
           <div class="panel panel-default">
             <div class="panel-heading" style="background-color:none">
@@ -53,22 +61,24 @@ $user = Auth::guard('student')->user();
             </div>
             <ul class="panel-body mcqitems" id="{{$value->id}}">
               @foreach($value->mcqitems as $k => $val)
-              @php
-              if($val->correct_answer)
-              {
-                $right_answer = $source->mcqlist()[$paper->format][$k].' '. $val->item;
-                $correct_id = $val->id;
-              }
-              @endphp
-              <li>
-                <label class="{{ $choice == $val->id ? 'selected':''}}">
-                  @if($choice == $val->id && $correct_id != $choice)
-                  <span style="font-size: 22px; color:red;"><i class="fa fa-times"></i></span>
-                  @endif
-                  <input {{ $choice != $val->id ? 'disabled':'checked'}} type="radio" />
-                  <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
-                </label>
-              </li>
+                @if($k <= 4)
+                  @php
+                  if($val->correct_answer)
+                  {
+                    $right_answer = $source->mcqlist()[$paper->format][$k].' '. $val->item;
+                    $correct_id = $val->id;
+                  }
+                  @endphp
+                  <li>
+                    <label class="{{ $choice == $val->id ? 'selected':''}}">
+                      @if($choice == $val->id && $correct_id != $choice)
+                      <span style="font-size: 22px; color:red;"><i class="fa fa-times"></i></span>
+                      @endif
+                      <input {{ $choice != $val->id ? 'disabled':'checked'}} type="radio" />
+                      <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
+                    </label>
+                  </li>
+                @endif
               @endforeach
             </ul>
             <div class="panel-footer" style="color: #0a0">

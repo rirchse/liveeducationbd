@@ -57,14 +57,14 @@ if($user)
                             </div>
                             <div id="dept{{$paper->id}}" class="panel-collapse collapse">
                               <div class="box-body">
-                                @if($paper->exam)
+                                @if($paper->exams->where('student_id', $user->id)->first())
                                 <a href="{{route('students.exam.paper', $paper->exam->id)}}" class="btn btn-info btn-block"><i class="fa fa-file-o"></i> আপনার এক্সাম পেপার</a>
                                 <a href="{{route('students.solution', $paper->id)}}" class="btn btn-success btn-block"><i class="fa fa-check"></i> সলূশন পেপার</a>
                                 @endif
-                                @if($paper->exam && $paper->result_at < date('Y-m-d'))
+                                @if($paper->exams->where('student_id', $user->id)->first() && $paper->result_at < date('Y-m-d'))
                                 <a href="{{route('students.result', $paper->id)}}" class="btn btn-warning cst-btn btn-block">ফলাফল দেখুন</a>
                                 @endif
-                                @if(!$paper->exam)
+                                @if(!$paper->exams->where('student_id', $user->id)->first())
                                 <a class="btn btn-info cst-btn btn-block" href="{{route('students.instruction', $paper->id)}}">পরীক্ষা দিন</a>
                                 @endif
                               </div>

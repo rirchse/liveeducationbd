@@ -31,6 +31,11 @@ class Paper extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function exams()
+    {
+        return $this->hasMany(Exam::class, 'paper_id');
+    }
+
     public function exam()
     {
         return $this->hasOne(Exam::class, 'paper_id');
