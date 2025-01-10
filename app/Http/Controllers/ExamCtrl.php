@@ -26,7 +26,7 @@ class ExamCtrl extends Controller
      */
     public function index()
     {
-        $exams = Exam::orderBy('id','DESC')->get();
+        $exams = Exam::orderBy('id','DESC')->paginate(25);
         return view('layouts.exams.index', compact('exams'));
     }
 

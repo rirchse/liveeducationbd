@@ -203,11 +203,11 @@ Route::middleware(['auth'])->group(function()
 		Route::get('syllabus/pdf/{id}', 'pdf')->name('syllabus.pdf');
 	});
 
-	// Route::controller(SettingCtrl::class)->group(function()
-	// {
-	// 	Route::get('/page-edit', 'edit')->name('page.edit');
-	// 	Route::post('/page-update', 'update')->name('page.update');
-	// });
+	Route::controller(ExamCtrl::class)->group(function()
+	{
+		Route::get('/exam/live', 'live')->name('exam.live');
+		Route::post('/exam/view', 'view')->name('exam.view');
+	});
 	
 });
 

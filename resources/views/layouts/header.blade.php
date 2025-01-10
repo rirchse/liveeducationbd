@@ -126,6 +126,24 @@ if($complains)
 
         <li class="treeview">
           <a href="#">
+            <i class="fa fa-pencil"></i>
+            <span>Exams</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            {{-- <li><a href="{{route('exam.live')}}"><i class="fa fa-live"></i>Live Exams</a></li> --}}
+            {{-- <li><a href="{{route('exam.view')}}"><i class="fa fa-th-large"></i>View Exams</a></li> --}}
+            <li><a href="{{route('exam.index')}}"><i class="fa fa-pencil"></i>View All Exams</a></li>
+            {{-- <li><a href="#"><i class="fa fa-server"></i> MCQ</a></li>
+            <li><a href="#"><i class="fa fa-pencil"></i> Written</a></li>
+            <li><a href="#"><i class="fa fa-play"></i> Video</a></li> --}}
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
             <i class="fa fa-question"></i>
             <span>Questions</span>
             <span class="pull-right-container">
