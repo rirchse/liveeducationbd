@@ -30,7 +30,7 @@ if($user)
     <!-- Main content -->
     <section class="content">
       @if( !empty($student) && $student->batches()->count() )
-        @foreach($student->batches()->get() as $batch)
+        @foreach($student->batches()->orderBy('batches.id', 'DESC')->get() as $batch)
         @php
         $batch_papers = $batch->papers->whereIn('status', ['Published', 'Scheduled']);
         @endphp
