@@ -207,6 +207,7 @@ Route::middleware(['auth'])->group(function()
 	{
 		Route::get('/exam/live', 'live')->name('exam.live');
 		Route::post('/exam/view', 'view')->name('exam.view');
+		Route::get('/exam/paper/{exam_id}', 'paper')->name('exam.paper');
 	});
 	
 });

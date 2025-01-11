@@ -7,6 +7,9 @@ use App\Models\Batch;
 use App\Models\Group;
 use App\Models\Exam;
 use App\Models\Role;
+use App\Models\Paper;
+use App\Models\Choice;
+use App\Models\Question;
 use Auth;
 use Image;
 use Toastr;
@@ -169,6 +172,25 @@ class ExamCtrl extends Controller
 
         Session::flash('error', 'Permission restricted!');
         return back();
+    }
+
+    // customized methods
+    public function paper($id)
+    {
+        $exam = Exam::find($id);
+        $paper = Paper::find($exam->paper_id);
+        // $choices = Choice::where('choices.exam_id', $id)
+        // ->leftJoin('questions', 'questions.id', 'choices.question_id')
+        // ->select('choices.*', 'questions.title')
+        // ->get();
+        $questions = Question::leftJoin('choices', 'choices.question_id', 'questions.id')
+        ->where('choices.exam_id', $id)
+        ->select('choices.*', 'questions.title')
+        ->get();
+        $choices = Choice::where('exam_id', $id)->pluck('question_id', 'mcq_id')->toArray();
+        // dd($choices);
+
+        return view('layouts.exams.paper', compact('exam', 'questions', 'paper', 'choices'));
     }
     
 }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Student;
 use Session;
 
 class StudentLogin extends Controller
@@ -53,6 +54,13 @@ class StudentLogin extends Controller
             'email' => 'required|email',
             'password' => 'required|max:32'
         ]);
+
+        $user = Student::where('email', $request->email)->first();
+        if($user->status != 'Active')
+        {
+            Session::flash('error', 'Please check your email and verify the account.');
+            return back();
+        }
 
         $email    = $request->email;
         $password = $request->password;

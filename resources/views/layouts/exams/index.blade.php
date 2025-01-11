@@ -71,6 +71,7 @@ $source = New SourceCtrl;
                   <td style="text-align: right">{{$value->no_answer}}</td>
                   <td style="text-align: right">{{$value->mark}}</td> --}}
                   <td>
+                    <a class="btn btn-info btn-sm" href="{{route('exam.paper', $value->id)}}"><i class="fa fa-th"></i></a>
                     @if(Auth::user()->authorizeRoles(['SuperAdmin']))
                     <form style="display: inline" action="{{route('exam.destroy', $value->id)}}" method="POST">
                       @csrf

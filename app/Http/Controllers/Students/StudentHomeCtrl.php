@@ -206,24 +206,29 @@ class StudentHomeCtrl extends Controller
     }
 
     //insert exam to the database with status 'live'
-    try{
-      Exam::insert([
+    try {
+      $live_exam = Exam::insert([
         'student_id' => $user->id,
         'paper_id' => $id,
         'start_at' => date('Y-m-d H:i:s'),
         'status' => 'Live',
         'created_at' => date('Y-m-d H:i:s')
       ]);
+
+      if($live_exam)
+      {
+        // find out the last exam entry for this user
+        $exam = Exam::orderBy('id', 'DESC')->where('student_id', $user->id)->first();
+        
+        return view('student-panel.exam-show', compact('paper', 'exam'));
+      }
     }
     catch(\Exception $e)
     {
       return $e;
     }
 
-    // find out the last exam entry for this user
-    $exam = Exam::orderBy('id', 'DESC')->where('student_id', $user->id)->first();
-    
-    return view('student-panel.exam-show', compact('paper', 'exam'));
+    return back();
   }
 
   public function result($id, $value = null)
@@ -316,18 +321,6 @@ class StudentHomeCtrl extends Controller
     }
 
     try {
-      // $exam = new Exam;
-      // $exam->student_id = $user->id;
-      // $exam->paper_id = $request->paper_id;
-      // $exam->start_at = date('Y-m-d H:i:s', $request->start_at);
-      // $exam->end_at = date('Y-m-d H:i:s');
-      // $exam->answer = $answered;
-      // $exam->correct = $correct;
-      // $exam->wrong = $wrong;
-      // $exam->no_answer = $no_answered;
-      // $exam->mark = $marks;
-      // $exam->save();
-
       Exam::where('id', $request->exam_id)->update([
         'end_at'    => date('Y-m-d H:i:s'),
         'answer'    => $answered,

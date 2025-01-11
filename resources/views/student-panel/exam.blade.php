@@ -99,7 +99,8 @@ if($user)
       @else
       <div class="panel panel-default">
         <div class="panel-body">
-          No Exam Available
+          <label>আপনের কোন কোর্সে পরীক্ষা চলমান নেই।</label>
+          <p><a href="{{route('students.course')}}">চলমান কোর্স সমূহ</a></p>
         </div>
       </div>
       @endif
