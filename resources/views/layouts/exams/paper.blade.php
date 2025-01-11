@@ -30,9 +30,9 @@ $source = New SourceCtrl;
           <div class="box-header with-border">
             <h4 class="box-title" style="display: inline">Exam Paper (<b>{{count($paper->questions)}}</b>)</h4>
             <div class="text-right toolbar-icon pull-right" style="display: inline">
-              <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
-              <a href="{{route('paper.show', $paper->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a>
-              <a href="{{route('paper.edit', $paper->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a>
+              <a href="{{route('exam.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
+              {{-- <a href="{{route('paper.show', $paper->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a> --}}
+              {{-- <a href="{{route('paper.edit', $paper->id)}}" class="label label-warning" title="Edit"><i class="fa fa-gear"></i></a> --}}
             </div>
           </div>
         </div>
