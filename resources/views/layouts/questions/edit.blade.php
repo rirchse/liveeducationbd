@@ -381,6 +381,12 @@ function getDepartments(e)
         return '';
     }
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -425,6 +431,12 @@ function getSemesters(e)
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
     let department = document.getElementById('department_id');
     let preElm = department.parentNode.parentNode;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -494,6 +506,12 @@ function getSubjects(e)
     
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
         url: '/get_subjects/' + ids,
@@ -533,6 +551,12 @@ function getSemsSubjects(e)
     }
     
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -574,6 +598,12 @@ function getChapters(e)
     
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
         url: '/get_chapters/' + ids,
@@ -601,6 +631,12 @@ function getChapters(e)
 function getFilters(e)
 {
     var course_id = e.options[e.options.selectedIndex].value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -804,6 +840,12 @@ function selectType(e)
 // ------------------ store data to database ----------------
 function submitMCQ(e)
 {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     let submit = document.getElementById('submit');
     submit.setAttribute('disabled', 'disabled');
 

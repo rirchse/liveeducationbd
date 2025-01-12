@@ -247,6 +247,12 @@ function getDepartments(e)
 {
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
         url: '/get_departments/' + ids,
@@ -279,6 +285,12 @@ function getSemesters(e)
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
     let department = document.getElementById('department_id');
     let preElm = department.parentNode.parentNode;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -337,6 +349,12 @@ function getSubjects(e)
 {
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
         url: '/get_subjects/' + ids,
@@ -366,6 +384,12 @@ function getSemsSubjects(e)
 {
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
         url: '/get_sems_subjects/' + ids,
@@ -394,6 +418,12 @@ function getSemsSubjects(e)
 function getChapters(e)
 {
     let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -422,6 +452,12 @@ function getChapters(e)
 function getFilters(e)
 {
     var course_id = e.options[e.options.selectedIndex].value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $.ajax({
         type: 'GET', //THIS NEEDS TO BE GET
@@ -656,6 +692,11 @@ function submitMCQ(e)
 
     if(access == false)
     {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         // check question
         $.ajax({
             url: '{{route("questions.title")}}',
@@ -715,6 +756,13 @@ function submitMCQ(e)
         });
     }
     else{
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $.ajax({
             url: '{{route("question.store")}}',
             type: 'POST',
