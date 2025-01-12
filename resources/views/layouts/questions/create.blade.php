@@ -694,7 +694,8 @@ function submitMCQ(e)
     {
         $.ajaxSetup({
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Access-Control-Allow-Origin': '*'
             }
         });
         // check question
@@ -756,7 +757,7 @@ function submitMCQ(e)
         });
     }
     else{
-        
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
