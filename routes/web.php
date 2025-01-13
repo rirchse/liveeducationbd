@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\StudentLogin;
 use App\Http\Controllers\Students\StudentHomeCtrl;
 use App\Http\Controllers\HomePageCtrl;
+use App;
+use URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,11 @@ use App\Http\Controllers\HomePageCtrl;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+if (App::environment('production'))
+{
+	URL::forceScheme('https');
+}
 
 
 Route::controller(HomePageCtrl::class)->group(function()
