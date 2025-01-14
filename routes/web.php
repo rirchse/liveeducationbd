@@ -22,6 +22,7 @@ use URL;
 |
 */
 
+// force https on production server
 if (App::environment('production'))
 {
 	URL::forceScheme('https');

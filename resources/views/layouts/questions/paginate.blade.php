@@ -49,13 +49,17 @@ if(!is_null(Session::get('_paper')))
         @if($value->type == 'MCQ')
         <ul class="list" style="padding-left:10px; padding-top:15px">
           @foreach($value->mcqitems as $k => $val)
-          @php
-          if($val->correct_answer)
-          {
-            $correct = $format[$k].' '.$val->item;
-          }
-          @endphp
-          <li><span class="{{$val->correct_answer ? 'correct' : ''}}">{{$format[$k]}} {!!$val->item!!}</span></li>
+            @if($k <= 4)
+              @php
+              if($val->correct_answer)
+              {
+                $correct = $format[$k].' '.$val->item;
+              }
+              @endphp
+              <li>
+                <span class="{{$val->correct_answer ? 'correct' : ''}}">{{$format[$k]}} {!!$val->item!!}</span>
+              </li>
+            @endif
           @endforeach
         </ul>
         <div class="col-md-12 no-padding">

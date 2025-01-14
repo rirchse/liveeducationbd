@@ -305,6 +305,9 @@ $value = $batch;
                   <th>মোট =</th>
                   <th>&#2547; {{$source->point0($value->net_price)}}</th>
                 </tr>
+                <tr>
+                  <th><input type="checkbox"> I agree to the Terms & Condition and Privacy Policy.</th>
+                </tr>
               </table>
             @endif
           </div>
