@@ -307,13 +307,17 @@ $value = $batch;
                 </tr>
                 <tr>
                   <th>
-                    <input type="checkbox"> I agree to the <a href="{{route('home.page', 'terms-condition')}}">Terms & Condition</a>, <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> and  <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a>.
                   </th>
                 </tr>
               </table>
             @endif
           </div>
         <div class="modal-footer">
+          <p style="text-align: left">
+            <input type="checkbox"> I agree to the <a href="{{route('home.page', 'terms-condition')}}">Terms & Condition</a>, <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> and  <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a>.
+          </p>
+          <br>
+
           {{-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> --}}
           
           <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$source->point0($value->net_price)}} পেমেন্ট করুন</button>

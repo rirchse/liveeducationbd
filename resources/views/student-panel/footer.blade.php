@@ -35,7 +35,7 @@
         <address>
           Mobile: 01718778184<br>
           Email: info@liveeducationbd.com<br>
-          Address: Jogendranagar, Sabjagri-6450, Gurudaspur, Natore<br>
+          Address: Jogendranagar, Sabgari-6450, Gurudaspur, Natore<br>
           Trade License No. 69141130786
         </address>
       </div>
