@@ -218,7 +218,10 @@ class StudentHomeCtrl extends Controller
       if($live_exam)
       {
         // find out the last exam entry for this user
-        $exam = Exam::orderBy('id', 'DESC')->where('student_id', $user->id)->first();
+        $exam = Exam::where('paper_id', $id)
+        ->where('student_id', $user->id)
+        ->orderBy('id', 'DESC')
+        ->first();
         
         return view('student-panel.exam-show', compact('paper', 'exam'));
       }

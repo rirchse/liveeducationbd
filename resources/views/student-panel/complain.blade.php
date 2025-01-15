@@ -12,14 +12,14 @@ if($user)
 {{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style> </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
 
     <!-- Main content -->
     <section class="content">
       <div class="box box-info">
         <div class="box-header with-border">
-          <h3 class="box-ti/tle" style="text-align: center;display:block">আপনার মতামত দিন</h3>
+          <h3 class="box-ti/tle" style="text-align: center;display:block">আপনার অভিযোগ দিন</h3>
         </div>
 
         <div class="row" style="margin-bottom:35px">
@@ -97,6 +97,6 @@ if($user)
       </div> <!-- /.box -->
 
     </section> <!-- /.content -->
-  </div> <!-- /.container -->
-</div>
+  {{-- </div> <!-- /.container -->
+</div> --}}
 @endsection

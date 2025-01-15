@@ -27,8 +27,8 @@ $percentage = $score = 0;
   .result table th{text-align: right}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header"></section>
 
@@ -160,8 +160,8 @@ $percentage = $score = 0;
       @endif
     </section> <!-- /.content -->
 
-  </div> <!-- /.container -->
-</div> <!-- /.content-wrapper -->
+  {{-- </div> <!-- /.container -->
+</div> <!-- /.content-wrapper --> --}}
 @endsection
 @section('scripts')
 <script>

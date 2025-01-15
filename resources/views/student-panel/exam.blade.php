@@ -16,8 +16,8 @@ if($user)
   .checkbox{padding-left: 25px}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1> পরীক্ষা সমূহ {{-- <small>পরীক্ষা সমূহple 2.0</small> --}} </h1>
@@ -29,7 +29,9 @@ if($user)
 
     <!-- Main content -->
     <section class="content">
-      @if( !empty($student) && $student->batches()->count() )
+      <div class="row">
+        <div class="col-md-12">
+          @if( !empty($student) && $student->batches()->count() )
         @foreach($student->batches()->orderBy('batches.id', 'DESC')->get() as $batch)
         @php
         $batch_papers = $batch->papers->whereIn('status', ['Published', 'Scheduled']);
@@ -41,14 +43,16 @@ if($user)
                   <a href="{{route('students.check', $paper->id)}}">
                   <div class="panel" style="min-height: 130px">
                     <div class="panel-heading">Live Education BD</div>
-                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
+                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b>
+                    </div>
+                    <p style="padding:0 15px">Batch: <b>{{substr($batch->name, 0, 30)}} ...</b></p>
                     <div class="panel-footer no-padding">
                         <div class="box-group" id="accordion{{$paper->id}}">
                           <div class="p/anel bo/x box-primary">
                             <div class="box-header with-border">
                               <div class="box-t/itle">
                                 <a data-toggle="collapse" data-parent="#accordion{{$paper->id}}" href="#dept{{$paper->id}}">
-                                  Batch: <b>{{substr($batch->name, 0, 40)}} ...</b>
+                                  বিস্তারিত দেখুন...
                                   <span class="pull-right-container">
                                     <i class="fa fa-chevron-down pull-right"></i>
                                   </span>
@@ -104,9 +108,13 @@ if($user)
         </div>
       </div>
       @endif
+        </div>
+      </div>
+
+      
     </section> <!-- /.content -->
-  </div> <!-- /.container -->
-</div>
+  {{-- </div> <!-- /.container -->
+</div> --}}
 
 <script>
   function showPassword(e)

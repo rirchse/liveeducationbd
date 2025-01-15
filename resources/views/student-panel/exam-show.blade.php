@@ -34,8 +34,8 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
   .result table th{text-align: right}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header"></section>
 
@@ -159,58 +159,62 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
         </div>
       </div>
       @else
-      <div class="row">
-        <div class="box box-info" id="fixed">
-          <div class="col-xs-4">
-            Questions: <b>{{$paper->questions->count()}}</b>
-          </div>
-          <div class="col-xs-4">
-            <div class="timer"><span id="timer">00:00</span></div>
-          </div>
-          <div class="col-xs-4">
-            Solved: <b id="solved">0</b>
-          </div>
-          <div class="clearfix"></div>
-        </div>
-      </div>
-      <div class="row" id="questions_panel">
-        <div class="banner"><img src="{{$paper->banner}}" alt=""/></div>
-        <div class="box col-md-12">
-          <div class="header" style="text-align:center">{!! $paper->header !!} </div>
-          <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
-        </div>
-        <div class="col-md-12 no-padding" id="questions-area">
-          @foreach($questions as $key => $value)
-          <div class="panel panel-default {{$paper->display == 'One' && $key != 0? 'hide':''}}">
-            <div class="panel-heading" style="background-color:none">
-              <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
-              <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
+        @if($exam)
+        <div class="row">
+          <div class="box box-info" id="fixed">
+            <div class="col-xs-4">
+              Questions: <b>{{$paper->questions->count()}}</b>
             </div>
-            <ul class="mcqitems" id="{{$value->id}}">
-              @foreach($value->mcqitems as $k => $val)
-              <li>
-                <label class="">
-                  <input onclick="answer(this)" type="radio" name="{{$value->id}}" id="{{$value->id.$val->id}}" check="0" value="{{$val->id}}"/>
-                  <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
-                </label>
-              </li>
-              @endforeach
-            </ul>
-            @if($paper->display == 'One')
-            <div class="panel-footer">
-              <button class="btn btn-success" onclick="showNextQuestion(this)">Next <i class="fa fa-long-arrow-right"></i></button>
+            <div class="col-xs-4">
+              <div class="timer"><span id="timer">00:00</span></div>
             </div>
-            @endif
+            <div class="col-xs-4">
+              Solved: <b id="solved">0</b>
+            </div>
+            <div class="clearfix"></div>
           </div>
-          @endforeach
-        </div> <!--/.col -->
-        <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
-      </div><!-- /.row -->
+        </div>
+        <div class="row" id="questions_panel">
+          <div class="banner"><img src="{{$paper->banner}}" alt=""/></div>
+          <div class="box col-md-12">
+            <div class="header" style="text-align:center">{!! $paper->header !!} </div>
+            <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
+          </div>
+          <div class="col-md-12 no-padding" id="questions-area">
+            @foreach($questions as $key => $value)
+            <div class="panel panel-default {{$paper->display == 'One' && $key != 0? 'hide':''}}">
+              <div class="panel-heading" style="background-color:none">
+                <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
+              </div>
+              <ul class="mcqitems" id="{{$value->id}}">
+                @foreach($value->mcqitems as $k => $val)
+                <li>
+                  <label class="">
+                    <input onclick="answer(this)" type="radio" name="{{$value->id}}" id="{{$value->id.$val->id}}" check="0" value="{{$val->id}}"/>
+                    <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
+                  </label>
+                </li>
+                @endforeach
+              </ul>
+              @if($paper->display == 'One')
+              <div class="panel-footer">
+                <button class="btn btn-success" onclick="showNextQuestion(this)">Next <i class="fa fa-long-arrow-right"></i></button>
+              </div>
+              @endif
+            </div>
+            @endforeach
+          </div> <!--/.col -->
+          <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
+        </div><!-- /.row -->
+        @else
+        {{return redirect()->route('students.exam')}}
+        @endif
       @endif
     </section> <!-- /.content -->
 
-  </div> <!-- /.container -->
-</div> <!-- /.content-wrapper -->
+  {{-- </div> <!-- /.container -->
+</div> <!-- /.content-wrapper --> --}}
 @endsection
 @section('scripts')
 <script>

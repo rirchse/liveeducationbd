@@ -13,8 +13,8 @@ $source = New SourceCtrl;
   .banner img{width:100%}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>Syllabus</h1>
@@ -84,8 +84,8 @@ $source = New SourceCtrl;
       </div><!-- /.col -->
     </div><!-- /.row -->
   </section><!-- /.content -->
-</div> <!-- /.container -->
-</div>
+{{-- </div> <!-- /.container -->
+</div> --}}
    
 @endsection
 @section('scripts')

@@ -29,8 +29,8 @@ $user = Auth::guard('student')->user();
   .result table th{text-align: right}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header"></section>
 
@@ -93,8 +93,8 @@ $user = Auth::guard('student')->user();
       </div><!-- /.row -->
     </section> <!-- /.content -->
 
-  </div> <!-- /.container -->
-</div> <!-- /.content-wrapper -->
+  {{-- </div> <!-- /.container -->
+</div> <!-- /.content-wrapper --> --}}
 @endsection
 @section('scripts')
 <script>

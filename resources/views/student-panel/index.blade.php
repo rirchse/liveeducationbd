@@ -18,8 +18,8 @@ if($user)
   .hover:hover{border:2px solid #080}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
 
     <!-- Main content -->
     <section class="content">
@@ -68,7 +68,7 @@ if($user)
             <div class="penel-heading no-padding" style="text-align: center; padding:15px">
               <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
             </div>
-            <div class="panel-heading"><b>{{substr($value->name, 0, 55)}} ...</b></div>
+            <div class="panel-heading"><b>{{substr($value->name, 0, 30)}} ...</b></div>
           </div>
           </a>
         </div>
@@ -95,7 +95,7 @@ if($user)
               <div class="panel-heading">Live Education BD</div>
               <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
               <div class="panel-footer">
-                Batch: <b>{{substr($course->name, 0, 45)}} ...<b>
+                Batch: <b>{{substr($course->name, 0, 30)}} ...<b>
               </div>
             </div>
           </a>
@@ -125,8 +125,8 @@ if($user)
         <div class="box-header with-border">
           <h3 class="box-title">বুক স্টোরেজ</h3>
         </div>
-      </div> <!-- /.box -->
-      <div class="box" style="margin-bottom:35px">
+      {{-- </div> <!-- /.box -->
+      <div class="box" style="margin-bottom:35px"> --}}
         <div class="col-md-12">
           <h3>Coming soon!</h3>
         </div>
@@ -137,8 +137,8 @@ if($user)
         <div class="box-header with-border">
           <h3 class="box-title">আপডেট তথ্য</h3>
         </div>
-      </div> <!-- /.box -->
-      <div class="box" style="margin-bottom:35px">
+      {{-- </div> <!-- /.box -->
+      <div class="box" style="margin-bottom:35px"> --}}
         <div class="col-md-12">
           <h3>Coming soon!</h3>
         </div>
@@ -149,14 +149,14 @@ if($user)
         <div class="box-header with-border">
           <h3 class="box-title">নিয়োগ বিজ্ঞপ্তি</h3>
         </div>
-      </div> <!-- /.box -->
-      <div class="box" style="margin-bottom:35px">
+      {{-- </div> <!-- /.box -->
+      <div class="box" style="margin-bottom:35px"> --}}
         <div class="col-md-12">
           <h3>Coming soon!</h3>
         </div>
         <div class="clearfix"></div>
       </div>
     </section> <!-- /.content -->
-  </div> <!-- /.container -->
-</div>
+  {{-- </div> <!-- /.container -->
+</div> --}}
 @endsection

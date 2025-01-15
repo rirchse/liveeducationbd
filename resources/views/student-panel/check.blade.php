@@ -13,8 +13,8 @@ $value = $paper;
   .cst-btn{margin-bottom:10px}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1> পরীক্ষা সমূহ {{-- <small>পরীক্ষা সমূহple 2.0</small> --}} </h1>
@@ -75,8 +75,8 @@ $value = $paper;
           @endif
         </div>
     </section> <!-- /.content -->
-  </div> <!-- /.container -->
-</div>
+  {{-- </div> <!-- /.container -->
+</div> --}}
 
 <script>
 </script>

@@ -51,7 +51,7 @@ function active($name)
           <li class="{{active('course')}}"><a href="{{route('home.course')}}">চলমান কোর্স সমূহ</a></li>
           <li class="{{active('my-course')}}"><a href="{{route('students.my-course')}}">আমার কোর্স সমূহ</a></li>
           <li class="{{active('exam')}}"><a href="{{route('students.exam')}}">পরীক্ষা</a></li>
-          <li class="{{active('complain')}}"><a href="{{route('students.complain')}}">মতামত</a></li>
+          <li class="{{active('complain')}}"><a href="{{route('students.complain')}}">অভিযোগ দিন</a></li>
           @if(empty($user))
           <li><a href="/signup">সাইন আপ</a></li>
           <li><a href="/students/login">লগিন</a></li>

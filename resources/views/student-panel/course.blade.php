@@ -12,8 +12,8 @@ $user = Auth::guard('student')->user();
   .course-image{width:100%}
 </style>
 
-<div class="content-wrapper">
-  <div class="container">
+{{-- <div class="content-wrapper">
+  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>চলমান কোর্স সমূহ </h1>
@@ -35,7 +35,7 @@ $user = Auth::guard('student')->user();
             <div class="penel-heading no-padding" style="text-align: center;padding:15px;min-height:150px">
               <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
             </div>
-            <div class="panel-heading"><b>{{substr($value->name, 0, 55)}} ...</b></div>
+            <div class="panel-heading"><b>{{substr($value->name, 0, 30)}} ...</b></div>
             <div class="panel-footer">
               @if(!empty($user) && $value->students()->where('id', $user->id)->first())
               <button class="btn btn-default pull-right" disabled>Applied</button>
@@ -58,8 +58,8 @@ $user = Auth::guard('student')->user();
       </div>
     </section> <!-- /.content -->
 
-  </div> <!-- /.container -->
-</div>
+  {{-- </div> <!-- /.container -->
+</div> --}}
 
 <script></script>
 @endsection

@@ -13,12 +13,17 @@
 </head>
 
 <body class="layout-top-nav">
-	<div class="wrapper" style="width:100%;padding-bottom: 50px">
+	<div class="wrapper" style="width:100%;">
     @include('student-panel.header')
 
-		@yield('content')
+		<div class="content-wrapper">
+			<div class="container">
 
-    @include('student-panel.footer')
+				@yield('content')
+
+				@include('student-panel.footer')
+			</div>
+		</div>
 	</div>
 
 	<!--   Core JS Files   -->

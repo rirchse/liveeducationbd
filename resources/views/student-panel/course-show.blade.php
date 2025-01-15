@@ -30,8 +30,8 @@ $value = $batch;
   }
 </style>
 
-<div class="content-wrapper">
-  <div class="container no-padding">
+{{-- <div class="content-wrapper">
+  <div class="container no-padding"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1> Course {{-- <small>Courseple 2.0</small> --}} </h1>
@@ -237,8 +237,8 @@ $value = $batch;
         </div><!-- column -->
       </div>
     </section> <!-- /.content -->
-  </div> <!-- /.container -->
-</div>
+  {{-- </div> <!-- /.container -->
+</div> --}}
 
 <div class="modal fade" id="paymentConfirm" style="display: none;">
   <div class="modal-dialog">
@@ -306,7 +306,9 @@ $value = $batch;
                   <th>&#2547; {{$source->point0($value->net_price)}}</th>
                 </tr>
                 <tr>
-                  <th><input type="checkbox"> I agree to the Terms & Condition and Privacy Policy.</th>
+                  <th>
+                    <input type="checkbox"> I agree to the <a href="{{route('home.page', 'terms-condition')}}">Terms & Condition</a>, <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> and  <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a>.
+                  </th>
                 </tr>
               </table>
             @endif
