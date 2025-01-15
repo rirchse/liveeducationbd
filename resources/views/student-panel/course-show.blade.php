@@ -72,6 +72,11 @@ $value = $batch;
                   @if($value->reg_end_at && date('Y-m-d H:i:s') > $value->reg_end_at )
                   <p class="text-danger">রেজিস্ট্রেশানের মেয়াদ শেষ</p>
                   @else
+                  
+                  <p style="text-align: left">
+                    <input type="checkbox" required id="agree"> I agree to the <a href="{{route('home.page', 'terms-condition')}}">Terms & Condition</a>, <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> and  <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a>.
+                  </p>
+                  <br>
                   <button onclick="checkLogin()" type="button" class="btn btn-success btn-block btn-lg">কোর্সটি কিনুন</button>
                   @endif
                 @endif
@@ -313,10 +318,6 @@ $value = $batch;
             @endif
           </div>
         <div class="modal-footer">
-          <p style="text-align: left">
-            <input type="checkbox" required> I agree to the <a href="{{route('home.page', 'terms-condition')}}">Terms & Condition</a>, <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> and  <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a>.
-          </p>
-          <br>
 
           {{-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> --}}
           
@@ -337,6 +338,14 @@ $value = $batch;
   function checkLogin()
   {
     let login = '{{$user ? $user->id : ''}}';
+    let agree = document.getElementById('agree');
+
+    if(agree.checked == false)
+  {
+    alert('Please confirm as per our agreement.');
+    return;
+  }
+
     if(login)
     {
       $(document).ready(function()
