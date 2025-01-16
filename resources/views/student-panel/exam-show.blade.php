@@ -208,7 +208,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
           <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
         </div><!-- /.row -->
         @else
-        {{return redirect()->route('students.exam')}}
+        <p>We are getting trouble to sit you to the exam, right now. Please try again later. <a href="{{route('students.exam')}}">Go back to the exam page</a></p>
         @endif
       @endif
     </section> <!-- /.content -->

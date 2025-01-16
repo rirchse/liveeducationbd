@@ -91,7 +91,7 @@ if($user)
         <a href="{{route('students.check', $paper->id)}}">
         <div class="panel" style="min-height: 130px">
           <div class="panel-heading">Live Education BD</div>
-          <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b></div>
+          <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{substr($paper->name, 0, 20) }}</b></div>
           <div class="panel-footer">
             For: <b>{{$paper->permit}}<b>
           </div>

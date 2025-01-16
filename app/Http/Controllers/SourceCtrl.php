@@ -81,7 +81,7 @@ class SourceCtrl extends Controller
   public function sendMail(array $data)
   {
     $data1 = [
-      'email_from' => 'noreply@liveeducationbd.com',
+      'email_from' => 'liveeducationbd24@gmail.com',
       'from_name' => 'Live Education BD'
     ];
 

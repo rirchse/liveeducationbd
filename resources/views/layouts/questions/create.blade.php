@@ -4,6 +4,8 @@
 <style>
    span:has(> input[name="correct[]"]){padding:5px}
     input[name="correct[]"]{width:20px; height: 20px;}
+    .loading{display:none; text-align: center; background:rgba(0,0,0,0.3);position:fixed; z-index:99999; top:0; right:0; bottom:0;left:0; padding-top:10%;}
+    .loading span{font-size:42px; position: absolute;top:20px; right:20px}
 </style>
 @endsection
 @section('title', 'Add New Question')
@@ -15,6 +17,12 @@
     <li class="active">Add a Question</li>
 </ol>
 </section>
+
+<!-- loading section -->
+<div id="loading" class="loading">
+    <span onclick="this.parentNode.style.display='none'"><i class="fa fa-times"></i></span>
+    <img src="/img/loading.webp" alt="">
+</div>
 
 <!-- Main content -->
 <section class="content">
@@ -675,6 +683,7 @@ function formValidation()
 
 // ------------------ store data to database ----------------
 
+// if question is exist to the database then access will overwrite true.
 let access = false;
 function submitMCQ(e)
 {
@@ -686,7 +695,9 @@ function submitMCQ(e)
     let showMessage = document.getElementById('showMessage');
     let msgArea = document.getElementById('msgArea');
     let msg_footer = document.getElementById('msg_footer');
-    submit.setAttribute('disabled', 'disabled');
+    // submit.setAttribute('disabled', 'disabled');
+    let loading = document.getElementById('loading');
+    loading.style.display = 'block';
 
     var formData = new FormData(e);
 
@@ -697,12 +708,15 @@ function submitMCQ(e)
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        // check question
+        // check question exist on the database
         $.ajax({
             url: '{{route("questions.title")}}',
             type: 'POST',
             data: {_token: formData.get('_token'), type: formData.get('type'), title: formData.get('title')},
             success:function(data){
+
+                loading.style.display = 'none';
+
                 if(data.questions.length > 0)
                 {
                     let html = '<label class="text-danger">The Question already exists, are you sure, you want to confirm add new one?</label><hr>';
@@ -755,7 +769,8 @@ function submitMCQ(e)
             }
         });
     }
-    else{
+    else
+    {
 
         $.ajaxSetup({
             headers: {
@@ -769,6 +784,8 @@ function submitMCQ(e)
             data: formData,
             success: function(data)
             {
+                loading.style.display = 'none';
+                
                 if(data.success == true)
                 {
                     let html = '';

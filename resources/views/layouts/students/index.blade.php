@@ -64,7 +64,7 @@ function check($id)
                   <th>Status</th>
                   <th>Created By</th>
                   <th>Created On</th>
-                  <th width="110">Action</th>
+                  <th width="150">Action</th>
                 </tr>
               </thead>
 
@@ -93,8 +93,8 @@ function check($id)
                   @if($value->status == 1)
                   {{-- <a href="/admin/user_login/{{$value->email}}" class="label label-success" title="Login to this account" target="_blank"><i class="fa fa-search-plus"></i></a> --}}
                   @endif
-                  @if($value->status == 0)
-                  {{-- <a href="/admin/resend_email_verification/{{$value->id}}" class="label label-primary" onclick="return confirm('Are you sure you want to resend email verification to this user?')" title="Resend verification email."><i class="fa fa-envelope-o"></i></a> --}}
+                  @if($value->status == 'Inactive')
+                  <a href="{{route('send.verify.email', $value->id)}}" class="btn btn-default" onclick="return confirm('Are you sure you want to resend email verification to this student?')" title="Resend verification email."><i class="fa fa-envelope-o"></i></a>
                   @endif
                   @if($value->status == 3)
                   {{-- <a href="/admin/user/{{$value->id}}/restore" class="label label-success" title="Restore the account" onclick="return confirm('Are you sure you want to restore the account?')"><i class="fa fa-undo"></i></a> --}}

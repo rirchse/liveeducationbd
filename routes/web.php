@@ -201,6 +201,7 @@ Route::middleware(['auth'])->group(function()
 		Route::get('add-student-complete', 'addStudentComplete')->name('students.add.complete');
 		Route::get('student/view/{id}/{name}', 'view')->name('student.view');
 		Route::get('student/remove/{id}/{name}/{obj}', 'remove')->name('student.remove');
+		Route::get('student/send_verify/{id}', 'sendVerifyEmail')->name('send.verify.email');
 	});
 
 	Route::controller(SyllabusCtrl::class)->group(function()

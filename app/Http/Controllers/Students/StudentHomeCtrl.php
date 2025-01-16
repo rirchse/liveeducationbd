@@ -173,7 +173,10 @@ class StudentHomeCtrl extends Controller
   public function examShow($id)
   {
     $user = Auth::guard('student')->user();
-    $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
+    $exams = Exam::where('paper_id', $id)
+    ->where('student_id', $user->id)
+    ->where('status', 'Completed')
+    ->count();
     $paper = Paper::find($id);
     // if on the paper settings has exam limitation and exam limitation number is less than already examed count on this paper. So it will redirect to the result page. Otherwise it will redirect to the exam start page.
     if($paper->exam_limit && $paper->exam_limit <= $exams)
