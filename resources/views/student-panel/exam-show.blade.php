@@ -6,7 +6,7 @@ $end_time = date('Y-m-d H:i:s', strtotime('+'.$paper->time.' minutes', strtotime
 $questions = $paper->questions;
 if($paper->random == 'Yes')
 {
-  $questions = $paper->questions()->inRandomOrder()->get();
+  // $questions = $paper->questions()->inRandomOrder()->get();
 }
 $start_at = strtotime(date('Y-m-d H:i:s'));
 @endphp

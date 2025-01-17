@@ -60,4 +60,9 @@ class Question extends Model
     {
         return $this->belongsToMany(Paper::class);
     }
+
+    public function choice()
+    {
+        return $this->hasOne(Choice::class, 'question_id');
+    }
 }
