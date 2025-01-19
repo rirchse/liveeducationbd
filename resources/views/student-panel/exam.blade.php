@@ -45,7 +45,7 @@ if($user)
                     <div class="panel-heading">Live Education BD</div>
                     <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{substr($paper->name, 0, 45)}}...</b>
                     </div>
-                    <p style="padding:0 15px">Batch: <b>{{substr($batch->name, 0, 30)}} ...</b></p>
+                    <p style="padding:0 15px">Batch: <b>{{substr( $batch->name, 0, 20)}} ...</b></p>
                     <div class="panel-footer no-padding">
                         <div class="box-group" id="accordion{{$paper->id}}">
                           <div class="p/anel bo/x box-primary">
