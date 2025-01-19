@@ -133,11 +133,11 @@ class StudentHomeCtrl extends Controller
     $exams = Exam::where('paper_id', $id)->where('student_id', $user->id)->count();
     $paper = Paper::find($id);
     
-    if($paper->status == 'Scheduled' && $paper->open && $paper->open >= date('Y-m-d H:i:s'))
+    if( $paper->status == 'Scheduled' && !is_null($paper->open) && strtotime($paper->open) > strtotime(date('Y-m-d H:i:s')) )
     {
       $check['scheduled'] = true;
     }
-    elseif($paper->status == 'Scheduled' && $paper->open <= date('Y-m-d H:i:s'))
+    elseif( $paper->status == 'Scheduled' && strtotime($paper->open) < strtotime(date('Y-m-d H:i:s')) )
     {
       Paper::where('id', $id)->update(['status' => 'Published']);
       $paper = Paper::find($id);
@@ -237,6 +237,21 @@ class StudentHomeCtrl extends Controller
     return back();
   }
 
+  // return quesiton on ajax request
+  public function getQuestions($paper_id)
+  {
+    // serve questions according to the paper
+    $paper = Paper::find($paper_id);
+    $questions = $paper->questions()->with('mcqitems')->paginate(1);
+    // dd($questions);
+    return response()->json(
+      [
+        'success' => true,
+        'questions' => $questions,
+      ]
+    );
+  }
+
   public function result($id, $value = null)
   {
     $result = [];
@@ -325,8 +340,11 @@ class StudentHomeCtrl extends Controller
 
     }
 
+    //default $result assigned by false 
+    $success = false;
+
     try {
-      Exam::where('id', $request->exam_id)->update([
+      $result = Exam::where('id', $request->exam_id)->update([
         'end_at'    => date('Y-m-d H:i:s'),
         'answer'    => $answered,
         'correct'   => $correct,
@@ -348,9 +366,15 @@ class StudentHomeCtrl extends Controller
           ]);
         }
       }
-    }catch(\E $e)
+    }
+    catch(\E $e)
     {
       return $e;
+    }
+
+    if($result)
+    {
+      $success = true;
     }
     
     $exam = Exam::find($request->exam_id);
@@ -360,7 +384,7 @@ class StudentHomeCtrl extends Controller
     }
 
     return response()->json([
-      'success' => true,
+      'success' => $success,
       'message' => $paper->message,
       'questions' => $questions,
       'answered' => $answered,

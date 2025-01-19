@@ -69,6 +69,7 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/check/{paper}', 'check')->name('students.check');
 		Route::get('students/instruction/{paper}', 'instruction')->name('students.instruction');
 		Route::get('students/exam/{id}', 'examShow')->name('students.exam.show');
+		Route::get('students/questions/{paper_id}', 'getQuestions')->name('students.exam.questions');
 		Route::get('students/result/{id}/{after?}', 'result')->name('students.result');
 		Route::get('students/exam-paper/{id}', 'examPaper')->name('students.exam.paper');
 		Route::get('students/solution/{id}', 'solution')->name('students.solution');

@@ -33,12 +33,8 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
   .selected{background:lightblue;}
   .result table th{text-align: right}
   .loading{display:none; text-align: center; background:rgba(0,0,0,0.6);position:fixed; z-index:99999; top:0; right:0; bottom:0;left:0; padding-top:10%;}
-  .loading span{font-size:42px; position: absolute;top:20px; right:20px}
-  .loading p{color:#fff; margin:-50px auto; font-size:18px; max-width:300px; text-align:center}
-  .exam-name{text-align: center;width:100%;font-weight:bold;padding-bottom:15px}
-  .question-title{display: inline; font-weight:bold;float:left; padding-right:5px}
-  .question-title-text{display: inline;text-align:justify}
-  .question-title-main{background-color:none}
+    .loading span{font-size:42px; position: absolute;top:20px; right:20px}
+    .loading p{color:#fff; margin-top:-50px; font-size:18px; max-width:300px; text-align:center}
 </style>
 
 {{-- <div class="content-wrapper">
@@ -48,6 +44,117 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
 
     <!-- Main content -->
     <section class="content" id="content">
+      @if(!empty($result))
+      <div class="row">
+        @foreach($exams as $value)
+        <div class="col-md-4 result" id="result">
+          <div class="panel panel-default">
+            <img src="/img/paper-banner.png" alt="" style="width:100%">
+            <div class="panel-heading no-padding">
+              <h3 style="text-align: center">Exam: {{$value->id}} > Result</h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-bordered">
+                <tr>
+                  <th colspan="2" style="text-align: center">Result Summary</th>
+                </tr>
+                <tr>
+                  <td>Exam Name</td>
+                  <th id="question">{{$value->name}}</th>
+                </tr>
+                <tr>
+                  <td>Exam No.</td>
+                  <th id="question">{{$value->name}}</th>
+                </tr>
+                <tr>
+                  <td>Start Time</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr>
+                <tr>
+                  <td>End Time</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr>
+                <tr>
+                  <td>Total Questions</td>
+                  <th id="question">{{$value->max}}</th>
+                </tr>
+                <tr>
+                  <td>Answered</td>
+                  <th id="answer">{{$value->answer}}</th>
+                </tr>
+                <tr>
+                  <td>Correct</td>
+                  <th id="correct">{{$value->correct}}</th>
+                </tr>
+                <tr>
+                  <td>Wrong</td>
+                  <th id="wrong">{{$value->wrong}}</th>
+                </tr>
+                <tr>
+                  <td>No Answered</td>
+                  <th id="no_answer">{{$value->no_answer}}</th>
+                </tr>
+                <tr>
+                  <td>Mark for per right answer</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Negative Mark for per wrong answer</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Score</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Result Percentage</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+                <tr>
+                  <td>Final Result</td>
+                  <th id="marks">{{$value->mark}}</th>
+                </tr>
+              </table>
+            </div>
+            <div class="panel-footer">
+              <p style="text-align: center">
+                <a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a>
+              </p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        @endforeach
+        
+        {{-- <div class="box box-danger" style="text-align: center">
+          <h4>No Exam Available</h4>
+          <p><a href="{{route('students.exam')}}"><i class="fa fa-arrow-left"></i> Back</a></p>
+        </div> --}}
+        <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-heading">
+            <h4>Solution</h4>
+          </div>
+          @foreach($paper->questions as $key => $value)
+          <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:none">
+              <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
+              <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
+            </div>
+            <ul class="mcqitems" id="{{$value->id}}">
+              @foreach($value->mcqitems as $k => $val)
+              <li>
+                <label class="">
+                  <input onclick="answer(this)" type="radio" name="{{$value->id}}" id="{{$value->id.$val->id}}" check="0" value="{{$val->id}}"/>
+                  <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
+                </label>
+              </li>
+              @endforeach
+            </ul>
+          </div>
+          @endforeach
+        </div>
+      </div>
+      @else
         @if($exam)
         <div class="row">
           <div class="box box-info" id="fixed">
@@ -64,149 +171,54 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
           </div>
         </div>
         <div class="row" id="questions_panel">
-          <div class="banner">
-            <img src="{{$paper->banner}}" alt=""/>
-          </div>
+          <div class="banner"><img src="{{$paper->banner}}" alt=""/></div>
           <div class="box col-md-12">
             <div class="header" style="text-align:center">{!! $paper->header !!} </div>
-            <p class="exam-name">Exam No: {{$paper->name}}</p>
+            <p style="text-align: center;width:100%;font-weight:bold;padding-bottom:15px">Exam No: {{$paper->name}}</p>
           </div>
-
-          <!-- multiple questions area -->
           <div class="col-md-12 no-padding" id="questions-area">
-            <!-- load all questions here -->
+            @foreach($questions as $key => $value)
+            <div class="panel panel-default {{$paper->display == 'One' && $key != 0? 'hide':''}}">
+              <div class="panel-heading" style="background-color:none">
+                <div style="display: inline; font-weight:bold;float:left; padding-right:5px">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline;text-align:justify">{!! $value->title !!}</div>
+              </div>
+              <ul class="mcqitems" id="{{$value->id}}">
+                @foreach($value->mcqitems as $k => $val)
+                <li>
+                  <label class="">
+                    <input onclick="answer(this)" type="radio" name="{{$value->id}}" id="{{$value->id.$val->id}}" check="0" value="{{$val->id}}"/>
+                    <span> {{$source->mcqlist()[$paper->format][$k]}} {{$val->item}}</span>
+                  </label>
+                </li>
+                @endforeach
+              </ul>
+              @if($paper->display == 'One')
+              <div class="panel-footer">
+                <button class="btn btn-success" onclick="showNextQuestion(this)">Next <i class="fa fa-long-arrow-right"></i></button>
+              </div>
+              @endif
+            </div>
+            @endforeach
           </div> <!--/.col -->
-
           <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
         </div><!-- /.row -->
         @else
         <p>We are getting trouble to sit you to the exam, right now. Please try again later. <a href="{{route('students.exam')}}">Go back to the exam page</a></p>
         @endif
+      @endif
     </section> <!-- /.content -->
 
   <!-- loading section -->
 <div id="loading" class="loading">
   {{-- <span onclick="this.parentNode.style.display='none'"><i class="fa fa-times"></i></span> --}}
   <img src="/img/loading.webp" alt="">
-  <p>আপনার রেজালশীট ও সলুশন পেপার প্রস্তুত করা হচ্ছে। <br>অনুগ্রহ পূর্বক অপেক্ষা করুন...</p>
+  <p style="">আপনার রেজালশীট ও সলুশন পেপার প্রস্তুত করা হচ্ছে। <br>অনুগ্রহ পূর্বক অপেক্ষা করুন...</p>
 </div>
 
 @endsection
 @section('scripts')
 <script>
-  //load all questions
-  let questions_area = document.getElementById('questions-area');
-  function loadQuestions()
-  {
-    let paper_id = '{{$paper->id}}';
-
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-    // let formData = new FormData();
-    // formData.append('paper_id', '{{$paper->id}}');
-
-    $.ajax({
-      url: '{{route("students.exam.questions", "")}}/'+paper_id,
-      type: 'GET',
-      // data: formData,
-      cache: false,
-      contentType: false,
-      processData: false,
-      success: function(data){
-        // console.log(data.questions.data.length);
-        if(data.success == true && data.questions.data.length > 0){
-          // call to the data writer on the html
-          writeQuestion(data);
-        }
-      },
-      error: function(data){
-        console.log(data);
-      },
-    });
-  }
-
-  //execute questions
-  loadQuestions();
-
-// onscroll load questions according to the pagination
-  var page = 2;
-
-  $(document).ready(function()
-  {
-    // see if we're at the bottom of the page to potentially load more content
-    $(window).on('scroll', scrollProducts);
-
-    function scrollProducts()
-    {
-      let paper_id = '{{$paper->id}}';
-      var end = $("#footer").offset().top;
-      var viewEnd = $(window).scrollTop() + $(window).height();
-      var distance = end - viewEnd;
-
-      // when we're almost at the bottom
-      if (distance < 900)  {
-        // unbind to prevent excessive firing
-        $(window).off('scroll', scrollProducts);
-        // console.log('we reached the bottom');
-
-        $.ajax({
-          type: 'GET',
-          url: '{{route("students.exam.questions", "")}}/'+paper_id+'?page=' + page,
-          success: function(data) {
-            // console.log("success!");
-            // $('#container').append(data).fadeIn();
-            // rebind after successful update
-            if(data.success == true && data.questions.data.length > 0){
-          // call to the data writer on the html
-          writeQuestion(data);
-        }
-            $(window).on('scroll', scrollProducts);
-            page++;
-          }
-        });
-      }
-      // console.log(page);
-    }
-  });
-  // on scroll load questions end
-  
-  let index = 1;
-  // data writer on the question area
-  function writeQuestion(data)
-  {
-    data.questions.data.forEach((e, n) => 
-    {
-      // console.log(e.mcqitems);
-      let mcqs = '';
-      // let q_display = (e.display == 'One') ? 'hide' : '';
-      // console.log(q_display);
-      
-      e.mcqitems.forEach(i => {
-        mcqs += '<li>'+
-          '<label class="">'+
-            '<input onclick="answer(this)" type="radio" name="'+e.id+'" id="'+e.id+i.id+'" check="0" value="'+i.id+'"/>'+
-            '<span> {{$source->mcqlist()[$paper->format][1]}} '+i.item+'</span>'+
-            '</label>'+
-          '</li>';
-      });
-
-      let question = document.createElement('div');
-      question.setAttribute('class', 'panel panel-default ');
-      question.innerHTML = '<div class="panel-heading question-title-main">'+
-        '<div class="question-title">প্রশ্ন '+Number(index)+'.</div>'+
-        '<div class="question-title-text">'+e.title+'</div>'+
-      '</div>'+
-      '<ul class="mcqitems" id="'+e.id+'">'+mcqs+'</ul>';
-
-      questions_area.append(question);
-      index++;
-    });
-  }
-
   //show next question
   function showNextQuestion(e)
   {
@@ -344,9 +356,9 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
   // submit exam
   function submitExam()
   {
-    let qids = [];
+    let qids =[];
     let mcqids = [];
-    let loading = document.getElementById('loading');
+    // let loading = document.getElementById('loading');
     let mcqitems = document.getElementsByClassName('mcqitems');
     for(let x = 0; x < mcqitems.length; x++)
     {
@@ -360,33 +372,21 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
         }
       }
     }
-    
+
+    // console.log(mcqids);
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
     let formData = new FormData();
     formData.append('paper_id', '{{$paper->id}}');
     formData.append('exam_id', '{{$exam->id}}');
     formData.append('question_id', qids);
     formData.append('mcq_id', mcqids);
     formData.append('start_at', '{{$start_at}}');
-
-    //storage to the local
-    localStorage.setItem('formdata', formData);
-
-    //display the loading
-    loading.style.display = 'block';
-    
-    // push to the database
-    pushToDatabase(formData);
-    // console.log(qids);
-  }
-
-  // push to the database method
-  function pushToDatabase(formData)
-  {
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
 
     $.ajax({
       url: '{{route("student.exam.add")}}',
@@ -399,14 +399,14 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
         // console.log(data);
         if(data.success == true)
         {
-          // let content = document.getElementById('content');
-          // let result_hidden = document.getElementById('result_hidden');
-          // let question = document.getElementById('question');
-          // let answer = document.getElementById('answer');
-          // let correct = document.getElementById('correct');
-          // let wrong = document.getElementById('wrong');
-          // let no_answer = document.getElementById('no_answer');
-          // let marks = document.getElementById('marks');
+          let content = document.getElementById('content');
+          let result_hidden = document.getElementById('result_hidden');
+          let question = document.getElementById('question');
+          let answer = document.getElementById('answer');
+          let correct = document.getElementById('correct');
+          let wrong = document.getElementById('wrong');
+          let no_answer = document.getElementById('no_answer');
+          let marks = document.getElementById('marks');
           let message = document.getElementById('message');
           let msg = 'পরীক্ষা সম্পূর্ণ হয়েছে, পরবর্তী ধাপে যাওয়ার জন্য ok করুন';
 
@@ -415,36 +415,19 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
             msg = data.message;
           }
 
-          // alert(msg);
+          alert(msg);
           // loading.style.display = 'none';
           // content.innerHTML = result_hidden.innerHTML;
           window.location.href = '{{route("students.result", [$paper->id, "after"])}}';
-          loading.style.display = 'none';
-        }
-        else
-        {
-          retryPushtoDatabase(formData);
         }
         // qcount.innerHTML = data.qcount.attached.length;
+        // loading.classList.add('hide');
       },
       error: function(data){
-        // if fail to store retry to push it
-        retryPushtoDatabase(formData);
         console.log(data);
       },
     });
-  }
-
-  // if fail retry to push to the database
-  function retryPushtoDatabase(formData)
-  {
-    // let formData = localStorage.getItem('formdata');
-    // console.log(JSON.parse(formData));
-    setTimeout(() => {
-      // push to database
-      pushToDatabase(formData);
-      
-    }, 10000);
+    // console.log(qids);
   }
 
   // show result
@@ -457,14 +440,14 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
   </script>
 
   <script type="text/javascript">
-  // document.addEventListener("keydown", function (e)
-  // {
-  //   if ((e.ctrlKey && e.key === 'r') || e.key === 'F5')
-  //   {
-  //     e.preventDefault();
-  //     alert("Page reload is disabled.");
-  //   }
-  // });
+  document.addEventListener("keydown", function (e)
+  {
+    if ((e.ctrlKey && e.key === 'r') || e.key === 'F5')
+    {
+      e.preventDefault();
+      alert("Page reload is disabled.");
+    }
+  });
 
   //reload block
   // window.onbeforeunload = function() { return "Your work will be lost."; };
