@@ -43,7 +43,7 @@ if($user)
                   <a href="{{route('students.check', $paper->id)}}">
                   <div class="panel" style="min-height: 130px">
                     <div class="panel-heading">Live Education BD</div>
-                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{$paper->name}}</b>
+                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{substr($paper->name, 0, 45)}}...</b>
                     </div>
                     <p style="padding:0 15px">Batch: <b>{{substr($batch->name, 0, 30)}} ...</b></p>
                     <div class="panel-footer no-padding">

@@ -242,7 +242,7 @@ class StudentHomeCtrl extends Controller
   {
     // serve questions according to the paper
     $paper = Paper::find($paper_id);
-    $questions = $paper->questions()->with('mcqitems')->paginate(1);
+    $questions = $paper->questions()->with('mcqitems')->paginate(5);
     // dd($questions);
     return response()->json(
       [
