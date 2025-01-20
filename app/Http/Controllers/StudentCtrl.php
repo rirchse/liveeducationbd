@@ -265,10 +265,13 @@ class StudentCtrl extends Controller
             return password_verify($curr, $dbpass);
         }
 
-        if(password_verify($request->current_password, $user->password) === false){
+        if(password_verify($request->current_password, $user->password) === false)
+        {
             Session::flash('error', 'Invalid password provided.');
             return redirect('/change_password');
-        }else{
+        }
+        else
+        {
             $user = Student::find(Auth::id());
             $user->password = bcrypt($request->password);
             $user->save();

@@ -152,6 +152,6 @@ class RegisterController extends Controller
             Session::flash('error', 'Your account already verified.');
         }
 
-        return redirect()->route('login');
+        return redirect()->route('students.login');
     }
 }
