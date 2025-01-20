@@ -428,14 +428,26 @@ class StudentCtrl extends Controller
     /** -------- send email for verification ----------- */
     public function sendVerifyEmail($id)
     {
+        $data = [];
         $source = new SourceCtrl;
         $student = Student::find($id);
         if($student->status == 'Inactive')
         {
+            $remember_token = $data['remember_token'] = ucwords(md5(123));
+            $data['status'] = NULL;
+
+            try{
+                Student::where('id', $id)->update($data);
+            }
+            catch(\Exception $e)
+            {
+                return $e;
+            }
+
             $emailData = [
                 'email_to' => $student->email,
                 'subject' => 'Email Verification | Sign Up at Live Education BD',
-                'comments' => 'Hello '.$student->name.',<br> Your email verification link below. Click on the link to verify your account. <a target="_blank" href="'.$source->host().'/account_verify/'.$student->remember_token.'">'.$source->host().'/account_verify/'.$student->remember_token.'</a> Otherwise, browse the URL. '
+                'comments' => 'Hello '.$student->name.',<br> Your email verification link below. Click on the link to verify your account. <a target="_blank" href="'.$source->host().'/account_verify/'.$remember_token.'">'.$source->host().'/account_verify/'.$remember_token.'</a> Otherwise, browse the URL. '
             ];
     
             $source->sendMail($emailData);
