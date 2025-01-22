@@ -242,11 +242,18 @@ class StudentHomeCtrl extends Controller
   {
     // serve questions according to the paper
     $paper = Paper::find($paper_id);
-    $questions = $paper->questions()->with('mcqitems')->paginate(5);
+    $questions = $paper->questions()->select('id', 'title')->with('mcqitems')->paginate(5);
     // dd($questions);
+
+    $success = false;
+    if(!is_null($questions))
+    {
+      $success = true;
+    }
+
     return response()->json(
       [
-        'success' => true,
+        'success' => $success,
         'questions' => $questions,
       ]
     );
@@ -506,5 +513,32 @@ class StudentHomeCtrl extends Controller
     {
       return $e;
     }
+  }
+
+  public function updatePaperAjax($id)
+  {
+    $paper = Paper::find($id);
+    try{
+      $result = Paper::where('id', $id)->update([
+        'status' => 'Published'
+      ]);
+
+      if($result)
+      {
+        return response()->json([
+          'success' => true,
+          'message' => 'The paper published'
+        ], 200);
+      }
+    }
+    catch(\Exception $e)
+    {
+      return $e;
+    }
+
+    return response()->json([
+      'success' => false,
+      'message' => 'The paper update failed'
+    ], 401);
   }
 }

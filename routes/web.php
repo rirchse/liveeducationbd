@@ -83,6 +83,7 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/syllabus/{id}/pdf', 'generatePDF')->name('students.syllabus.pdf');
 		Route::get('students/complain', 'complain')->name('students.complain');
 		Route::post('students/complain', 'complainStore')->name('students.complain.store');
+		Route::get('students/update-paper/{id}', 'updatePaperAjax')->name('paper.update.ajax');
 	});
 
 	Route::controller(SslCommerzPaymentController::class)->group(function()
@@ -203,6 +204,8 @@ Route::middleware(['auth'])->group(function()
 		Route::get('student/view/{id}/{name}', 'view')->name('student.view');
 		Route::get('student/remove/{id}/{name}/{obj}', 'remove')->name('student.remove');
 		Route::get('student/send_verify/{id}', 'sendVerifyEmail')->name('send.verify.email');
+
+		Route::post('student.search', 'search')->name('student.search');
 	});
 
 	Route::controller(SyllabusCtrl::class)->group(function()

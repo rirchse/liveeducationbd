@@ -41,14 +41,18 @@ function check($id)
           <div class="box-header">
             <h3 class="box-title">List of Students</h3>
             <div class="box-tools">
-              <a href="{{route('student.create')}}" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Add</a>
-              {{-- <div class="input-group input-group-sm" style="width: 150px;">
-                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                <div class="input-group-btn">
-                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              <form action="{{route('student.search')}}" method="post" style="width: 250px; float:left">
+                @csrf
+                <div class="input-group input-group-sm">
+                  <input type="text" name="value" class="form-control pull-right" placeholder="Search" required>
+  
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
                 </div>
-              </div> --}}
+              </form>
+              <a href="{{route('student.create')}}" class="btn btn-sm btn-info" style="margin-left:15px"><i class="fa fa-plus"></i> Add</a>
+              <a href="{{route('student.index')}}" class="btn btn-sm btn-success" style=""><i class="fa fa-list"></i> All</a>
             </div>
           </div>
           <!-- /.box-header -->

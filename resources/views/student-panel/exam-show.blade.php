@@ -77,7 +77,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
             <!-- load all questions here -->
           </div> <!--/.col -->
 
-          <button class="btn btn-info pull-right" onclick="submitExam()">Submit</button>
+          <button class="btn btn-info btn-lg pull-right" onclick="submitExam()" style="display: none" id="submit-btn">Submit</button>
         </div><!-- /.row -->
         @else
         <p>We are getting trouble to sit you to the exam, right now. Please try again later. <a href="{{route('students.exam')}}">Go back to the exam page</a></p>
@@ -142,13 +142,14 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
 
     function scrollProducts()
     {
+      // let last_page = 3;
       let paper_id = '{{$paper->id}}';
       var end = $("#footer").offset().top;
       var viewEnd = $(window).scrollTop() + $(window).height();
       var distance = end - viewEnd;
 
       // when we're almost at the bottom
-      if (distance < 900)  {
+      if (distance < 900){
         // unbind to prevent excessive firing
         $(window).off('scroll', scrollProducts);
         // console.log('we reached the bottom');
@@ -160,10 +161,14 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
             // console.log("success!");
             // $('#container').append(data).fadeIn();
             // rebind after successful update
-            if(data.success == true && data.questions.data.length > 0){
-          // call to the data writer on the html
-          writeQuestion(data);
-        }
+            if(data.success == true && data.questions.data.length > 0)
+            {
+              // console.log(data.qeustions.last_page);
+              // last_page = data.questions.last_page;
+              // call to the data writer on the html
+              writeQuestion(data);
+            }
+
             $(window).on('scroll', scrollProducts);
             page++;
           }
@@ -175,15 +180,19 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
   // on scroll load questions end
   
   let index = 1;
+  let total_question = 0;
   // data writer on the question area
   function writeQuestion(data)
   {
     data.questions.data.forEach((e, n) => 
     {
-      // console.log(e.mcqitems);
+      // console.log(data.questions.total);
       let mcqs = '';
-      // let q_display = (e.display == 'One') ? 'hide' : '';
-      // console.log(q_display);
+      let display_type = '{{$paper->display}}';
+      let q_display = display_type == 'One' && index != 1 ? 'hide' : '';
+      let nextBtn = display_type == 'One' ?'<div class="panel-footer">'+
+        '<button class="btn btn-success" onclick="showNextQuestion(this)">Next <i class="fa fa-long-arrow-right"></i></button>'+
+      '</div>':'';
       
       e.mcqitems.forEach(i => {
         mcqs += '<li>'+
@@ -195,15 +204,21 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
       });
 
       let question = document.createElement('div');
-      question.setAttribute('class', 'panel panel-default ');
+      question.setAttribute('class', 'panel panel-default '+q_display);
       question.innerHTML = '<div class="panel-heading question-title-main">'+
         '<div class="question-title">প্রশ্ন '+Number(index)+'.</div>'+
         '<div class="question-title-text">'+e.title+'</div>'+
       '</div>'+
-      '<ul class="mcqitems" id="'+e.id+'">'+mcqs+'</ul>';
+      '<ul class="mcqitems" id="'+e.id+'">'+mcqs+'</ul>'+nextBtn;
 
       questions_area.append(question);
       index++;
+
+      //enable submit button after reach to the last question
+      if(data.questions.total == index && display_type != 'One')
+      {
+        document.getElementById('submit-btn').style.display = 'block';
+      }
     });
   }
 
@@ -218,9 +233,11 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
     }
     else
     {
-      questionArea.innerHTML = '<div class="panel panel-default"> <div class="panel-body"> Exam Completed. You can Submit now! </div></div>';
+      questionArea.innerHTML = '<div class="panel panel-default">'+
+        '<div class="panel-body"> Exam Completed. You can Submit now! </div>'+
+        '<button class="btn btn-info btn-lg pull-right" onclick="submitExam()" id="submit-btn" style="margin-top:15px">Submit</button>'+
+        '</div>';
     }
-    // console.log(e.parentNode.parentNode.nextElementSibling);
   }
   
   // Set the date we're counting down to

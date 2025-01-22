@@ -14,6 +14,17 @@
       <div class="col-md-4">
         <br>
         <img src="/img/logo.png" alt="" class="footer-logo">
+        <ul class="social-icons">
+          <!-- <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li> -->
+          <li>
+            <a target="_blank" href="https://www.facebook.com/saeonlineexamgroup?mibextid=ZbWKwL">
+              <div class="fa fa-facebook"></div>
+              <span class="label">Facebook</span>
+            </a>
+          </li>
+          <!-- <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li> -->
+          <!-- <li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li> -->
+        </ul>
       </div>
       <div class="col-md-4">
         <br>
@@ -40,17 +51,6 @@
         </address>
       </div>
         <div class="copyright">
-          <ul class="social-icons">
-            <!-- <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li> -->
-            <li>
-              <a target="_blank" href="https://www.facebook.com/saeonlineexamgroup?mibextid=ZbWKwL">
-                <div class="fa fa-facebook"></div>
-                <span class="label">Facebook</span>
-              </a>
-            </li>
-            <!-- <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li> -->
-            <!-- <li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li> -->
-          </ul>
           <p style="text-align: center">
             <img src="/img/pay-buttons.png" alt="" style="width:100%">
           </p>

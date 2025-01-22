@@ -458,4 +458,21 @@ class StudentCtrl extends Controller
 
         return back();
     }
+
+    public function search(Request $request)
+    {
+        $this->validate($request, [
+            'value' => 'string'
+        ]);
+
+        $students = Student::orderBy('id', 'DESC')
+        ->where('name', 'like', '%'. $request->value.'%')
+        ->orWhere('email', 'like', '%'. $request->value.'%')
+        ->orWhere('contact', 'like', '%'. $request->value.'%')
+        ->paginate(25);
+
+        // dd($students);
+
+        return view('layouts.students.index', compact('students'));
+    }
 }
