@@ -69,7 +69,7 @@ $url = route('paper.addtopaper');
             <form action="{{route('question.view.post')}}" method="POST" id="filter_form" onsubmit="event.preventDefault(); ajaxFilter()">
               @csrf
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label for="">Course</label>
                     <select name="course_id" id="course_id" class="form-control select2" onchange="getDepartments(this)">
@@ -80,7 +80,7 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label for="">Department</label>
                     <select name="department_id" id="department_id" class="form-control select2" onchange="getSemesters(this); getSubjects(this)">
@@ -91,7 +91,7 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3" id="semester">
+                <div class="col-md-2" id="semester">
                   <div class="form-group">
                     <label for="">Semester</label>
                     <select name="semester_id" id="semester_id" class="form-control select2" onchange="getSubjects(this)">
@@ -102,7 +102,7 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label for="">Subjects</label>
                     <select name="subject_id" id="subject_id" class="form-control select2" onchange="getChapters(this)">
@@ -113,7 +113,7 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label for="">Chapter</label>
                     <select name="chapter_id" id="chapter_id" class="form-control select2">
@@ -124,7 +124,7 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label for="">Type</label>
                     <select name="type" id="" class="form-control">
@@ -135,7 +135,7 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label for="">Created By</label>
                     <select name="created_by" id="created_by" class="form-control select2">
@@ -146,7 +146,25 @@ $url = route('paper.addtopaper');
                     </select>
                   </div>
                 </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="">Start Date</label>
+                    <input type="date" name="start" id="start" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="">End Date</label>
+                    <input type="date" name="end" id="end" class="form-control">
+                  </div>
+                </div>
                 <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="">Question Title</label>
+                    <input name="title" id="title" class="form-control" placeholder="Search by question's title">
+                  </div>
+                </div>
+                <div class="col-md-2">
                   <div class="form-group">
                     <br>
                     <input class="btn btn-primary" type="submit" value="Submit">

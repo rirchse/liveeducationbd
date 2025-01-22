@@ -133,6 +133,17 @@ class QuestionCtrl extends Controller
             $questions = $questions->where('created_by', $data['created_by']);
         }
 
+        if(isset($data['start']))
+        {
+            $questions = $questions->whereRaw('DATE(created_at) >= ?', [$data['start']])
+            ->whereRaw('DATE(created_at) <= ?', [$data['end']]);
+        }
+
+        if(isset($data['title']))
+        {
+            $questions = $questions->where('title', 'like', '%'.$data['title'].'%');
+        }
+
         $questions = $questions->paginate(25);
 
         $cat = [
