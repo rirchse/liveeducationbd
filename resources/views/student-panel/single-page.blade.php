@@ -17,8 +17,6 @@ if($user)
   .checkbox{padding-left: 25px}
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>Single Page {{-- <small>Page 2.0</small> --}} </h1>
@@ -37,8 +35,6 @@ if($user)
         {!! $page->details !!}
       </div>
     </section> <!-- /.content -->
-  {{-- </div> <!-- /.container -->
-</div> --}}
 
 <script>
 </script>

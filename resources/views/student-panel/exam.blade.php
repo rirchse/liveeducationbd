@@ -16,8 +16,6 @@ if($user)
   .checkbox{padding-left: 25px}
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1> পরীক্ষা সমূহ {{-- <small>পরীক্ষা সমূহple 2.0</small> --}} </h1>
@@ -30,13 +28,14 @@ if($user)
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 no-padding">
           @if( !empty($student) && $student->batches()->count() )
         @foreach($student->batches()->orderBy('batches.id', 'DESC')->get() as $batch)
         @php
         $batch_papers = $batch->papers->whereIn('status', ['Published', 'Scheduled']);
         @endphp
           @if($batch_papers)
+          <div class="col-md-12 box box-info"><h4>{{$batch->name}}</h4></div>
             @foreach($batch_papers as $key => $paper)
               @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
                 <div class="col-md-3">
@@ -82,6 +81,8 @@ if($user)
                   </div>
                 </a>
                 </div>
+              @else
+              <p style="color:white">Exams will publish soon!</p>
               @endif
             @endforeach
           @endif
@@ -89,6 +90,7 @@ if($user)
         <div class="row"></div>
 
       @if($papers)
+      <div class="col-md-12 box box-info"><h4>Free Exams</h4></div>
       @foreach($papers as $paper)
       <div class="col-md-3">
         <a href="{{route('students.check', $paper->id)}}">
@@ -113,11 +115,7 @@ if($user)
       @endif
         </div>
       </div>
-
-      
     </section> <!-- /.content -->
-  {{-- </div> <!-- /.container -->
-</div> --}}
 
 <script>
   function showPassword(e)

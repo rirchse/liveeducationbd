@@ -12,9 +12,6 @@ if($user)
 {{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style> </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
-
     <!-- Main content -->
     <section class="content">
       <div class="box box-info">
@@ -97,6 +94,4 @@ if($user)
       </div> <!-- /.box -->
 
     </section> <!-- /.content -->
-  {{-- </div> <!-- /.container -->
-</div> --}}
 @endsection

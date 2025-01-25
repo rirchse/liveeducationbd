@@ -30,8 +30,6 @@ $value = $batch;
   }
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container no-padding"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1> Course {{-- <small>Courseple 2.0</small> --}} </h1>
@@ -149,8 +147,6 @@ $value = $batch;
         </div><!-- column -->
       </div>
     </section> <!-- /.content -->
-  {{-- </div> <!-- /.container -->
-</div> --}}
 @endsection
 @section('scripts')
 <script>

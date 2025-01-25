@@ -41,8 +41,6 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
   .question-title-main{background-color:none}
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header"></section>
 

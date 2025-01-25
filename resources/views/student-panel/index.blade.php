@@ -18,9 +18,6 @@ if($user)
   .hover:hover{border:2px solid #080}
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
-
     <!-- Main content -->
     <section class="content">
       <div class="row-fluid">
@@ -157,6 +154,4 @@ if($user)
         <div class="clearfix"></div>
       </div>
     </section> <!-- /.content -->
-  {{-- </div> <!-- /.container -->
-</div> --}}
 @endsection

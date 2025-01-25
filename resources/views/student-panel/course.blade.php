@@ -12,8 +12,6 @@ $user = Auth::guard('student')->user();
   .course-image{width:100%}
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>চলমান কোর্স সমূহ </h1>
@@ -57,9 +55,6 @@ $user = Auth::guard('student')->user();
         @endif
       </div>
     </section> <!-- /.content -->
-
-  {{-- </div> <!-- /.container -->
-</div> --}}
 
 <script></script>
 @endsection

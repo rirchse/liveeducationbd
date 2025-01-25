@@ -7,14 +7,19 @@ $source = New SourceCtrl;
 @section('title', 'Solution')
 @section('content')
 <style>
-  .mcqitems{list-style: none; padding-left: 10px}
-  .mcqitems li{padding: 10px}
+  .mcqitems{list-style: none; padding-left: 10px; }
+  .mcqitems li{padding: 10px;list-style: none; }
   .banner{margin-top:15px}
   .banner img{width:100%}
-  .questions{margin: auto}
+  .questions{margin: auto; font-size:12px}
+  @media screen and (max-width:768px){
+    .questions{}
+  }
+  @media screen and (min-width:769px){
+    .questions{width:750px; columns:360px 2; column-gap:30px; column-rule: 1px solid #888;}
+    .mcqitems{width:340px; column-width:140px}
+  }
 </style>
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>Solution</h1>
@@ -57,17 +62,17 @@ $source = New SourceCtrl;
           <h3 style="text-align: center;border-bottom:2px solid #ddd; padding-bottom:15px">
             Solution Paper
           </h3>
-            <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888; font-size:12px">
+            <div class="questions">
               @foreach($paper->questions as $key => $value)
               @php
               $correct_ans = '';
               @endphp
               
               <div class="question">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline; font-weight:bold; float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.</div>
                 <div style="display: inline; text-align:justify">{!! $value->title !!}</div>
 
-                <div class="mcqitems" style="list-style: none; width:360px; column-width:140px">
+                <div class="mcqitems">
                   @foreach($value->mcqitems as $k => $val)
                   @php
                   if($val->correct_answer)
@@ -97,8 +102,6 @@ $source = New SourceCtrl;
       </div><!-- /.col -->
     </div><!-- /.row -->
   </section><!-- /.content -->
-  {{-- </div>
-</div> --}}
    
 @endsection
 @section('scripts')

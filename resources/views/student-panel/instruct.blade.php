@@ -17,8 +17,6 @@ if($user)
   .checkbox{padding-left: 25px}
 </style>
 
-{{-- <div class="content-wrapper">
-  <div class="container"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1> পরীক্ষা সমূহ {{-- <small>পরীক্ষা সমূহple 2.0</small> --}} </h1>
