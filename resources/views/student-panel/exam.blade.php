@@ -30,7 +30,7 @@ if($user)
       <div class="row">
         <div class="col-md-12 no-padding">
           @if( !empty($student) && $student->batches()->count() )
-        @foreach($student->batches()->orderBy('batches.id', 'DESC')->get() as $batch)
+        @foreach($student->batches()->orderBy('batches.id', 'DESC')->where('status', 'Active')->get() as $batch)
         @php
         $batch_papers = $batch->papers->whereIn('status', ['Published', 'Scheduled']);
         @endphp
@@ -42,7 +42,7 @@ if($user)
                   <a href="{{route('students.check', $paper->id)}}">
                   <div class="panel" style="min-height: 130px">
                     <div class="panel-heading">Live Education BD</div>
-                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{substr($paper->name, 0, 45)}}...</b>
+                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{substr($paper->name, 0, 30)}}...</b>
                     </div>
                     <p style="padding:0 15px">Batch: <b>{{substr( $batch->name, 0, 20)}} ...</b></p>
                     <div class="panel-footer no-padding">
@@ -82,7 +82,7 @@ if($user)
                 </a>
                 </div>
               @else
-              <p style="color:white">Exams will publish soon!</p>
+              {{-- <p style="color:white">Exams will publish soon!</p> --}}
               @endif
             @endforeach
           @endif
