@@ -133,7 +133,7 @@ if($complains)
             </span>
           </a>
           <ul class="treeview-menu">
-            {{-- <li><a href="{{route('exam.live')}}"><i class="fa fa-live"></i>Live Exams</a></li> --}}
+            <li><a href="{{route('exam.live')}}"><i class="fa fa-bullseye"></i>Live Exams</a></li>
             {{-- <li><a href="{{route('exam.view')}}"><i class="fa fa-th-large"></i>View Exams</a></li> --}}
             <li><a href="{{route('exam.index')}}"><i class="fa fa-pencil"></i>View All Exams</a></li>
             {{-- <li><a href="#"><i class="fa fa-server"></i> MCQ</a></li>

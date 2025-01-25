@@ -33,6 +33,21 @@ class ExamCtrl extends Controller
         return view('layouts.exams.index', compact('exams'));
     }
 
+    public function live()
+    {
+        $exams = Exam::orderBy('id','DESC')
+        ->where('status', 'Live')
+        ->whereRaw('DATE(created_at) = ?', [date('Y-m-d')])
+        ->paginate(100);
+
+        // return response()->json([
+        //     'success' => true,
+        //     'exams' => $exams
+        // ]);
+        
+        return view('layouts.exams.live', compact('exams'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
