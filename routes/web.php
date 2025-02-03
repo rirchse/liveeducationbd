@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\StudentLogin;
 use App\Http\Controllers\Students\StudentHomeCtrl;
 use App\Http\Controllers\HomePageCtrl;
@@ -36,6 +37,7 @@ Route::controller(HomePageCtrl::class)->group(function()
 	Route::get('home/course/{id}', 'courseShow')->name('home.course.show');
 	Route::get('home/pages/{slug}', 'page')->name('home.page');
 });
+
 Route::get('/login', function()
 {
 	return view('auth.login');
@@ -58,6 +60,19 @@ Route::controller(StudentLogin::class)->group(function()
 	Route::get('students/login', 'login')->name('students.login');
 	Route::post('students/login', 'loginPost')->name('students.login.post');
 	Route::post('students/logout', 'logout')->name('students.logout');
+});
+
+Route::controller(ForgotPasswordController::class)->group(function()
+{
+	Route::get('students/forgot-password', function() {
+		return view('auth.passwords.email');
+	})->middleware('guest')->name('password.request');
+	
+	Route::post('students/email-password', 'emailPassword')->name('password.email');
+
+	Route::get('/reset-password/{token}', 'passwordReset')->middleware('guest')->name('password.reset');
+
+	Route::post('password.update', 'updatePassword')->name('password.update');
 });
 
 Route::middleware('auth:student')->group(function()
@@ -84,6 +99,7 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/complain', 'complain')->name('students.complain');
 		Route::post('students/complain', 'complainStore')->name('students.complain.store');
 		Route::get('students/update-paper/{id}', 'updatePaperAjax')->name('paper.update.ajax');
+		Route::get('students/profile', 'profile')->name('students.profile');
 	});
 
 	Route::controller(SslCommerzPaymentController::class)->group(function()
@@ -221,6 +237,10 @@ Route::middleware(['auth'])->group(function()
 		Route::get('/exam-live', 'live')->name('exam.live');
 		Route::post('/exam/view', 'view')->name('exam.view');
 		Route::get('/exam/paper/{exam_id}', 'paper')->name('exam.paper');
+	});
+
+	Route::controller(ComplainCtrl::class)->group(function(){
+		Route::post('/complain-reply', 'reply')->name('complain.reply');
 	});
 	
 });

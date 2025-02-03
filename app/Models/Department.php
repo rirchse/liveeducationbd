@@ -50,4 +50,9 @@ class Department extends Model
     {
         return $this->belongsToMany(Student::class);
     }
+
+    public function complain()
+    {
+        return $this->hasOne(Complain::class, 'department_id');
+    }
 }

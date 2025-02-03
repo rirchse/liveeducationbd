@@ -55,12 +55,12 @@ class StudentLogin extends Controller
             'password' => 'required|max:32'
         ]);
 
-        $user = Student::where('email', $request->email)->first();
-        if($user->status != 'Active')
-        {
-            Session::flash('error', 'Please check your email and verify the account.');
-            return back();
-        }
+        // $user = Student::where('email', $request->email)->first();
+        // if($user->status != 'Active')
+        // {
+        //     Session::flash('error', 'Please check your email and verify the account.');
+        //     return back();
+        // }
 
         $email    = $request->email;
         $password = $request->password;
@@ -68,7 +68,7 @@ class StudentLogin extends Controller
         if(Auth::guard('student')->attempt([
             'email' => $email,
             'password' => $password,
-            'status' => 'Active'
+            // 'status' => 'Active'
         ], $remember = true))
         {
             return redirect()->intended('students/my-course');

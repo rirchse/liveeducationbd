@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
+use App\Http\Controllers\Students\StudentHomeCtrl;
+use Session;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -26,6 +28,7 @@ class SslCommerzPaymentController extends Controller
     public function index(Request $request)
     {
         $data = $request->all();
+
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
@@ -171,6 +174,7 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+        $studentctrl = new StudentHomeCtrl;
         echo "Transaction is Successful";
 
         $tran_id = $request->input('tran_id');
@@ -183,6 +187,8 @@ class SslCommerzPaymentController extends Controller
         $order_details = DB::table('orders')
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
+        //add student to the batch and department
+        $studentctrl->courseApplied(Session::get('_confirm'));
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -196,9 +202,10 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
+                $redirect_url = route('students.my-course');
 
                 echo "<br >Transaction is successfully Completed. Back to the homepage or <p>It will automatic redirect to you ... ";
-                echo "<script> setTimeout('window.location.href=\"/\"', 5000);</script>";
+                echo "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
             }
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             /*

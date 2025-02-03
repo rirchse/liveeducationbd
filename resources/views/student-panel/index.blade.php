@@ -21,16 +21,19 @@ if($user)
     <!-- Main content -->
     <section class="content">
       <div class="row-fluid">
-        <img src="/img/online-education.jpg" alt="" style="width:100%">
+        <div class="hero" style="background: url(/img/online-education.jpg) 100%; min-height:200px">
+          
+        </div>
+        {{-- <img src="" alt="" style="width:100%"> --}}
         <br>
-        <div class="box box-info">
+        {{-- <div class="box box-info">
           <div class="box-header with-border">
             <h3 class="box-title">আমাদের সম্পর্কে জানুন</h3>
           </div>
           <div class="box-body">
             Coming Soon...
           </div>
-        </div>
+        </div> --}}
       </div>
       <div class="box box-info">
         <div class="box-header with-border">

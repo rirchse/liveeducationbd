@@ -52,7 +52,7 @@ $source = New SourceCtrl;
                   <td>{{$val->id}}</td>
                   <td>{{$val->name}}</td>
                   <td>
-                    <a href="{{route('student.view', [$val->id, 'batch'])}}" class="btn btn-info">{{$val->students()->count()}}</a>
+                    <a href="{{route('student.view', [$val->id, 'department'])}}" class="btn btn-info">{{$val->students()->count()}}</a>
                   </td>
                   <td>
                     @foreach($val->courses as $value)

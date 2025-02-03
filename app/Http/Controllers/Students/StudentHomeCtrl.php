@@ -49,6 +49,12 @@ class StudentHomeCtrl extends Controller
     return redirect()->route('students.my-course');
   }
 
+  public function profile()
+  {
+    $user = Auth::guard('student')->user();
+    return view('student-panel.profile', compact('user'));
+  }
+
   public function course()
   {
     $courses = Batch::orderBy('id', 'DESC')->where('status', 'Active')->get();
@@ -57,6 +63,7 @@ class StudentHomeCtrl extends Controller
 
   public function courseShow($id)
   {
+    // dd(Session::get('_order'));
     $batch = Batch::find($id);
     // $batches = Batch::where('status', 'Active')->get();
     $departments = $batch->departments()->where('status', 'Active')->get();
@@ -84,6 +91,7 @@ class StudentHomeCtrl extends Controller
     Session::put('_confirm', [
       'batch_id' => $data['batch_id'],
       'department_id' => $data['department_id'],
+      'student_id' => $student->id,
     ]);
 
     return redirect()->route('students.course.confirm');
@@ -101,13 +109,16 @@ class StudentHomeCtrl extends Controller
     return redirect()->route('students.course');
   }
 
-  public function courseApplied()
+  public function courseApplied($data)
   {
-    $student->batches()->attach($request->batch_id);
-    $student->departments()->attach($request->department_id);
+    $student = Student::find($data['student_id']);
+    $student->batches()->attach($data['batch_id']);
+    $student->departments()->attach($data['department_id']);
 
-    Session::flash('success', 'You have successfully applied to the course.');
-    return redirect()->route('students.my-course');
+    return true;
+
+    // Session::flash('success', 'You have successfully applied to the course.');
+    // return redirect()->route('students.my-course');
   }
 
   public function myCourse()
@@ -264,7 +275,12 @@ class StudentHomeCtrl extends Controller
     $result = [];
     $position = '';
     $user = Auth::guard('student')->user();
-    $exams = Exam::where('student_id', $user->id)->where('paper_id', $id)->get();
+
+    $exams = Exam::orderBy('id', 'DESC')
+    ->where('student_id', $user->id)
+    ->where('paper_id', $id)
+    ->get();
+
     $paper = Paper::find($id);
     if($value == 'after')
     {
@@ -286,7 +302,7 @@ class StudentHomeCtrl extends Controller
 
     $candidates = $all_exams->count();
     
-    if($paper->result_view == 'Yes')
+    if($paper->result_view == 'Yes' || $paper->result_at < date('Y-m-d H:i:s'))
     {
       $result['result'] = 'Yes';
     }
@@ -541,4 +557,11 @@ class StudentHomeCtrl extends Controller
       'message' => 'The paper update failed'
     ], 401);
   }
+
+  // public function checkout(Request $request)
+  // {
+  //   $this->validate($request, [
+  //     //
+  //   ]);
+  // }
 }

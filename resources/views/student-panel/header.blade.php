@@ -1,11 +1,14 @@
 <?php
+
+use \App\Http\Controllers\SourceCtrl;
+$source = New SourceCtrl;
+
 $user = [];
 if(Auth::guard('student')->user())
 {
   $user = Auth::guard('student')->user();
 }
-// $uri = explode('/', $_SERVER['REQUEST_URI']);
-// dd($_SERVER['REQUEST_URI']);
+
 function active($name)
 {
   $uri = explode('/', $_SERVER['REQUEST_URI']);
@@ -140,12 +143,15 @@ function active($name)
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
-              <li class="user-header">
+              <li class="user-header" style="height: 100%">
                 <img src="{{$user->image ? :'/img/avatar.png' }} " class="img-circle" alt="User Image"/>
-                <p style="color: #000">
-                  {{$user->name}}
-                  {{-- <small>Member since Nov. 2012</small> --}}
-                </p>
+                <h4 style="color: #000">
+                  {{$user->name}}</br>
+                  <small>Reg. ID: {{$source->numset($user->id, 6)}}<br>
+                  {{$user->email}}</br>
+                  {{$user->contact}}</small>
+                  </h4>
+                <div class="clearfix"></div>
               </li>
               <!-- Menu Body -->
               {{-- <li class="user-body">
@@ -164,7 +170,7 @@ function active($name)
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  {{-- <a href="#" class="btn btn-default btn-flat">Profile</a> --}}
+                  <a href="{{route('students.profile')}}" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <form action="{{route('students.logout')}}" method="post">

@@ -45,6 +45,10 @@ class StudentCtrl extends Controller
         {
             $object = Group::find($id);
         }
+        elseif($name == 'department')
+        {
+            $object = Department::find($id);
+        }
         elseif($name == 'batch')
         {
             $object = Batch::find($id);
@@ -328,6 +332,10 @@ class StudentCtrl extends Controller
         if($name == 'group')
         {
             $student->groups()->detach($objid);
+        }
+        elseif($name == 'department')
+        {
+            $student->departments()->detach($objid);
         }
         elseif($name == 'batch')
         {

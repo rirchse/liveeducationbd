@@ -20,14 +20,14 @@ $value = $batch;
   .course-image{width:100%}
   .teacher-title p{margin:0}
   .box-title {display: block;width:100%}
-  @media(min-width: 769px){
+  /* @media(min-width: 769px){
     .pricing{float: right;}
     .info{}
   }
   @media(max-width: 768px){
     .pricing{}
     .info{}
-  }
+  } */
 </style>
 
     <!-- Content Header (Page header) -->
@@ -42,20 +42,23 @@ $value = $batch;
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-md-4 pricing">
+        <div class="col-md-6 col-md-offset-3 pricing">
           <!-- Apply to the course -->
           <form action="{{route('payment.proceed')}}" method="post">
             @csrf
+            @if(Session::get('_confirm'))
             <input type="hidden" name="batch_id" value="{{$value->id}}">
             
             <input type="hidden" name="name" value="{{$student->name}}" />
+            <input type="hidden" name="student_id" value="{{$student->id}}" />
+            <input type="hidden" name="department_id" value="{{$department->id}}" />
             <input type="hidden" name="email" value="{{$student->email}}" />
             <input type="hidden" name="phone" value="{{$student->contact}}" />
             <input type="hidden" name="address1" value="" />
             <input type="hidden" name="total" value="{{$value->net_price}}" />
             <div class="panel panel-default">
               <div class="penel-heading no-padding" style="text-align: center;padding:15px">
-                <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
+                {{-- <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" /> --}}
               </div>
               <div class="panel-heading">
                 <h3>
@@ -92,59 +95,14 @@ $value = $batch;
               </div>
               @endif
               <div class="panel-footer">
-                  <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$value->net_price}} পেমেন্ট করুন</button>
+                  <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$value->net_price}} কনফার্ম করুন</button>
                 <div class="clearfix"></div>
               </div>
             </div>
+            @endif
           </form>
           <div class="clearfix"></div>
         </div>
-        <div class="col-md-8 info">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3>{{$value->name}} <br><small>Course: <b>{{$value->course ? $value->course->name:''}}</b></small></h3>
-              @if($value->reg_end_at)
-              <p style="text-align: center; color:red">রেজিস্ট্রেশনের মেয়াদ  আছে: <b><span id="timer"></span></b>
-              </p>
-              @endif
-            </div>
-            <div class="panel-body" style="min-height: 200px">
-              {!!$value->short!!}
-            </div>
-          </div>
-          
-          <div class="panel panel-warning">
-            <div class="panel-heading"><h4>কোর্সটির মেয়াদ ও অন্যান্য</h4></div>
-            <div class="panel-body table-responsive">
-              <table class="table table-bordered">
-                @if($value->start_at)
-                <tr>
-                  <td>কোর্সটি শুরু হয়েছে</td>
-                  <th>{{$source->dformat($value->start_at)}}</th>
-                </tr>
-                @endif
-                @if($value->end_at)
-                <tr>
-                  <td>কোর্সটি শেষ হবে</td>
-                  <th>{{$source->dformat($value->end_at)}}</th>
-                </tr>
-                @endif
-                @if($value->reg_end_at)
-                <tr>
-                  <td>রেজিস্ট্রেশনের মেয়াদ শেষ হবে</td>
-                  <th>{{$source->dtformat($value->reg_end_at)}}</th>
-                </tr>
-                @endif
-                @if($value->offer_end_at)
-                <tr>
-                  <td>বর্তমান অফারের মেয়াদ</td>
-                  <th>{{$source->dtformat($value->offer_end_at)}}</th>
-                </tr>
-                @endif
-              </table>
-            </div>
-          </div>
-        </div><!-- column -->
       </div>
     </section> <!-- /.content -->
 @endsection

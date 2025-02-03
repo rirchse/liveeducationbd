@@ -10,4 +10,9 @@ class Complain extends Model
     {
         return $this->belongsTo(Batch::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

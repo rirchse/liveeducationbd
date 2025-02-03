@@ -8,6 +8,7 @@ if($user)
   $student = \App\Models\Student::find($user->id);
 }
 $value = $batch;
+// dd(Session::get('_order'));
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -170,10 +171,42 @@ $value = $batch;
             <div class="panel-body">{!! $value->routine !!}</div>
           </div>
           @endif
-          @if($value->departments)
+          
+          @php
+          $course_syllabuses = [];
+          if($value->syllabus)
+          {
+            $course_syllabuses = $value->syllabus->where('department_id', NULL)->get();
+          }
+          @endphp
+
+          @if($value->departments || $course_syllabuses)
           <div class="panel panel-default">
             <div class="panel-heading"><h4>কোর্স সিলেবাস</h4></div>
             <div class="box-group" id="accordion">
+
+              @if($course_syllabuses)
+              <div class="panel box box-warning">
+                <div class="box-header with-border">
+                  <div class="box-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#batch_syllabus">
+                      ব্যাচ এর সিলেবাস সমূহ
+                      <span class="pull-right-container">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <div id="batch_syllabus" class="panel-collapse collapse">
+                  <div class="box-body">
+                    @foreach($course_syllabuses as $key => $syllabus)
+                    <p><b><a href="{{route('student.syllabus', $syllabus->id)}}">{{$syllabus->name}}</a></b></p>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              @endif
+
               @foreach($value->departments as $key => $department)
               <div class="panel box box-primary">
                 <div class="box-header with-border">
@@ -196,15 +229,15 @@ $value = $batch;
                         <td>
                           @if(!empty($student))
                           
-                          @if($department->syllabus->pdf)
-                          সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
-                          @endif
+                            @if($department->syllabus->pdf)
+                            সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                            @endif
 
                           @else
 
-                          @if($department->syllabus->sample_pdf)
-                          স্যাম্পল সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
-                          @endif
+                            @if($department->syllabus->sample_pdf)
+                            স্যাম্পল সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                            @endif
 
                           @endif
                         </td>
@@ -220,6 +253,7 @@ $value = $batch;
             </div>
           </div>
           @endif
+
           @if($value->details)
           <div class="panel panel-default">
             <div class="panel-heading"><h4>কোর্স সম্পর্কে বিস্তারিত</h4></div>
@@ -248,7 +282,7 @@ $value = $batch;
 <div class="modal fade" id="paymentConfirm" style="display: none;">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="{{route('payment.proceed')}}" method="post">
+      <form action="{{route('students.course.apply')}}" method="post">
         @csrf
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -321,7 +355,7 @@ $value = $batch;
 
           {{-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> --}}
           
-          <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$source->point0($value->net_price)}} পেমেন্ট করুন</button>
+          <button class="btn btn-primary btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">পেমেন্ট এর জন্য এগিয়ে যান</button>
           <div class="clearfix"></div>
         </div>
       </form>

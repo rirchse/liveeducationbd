@@ -9,6 +9,12 @@ if($paper->random == 'Yes')
   // $questions = $paper->questions()->inRandomOrder()->get();
 }
 $start_at = strtotime(date('Y-m-d H:i:s'));
+
+$exam_id = null;
+if($exam)
+{
+  $exam_id = $exam->id;
+}
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -46,7 +52,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
 
     <!-- Main content -->
     <section class="content" id="content">
-        @if($exam)
+        @if($exam_id)
         <div class="row">
           <div class="box box-info" id="fixed">
             <div class="col-xs-4">
@@ -378,7 +384,7 @@ $start_at = strtotime(date('Y-m-d H:i:s'));
     
     let formData = new FormData();
     formData.append('paper_id', '{{$paper->id}}');
-    formData.append('exam_id', '{{$exam->id}}');
+    formData.append('exam_id', '{{$exam_id}}');
     formData.append('question_id', qids);
     formData.append('mcq_id', mcqids);
     formData.append('start_at', '{{$start_at}}');

@@ -3,6 +3,7 @@ use \App\Http\Controllers\SourceCtrl;
 $source = New SourceCtrl;
 $user = Auth::guard('student')->user();
 $percentage = $score = 0;
+$exam_index = $exams->count();
 @endphp
 @extends('student')
 @section('title', 'Course')
@@ -45,7 +46,7 @@ $percentage = $score = 0;
             @endif
             {!! $paper->header !!}
             <div class="panel-heading no-padding">
-              <h3 style="text-align: center">Exam: {{$key+1}}</h3>
+              <h3 style="text-align: center">Exam: {{$exam_index }}</h3>
             </div>
             <div class="panel-body">
               <table class="table table-bordered">
@@ -134,6 +135,9 @@ $percentage = $score = 0;
           </div>
           <div class="clearfix"></div>
         </div>
+          @php
+          $exam_index --;
+          @endphp
         @endforeach
       </div>
       @elseif(isset($result['message']))

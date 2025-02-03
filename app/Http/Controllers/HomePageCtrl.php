@@ -50,9 +50,7 @@ class HomePageCtrl extends Controller
 
   public function courseShow($id)
   {
-    // $course = Course::find($id);
     $batch = Batch::find($id);
-    // dd($batch);
     if($batch->departments()->where('status', 'Active')->get())
     {
       $departments = $batch->departments()->where('status', 'Active')->get();

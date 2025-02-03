@@ -209,5 +209,31 @@ class ComplainCtrl extends Controller
         //     'file' => $file
         // ]);
     }
+
+    public function reply(Request $request)
+    {
+        $source = new SourceCtrl;
+        $complain = Complain::find($request->complain_id);
+
+        $emailData = [
+            'email_to' => $complain->email,
+            'subject' => 'Reply from Live Education BD',
+            'comments' => 'Hello '.$complain->name.',<br> '.$request->reply_message
+        ];
+
+        $source->sendMail($emailData);
+
+        try {
+            Complain::where('id', $complain->id)->update(['status' => 'Replied']);
+        }
+        catch(\Exception $e)
+        {
+            return $e;
+        }
+
+        Session::flash('success', 'Your message successfully sent.');
+        return back();
+
+    }
     
 }

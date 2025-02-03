@@ -151,4 +151,9 @@ class SourceCtrl extends Controller
 
     return $returnable;
   }
+
+  public function numset($num, $count = null)
+  {
+    return str_pad($num, $count, '0', STR_PAD_LEFT);
+  }
 }
