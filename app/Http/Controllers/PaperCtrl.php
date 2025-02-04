@@ -223,19 +223,20 @@ class PaperCtrl extends Controller
      */
     public function destroy($id)
     {
-        $file = AnswerFile::find($id);
-        $xfile = public_path($file->file);
+        $paper = Paper::find($id);
+        $xbanner = public_path($paper->banner);
            
-        if (File::exists($xfile)) {
-            File::delete($xfile);
+        if (File::exists($xbanner)) {
+            File::delete($xbanner);
         }
-        $file->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'File successfully deleted!',
-            'file' => $file
-        ]);
+        //remove attached questions
+        $paper->questions()->detach();
+
+        $paper->delete();
+
+        Session::flash('success', 'The question paper successfully deleted!');
+        return redirect()->route('paper.index');
     }
 
     //custom routes

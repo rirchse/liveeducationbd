@@ -49,6 +49,12 @@ $value = $paper;
             <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
 
             <a href="{{route('paper.edit', $value->id)}}" class="label label-warning" title="Edit this"><i class="fa fa-gear"></i></a>
+
+            <form action="{{route('paper.destroy', $value->id)}}" method="post" style="display: inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this question paper?')" title="Delete"><i class="fa fa-trash"></i></button>
+            </form>
           </div>
           <div class="col-md-12">
             <table class="table">
