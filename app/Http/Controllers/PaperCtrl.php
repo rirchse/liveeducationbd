@@ -360,5 +360,77 @@ class PaperCtrl extends Controller
         $exams = Exam::where('paper_id', $id)->orderBy('mark', 'DESC')->get();
         return view('layouts.papers.exam', compact('paper', 'exams', 'students'));
     }
+
+    public function copy($id)
+    {
+        $courses = Course::where('status', 'Active')->get();
+        $batches = Batch::where('status', 'Active')->get();
+        $departments = Department::where('status', 'Active')->get();
+        $groups = Group::where('status', 'Active')->get();
+        $paper = Paper::find($id);
+        return view('layouts.papers.copy', compact('paper', 'courses', 'batches', 'departments', 'groups'));
+    }
     
+    public function copyStore(Request $request)
+    {
+        $source = new SourceCtrl;
+        $validator = Validator::make($request->all(), [
+            'paper_id' => 'required|numeric',
+            'header' => 'required',
+            'banner' => 'mimes:jpeg,jpg,png,pdf|max:1000',
+        ]);
+        
+        $data = $request->all();
+        $paper = Paper::find($request->paper_id);
+        // dd($paper);
+
+        if(isset($data['paper_id']))
+        {
+            unset($data['paper_id']);
+        }
+
+        if(isset($data['_token']))
+        {
+            unset($data['_token']);
+        }
+
+        if(isset($data['_method']))
+        {
+            unset($data['_method']);
+        }
+
+        if(isset($data['banner']))
+        {
+            $data['banner'] = $source->uploadImage($data['banner'], 'papers/');
+        }
+        elseif(!is_null($paper->banner))
+        {
+            $data['banner'] = $paper->banner;
+        }
+
+        if(!isset($data['format']))
+        {
+            $data['format'] = 0;
+        }
+
+        try {
+            Paper::insert($data);
+            
+            //find questions
+            $questions = $paper->questions()->pluck('id')->toArray();
+            // dd($questions);
+
+            $paper = Paper::orderBy('id', 'DESC')->first();
+
+            //add questions
+            $paper->questions()->attach($questions);
+        }
+        catch(\Exception $e)
+        {
+            return $e;
+        }
+        
+        Session::flash('success', 'The question paper successfully copied.');
+        return redirect()->route('paper.show', $paper->id);
+    }
 }

@@ -205,6 +205,8 @@ Route::middleware(['auth'])->group(function()
 		Route::get('/paper/solution/{id}', 'solution')->name('paper.solution');
 		Route::get('/paper/result/{id}', 'result')->name('paper.result');
 		Route::get('/paper/result/csv/{id}', 'resultCsv')->name('paper.result.csv');
+		Route::get('/paper/copy/{id}', 'copy')->name('paper.copy');
+		Route::post('/paper/copy-store', 'copyStore')->name('paper.copy.store');
 	});
 
 	Route::controller(BatchCtrl::class)->group(function()

@@ -94,14 +94,14 @@ class ForgotPasswordController extends Controller
         ]);
 
         try{
-            Student::where('email', $request->email)->where('token', $request->token)->update(['password' => bcrypt($request->password)]);
+            Student::where('email', $request->email)->where('remember_token', $request->token)->update(['password' => bcrypt($request->password)]);
 
             Session::flash('success', 'Password successfully updated');
             return redirect()->route('students.login');
         }
         catch(\Exception $e)
         {
-            return $e;
+            return $e->getMessage();
         }
 
         return redirect()->route('homepage');

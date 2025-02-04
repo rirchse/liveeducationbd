@@ -26,17 +26,28 @@ $value = $paper;
           </div>
           <div class="col-md-12 text-right toolbar-icon">
             {{-- <a id="exam-url" href="{{route('students.instruction', $paper->id)}}" style="font-size: 12px" hidden>{{route('students.instruction', $paper->id)}}</a> --}}
-            <input type="hidden" id="exam-url" value="what is problem?">
+            {{-- <input type="hidden" id="exam-url" value=""> --}}
 
-              <button title="Copy Link" class="btn btn-default btn-sm" onclick="copyUrl(); alert('Link Copied to the clipboard')"><i class="fa fa-copy"></i> Copy Link </button>
-              <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
-              <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
-              <a href="{{route('paper.solution', $paper->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a>
-              <a href="{{route('paper.exam', $paper->id)}}" title="Exam" class="label label-primary"><i class="fa fa-list"> Exams</i></a>
-              <a href="{{route('paper.result', $paper->id)}}" title="Result" class="label label-warning"><i class="fa fa-list-o"> Result</i></a>
+            <button title="Copy Link" class="btn btn-default btn-sm" onclick="copyUrl(); alert('Link Copied to the clipboard')"><i class="fa fa-copy"></i> Copy Link </button>
+
+            <a href="{{route('paper.add.question', $paper->id)}}" title="Add Questions" class="label label-info"><i class="fa fa-plus"></i> Add Questions</a>
+
+            <a href="{{route('paper.create')}}" title="Add" class="label label-primary"><i class="fa fa-pencil"></i> Create</a>
+
+            <a href="{{route('paper.copy', $paper->id)}}" title="Make a Copy" class="label label-default"><i class="fa fa-copy"></i> Copy</a>
+
+            <a href="{{route('paper.solution', $paper->id)}}" title="Solution" class="label label-info"><i class="fa fa-file-o"> Solution</i></a>
+
+            <a href="{{route('paper.exam', $paper->id)}}" title="Exam" class="label label-primary"><i class="fa fa-list"> Exams</i></a>
+
+            <a href="{{route('paper.result', $paper->id)}}" title="Result" class="label label-warning"><i class="fa fa-list-o"> Result</i></a>
+
             <a href="{{route('paper.create')}}" title="Add New" class="label label-info"><i class="fa fa-plus"></i></a>
+
             <a href="{{route('paper.view', $value->id)}}" title="View" class="label label-primary"><i class="fa fa-th"></i></a>
+
             <a href="{{route('paper.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
+
             <a href="{{route('paper.edit', $value->id)}}" class="label label-warning" title="Edit this"><i class="fa fa-gear"></i></a>
           </div>
           <div class="col-md-12">

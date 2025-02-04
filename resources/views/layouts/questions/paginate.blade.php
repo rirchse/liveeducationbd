@@ -21,9 +21,10 @@ if(!is_null(Session::get('_paper')))
 </style>
 <div class="box-header">
   <h3 class="box-title">
-    <label for="checkAll">
-      <input type="checkbox" onclick="checkAll(this)" style="width:20px; height:20px" id="checkAll" /> Check All
       Questions ({{$questions->total()}})
+      <br>
+    <label for="checkAll" style="margin-top: 15px; margin-left:15px; font-weight:normal">
+      <input type="checkbox" onclick="checkAll(this)" style="width:18px; height:18px" id="checkAll" /> Check All
     </label>
   </h3>
 </div><!-- /.box-header -->
