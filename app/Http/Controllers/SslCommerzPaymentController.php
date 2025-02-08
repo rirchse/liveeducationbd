@@ -10,10 +10,10 @@ use Session;
 
 class SslCommerzPaymentController extends Controller
 {
-    public function __construct()
-    {
-      $this->middleware('auth:student');
-    }
+    // public function __construct()
+    // {
+    //   $this->middleware('auth:student');
+    // }
 
     public function exampleEasyCheckout()
     {
@@ -174,6 +174,7 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+        // dd($request->all());
         $studentctrl = new StudentHomeCtrl;
         echo "Transaction is Successful";
 
@@ -188,7 +189,12 @@ class SslCommerzPaymentController extends Controller
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
         //add student to the batch and department
-        $studentctrl->courseApplied(Session::get('_confirm'));
+        $result = $studentctrl->courseApplied(Session::get('_confirm'));
+
+        if($result = true)
+        {
+            Session::forget('_confirm');
+        }
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -202,6 +208,7 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
+
                 $redirect_url = route('students.my-course');
 
                 echo "<br >Transaction is successfully Completed. Back to the homepage or <p>It will automatic redirect to you ... ";
@@ -233,11 +240,22 @@ class SslCommerzPaymentController extends Controller
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Failed']);
             echo "Transaction is Falied";
+            //redirect to homepage
+            //
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             echo "Transaction is already Successful";
         } else {
             echo "Transaction is Invalid";
         }
+        
+        //session forget
+        if(Session::get('_confirm'))
+        {
+            Session::forget('_confirm');
+        }
+
+        //redirect to
+        $this->redirectTo();
 
     }
 
@@ -259,8 +277,15 @@ class SslCommerzPaymentController extends Controller
         } else {
             echo "Transaction is Invalid";
         }
+        
+        //session forget
+        if(Session::get('_confirm'))
+        {
+            Session::forget('_confirm');
+        }
 
-
+        //redirect to
+        $this->redirectTo();
     }
 
     public function ipn(Request $request)
@@ -304,6 +329,14 @@ class SslCommerzPaymentController extends Controller
         } else {
             echo "Invalid Data";
         }
+    }
+
+    //customized redirect to
+    public function redirectTo()
+    {
+        $redirect_url = route('home.course');
+
+        return "<br ><p>It will automatic redirect to you ... </p>"."<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
     }
 
 }

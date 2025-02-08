@@ -97,6 +97,14 @@ class StudentHomeCtrl extends Controller
     return redirect()->route('students.course.confirm');
   }
 
+  public function checkout($id)
+  {
+    //
+    $batch = Batch::find($id);
+    $departments = $batch->departments()->get();
+    return view('student-panel.course-checkout', compact('batch', 'departments'));
+  }
+
   public function confirm()
   {
     if(Session::get('_confirm'))
@@ -111,11 +119,19 @@ class StudentHomeCtrl extends Controller
 
   public function courseApplied($data)
   {
-    $student = Student::find($data['student_id']);
-    $student->batches()->attach($data['batch_id']);
-    $student->departments()->attach($data['department_id']);
+    try {
+      $student = Student::find($data['student_id']);
+      $student->batches()->attach($data['batch_id']);
+      $student->departments()->attach($data['department_id']);
 
-    return true;
+      return true;
+    }
+    catch(\Exception $e)
+    {
+      return $e->getMessage();
+    }
+
+    return false;
 
     // Session::flash('success', 'You have successfully applied to the course.');
     // return redirect()->route('students.my-course');

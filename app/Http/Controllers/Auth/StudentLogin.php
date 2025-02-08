@@ -71,13 +71,14 @@ class StudentLogin extends Controller
             // 'status' => 'Active'
         ], $remember = true))
         {
-            return redirect()->intended('students/my-course');
+            return redirect()->intended(route('students.my-course'));
         }
-        else
-        {
-            Session::flash('error', 'Invalid Credentials!');
-        }
-        return redirect()->route('students.login');
+        // else
+        // {
+        //     Session::flash('error', 'Invalid Credentials!');
+        // }
+        // return redirect()->route('students.login');
+        return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
     public function logout(Request $request): RedirectResponse

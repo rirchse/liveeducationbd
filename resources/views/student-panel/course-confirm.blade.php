@@ -32,7 +32,7 @@ $value = $batch;
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1> Course {{-- <small>Courseple 2.0</small> --}} </h1>
+      <h1> Course Confirm {{-- <small>Courseple 2.0</small> --}} </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Course</a></li>
@@ -41,7 +41,7 @@ $value = $batch;
 
     <!-- Main content -->
     <section class="content">
-      <div class="row">
+      <div class="row box-info">
         <div class="col-md-6 col-md-offset-3 pricing">
           <!-- Apply to the course -->
           <form action="{{route('payment.proceed')}}" method="post">
@@ -76,6 +76,14 @@ $value = $batch;
               <div class="panel-body table-responsive">
                 <table class="table">
                   <tr>
+                    <td>কোর্স এর নাম</td>
+                    <th>{{$batch->course?$batch->course->name:''}}</th>
+                  </tr>
+                  <tr>
+                    <td>ব্যাচ এর নাম</td>
+                    <th>{{$batch->name}}</th>
+                  </tr>
+                  <tr>
                     <td>আপনার নির্বাচিত ডিপার্টমেন্ট</td>
                     <th>{{$department->name}}</th>
                   </tr>
@@ -95,7 +103,7 @@ $value = $batch;
               </div>
               @endif
               <div class="panel-footer">
-                  <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$value->net_price}} কনফার্ম করুন</button>
+                  <button class="btn btn-warning btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">&#2547; {{$value->net_price}} পেমেন্ট কনফার্ম করুন</button>
                 <div class="clearfix"></div>
               </div>
             </div>

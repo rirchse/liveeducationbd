@@ -91,6 +91,7 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/course', 'course')->name('students.course');
 		Route::get('students/course/{id}', 'courseShow')->name('students.course.show');
 		Route::post('students/course-apply', 'applyCourse')->name('students.course.apply');
+		Route::get('students/checkout/{id}', 'checkout')->name('students.course.checkout');
 		Route::get('students/confirm', 'confirm')->name('students.course.confirm');
 		Route::get('students/my-course', 'myCourse')->name('students.my-course');
 		Route::post('student/exam_add', 'examAdd')->name('student.exam.add');
@@ -109,14 +110,14 @@ Route::middleware('auth:student')->group(function()
 		// Route::get('/example2', 'exampleHostedCheckout');
 		Route::get('/payment-proceed', 'exampleHostedCheckout');
 	
-		Route::post('/pay', 'index')->name('payment.proceed');
+		Route::post('/students/pay', 'index')->name('payment.proceed');
 		Route::post('/pay-via-ajax', 'payViaAjax');
 	
-		Route::post('/success', 'success');
-		Route::post('/fail', 'fail');
-		Route::post('/cancel', 'cancel');
+		Route::post('/students/success', 'success');
+		Route::post('/students/fail', 'fail');
+		Route::post('/students/cancel', 'cancel');
 	
-		Route::post('/ipn', 'ipn');
+		Route::post('/students/ipn', 'ipn');
 		//SSLCOMMERZ END
 	});
 });

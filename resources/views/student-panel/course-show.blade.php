@@ -78,7 +78,7 @@ $value = $batch;
                     <input type="checkbox" required id="agree"> I agree to the <a href="{{route('home.page', 'terms-condition')}}">Terms & Condition</a>, <a href="{{route('home.page', 'privacy-policy')}}">Privacy Policy</a> and  <a href="{{route('home.page', 'return-policy')}}">Fund Return Policy</a>.
                   </p>
                   <br>
-                  <button onclick="checkLogin()" type="button" class="btn btn-success btn-block btn-lg">কোর্সটি কিনুন</button>
+                  <button type="button" onclick="checkLogin()" href="{{route('students.course.checkout', $batch->id)}}" class="btn btn-success btn-block btn-lg">কোর্সটি কিনুন</button>
                   @endif
                 @endif
                 <div class="clearfix"></div>
@@ -300,7 +300,7 @@ $value = $batch;
           <input type="hidden" name="total" value="{{$value->net_price}}" />
 
             <div class="penel-heading no-padding" style="text-align: center;padding:15px">
-              {{-- <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" /> --}}
+              <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.jpg'}}" alt="" />
             </div>
               <h3>
                 @if($value->discount) 
@@ -368,31 +368,49 @@ $value = $batch;
 @endsection
 @section('scripts')
 <script>
+  // function check(e)
+  // {
+  //   let agree = document.getElementById('agree');
+
+  //   if(agree.checked == false)
+  //   {
+  //     alert('Please confirm as per our agreement.');
+  //     // window.location.href = '{{route("students.course.show", "")}}'+$value->id;
+  //     // e.preventDefault();
+      
+  //     return false;
+  //   }
+
+  // }
   //eheck login
   function checkLogin()
   {
-    let login = '{{$user ? $user->id : ''}}';
+    // let login = '{{$user ? $user->id : ''}}';
     let agree = document.getElementById('agree');
 
     if(agree.checked == false)
-  {
-    alert('Please confirm as per our agreement.');
-    return;
-  }
-
-    if(login)
     {
-      $(document).ready(function()
-      {
-        // $("#myBtn").click(function(){
-          $("#paymentConfirm").modal();
-        // });
-      });
+      alert('Please confirm as per our agreement.');
+      return;
     }
     else
     {
-      window.location.href = '/students/login';
+      window.location.href = '{{route("students.course.checkout", "$value->id")}}';
     }
+
+    // if(login)
+    // {
+    //   $(document).ready(function()
+    //   {
+    //     // $("#myBtn").click(function(){
+    //       $("#paymentConfirm").modal();
+    //     // });
+    //   });
+    // }
+    // else
+    // {
+    //   window.location.href = '/students/login';
+    // }
   }
   // Set the date we're counting down to
   // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
