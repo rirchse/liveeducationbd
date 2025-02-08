@@ -70,8 +70,8 @@ class SyllabusCtrl extends Controller
             'name'      => 'required|unique:groups|max:255',
             'header'    => 'required',
             'details'   => 'nullable|max:1000',
-            'pdf'       => 'nullable|mimes:pdf|max:1000',
-            'routine'   => 'nullable|mimes:pdf|max:1000',
+            'pdf'       => 'nullable|mimes:pdf|max:10000',
+            'routine'   => 'nullable|mimes:pdf|max:10000',
         ]);
         
         $data = $request->all();
@@ -159,9 +159,9 @@ class SyllabusCtrl extends Controller
             'name'      => 'required|max:255',
             'header'    => 'required|max:255',
             'details'   => 'nullable|max:1000',
-            'sample_pdf'=> 'nullable|mimes:pdf|max:1000',
-            'pdf'       => 'nullable|mimes:pdf|max:5000',
-            'routine'   => 'nullable|mimes:pdf|max:1000',
+            'sample_pdf'=> 'nullable|mimes:pdf|max:5000',
+            'pdf'       => 'nullable|mimes:pdf|max:10000',
+            'routine'   => 'nullable|mimes:pdf|max:10000',
         ]);
         
         $data = $request->all();
