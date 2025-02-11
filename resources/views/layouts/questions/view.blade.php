@@ -4,6 +4,11 @@ $source = New SourceCtrl;
 $correct = '';
 $format = ['a)', 'b)', 'c)', 'd)', 'e)'];
 $url = route('paper.addtopaper');
+  
+if(Session::get('_paper') && Session::get('_paper')->type == 'syllabus')
+{
+  $url = route('syllabus.addtopaper');
+}
 @endphp
 
 @extends('dashboard')
@@ -180,10 +185,6 @@ $url = route('paper.addtopaper');
           @if(!is_null(Session::get('_paper')))
             @php
             $paper = Session::get('_paper');
-            if($paper->type == 'syllabus')
-            {
-              $url = route('syllabus.addtopaper');
-            }
             @endphp
           <div class="box-header">
             <div class="paper_panel">
@@ -261,7 +262,7 @@ $url = route('paper.addtopaper');
     let checked = 0;
     let unchecked = 0;
 
-    if(counter)
+    if(qcount)
     {
       counter = Number(qcount.innerHTML);
     }
@@ -279,7 +280,7 @@ $url = route('paper.addtopaper');
     });
 
     let checkAll = document.getElementById('checkAll');
-    if(Number(qcount.innerHTML) >= Number(maxq.innerHTML) || checked > unchecked)
+    if(maxq.innerHTML && Number(qcount.innerHTML) >= Number(maxq.innerHTML) || checked > unchecked)
     {
       checkAll.checked = true;
     }
@@ -619,10 +620,14 @@ $url = route('paper.addtopaper');
             counter++;
         }
 
-        if (counter >= Number(maxq.innerHTML))
+        if (maxq.innerHTML && counter >= Number(maxq.innerHTML))
         {
           qcount.innerHTML = counter;
           break;
+        }
+        else
+        {
+          qcount.innerHTML = counter;
         }
       }
 
@@ -761,6 +766,7 @@ $url = route('paper.addtopaper');
           question_area.innerHTML = data;
           loading.classList.add('hide');
           prevNext();
+          checkAllchecked();
         },
         error: function(data){
           console.log(data);
