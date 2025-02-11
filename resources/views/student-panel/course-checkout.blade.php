@@ -111,8 +111,14 @@ $value = $batch;
               <div class="panel-footer">
       
                 {{-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> --}}
+                @if(!empty($user->id) && $value->students()->where('id', $user->id)->first())
+                <h4>আপনি কোর্সটি কিনেছেন</h4>
+                <a class="btn btn-info" href="{{route('students.my-course')}}">আমার কোর্স এ ফিরে যান</a>
+                
+                @else
                 
                 <button class="btn btn-primary btn-block btn-lg" onsubmit="return confirm('Double check you provided information.')">পেমেন্ট এর জন্য এগিয়ে যান</button>
+                @endif
                 <div class="clearfix"></div>
               </div>
             </div>

@@ -241,7 +241,6 @@ class SslCommerzPaymentController extends Controller
                 ->update(['status' => 'Failed']);
             echo "Transaction is Falied";
             //redirect to homepage
-            //
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             echo "Transaction is already Successful";
         } else {

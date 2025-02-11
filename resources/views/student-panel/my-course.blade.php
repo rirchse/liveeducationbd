@@ -81,6 +81,7 @@ if($user)
         </div>
       </div>
       @endif
+      <div class="clearfix"></div>
     </section> <!-- /.content -->
 
 <script>

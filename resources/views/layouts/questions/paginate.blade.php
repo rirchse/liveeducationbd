@@ -21,11 +21,14 @@ if(!is_null(Session::get('_paper')))
 </style>
 <div class="box-header">
   <h3 class="box-title">
-      Questions ({{$questions->total()}})
+    Questions ({{$questions->total()}})
+
+    @if(!is_null(Session::get('_paper')))
       <br>
-    <label for="checkAll" style="margin-top: 15px; margin-left:15px; font-weight:normal">
-      <input type="checkbox" onclick="checkAll(this)" style="width:18px; height:18px" id="checkAll" /> Check All
-    </label>
+      <label for="checkAll" style="margin-top: 15px; margin-left:15px; font-weight:normal">
+        <input type="checkbox" onclick="checkAll(this)" style="width:18px; height:18px" id="checkAll" /> Check All
+      </label>
+    @endif
   </h3>
 </div><!-- /.box-header -->
 <div class="box-body">

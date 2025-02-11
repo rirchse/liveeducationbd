@@ -178,12 +178,13 @@ $url = route('paper.addtopaper');
       <div class="col-md-4 scroll" style="padding-left: 0">
         <div class="box filter-parent" id="filter-parent">
           @if(!is_null(Session::get('_paper')))
-          @php
-          $paper = Session::get('_paper');
-          if($paper->type == 'syllabus'){
-            $url = route('syllabus.addtopaper');
-          }
-          @endphp
+            @php
+            $paper = Session::get('_paper');
+            if($paper->type == 'syllabus')
+            {
+              $url = route('syllabus.addtopaper');
+            }
+            @endphp
           <div class="box-header">
             <div class="paper_panel">
               <div class="form-group">
@@ -247,35 +248,76 @@ $url = route('paper.addtopaper');
       {{-- <div class="alert hi/de" style="background:#fff;right:0">///</div> --}}
       
 <script>
+  // assign loading variable for every where use
+  const loading = document.getElementById('loading');
+  
+  let maxq = document.getElementById('maxq');
+  let qcount = document.getElementById('qcount');
+  let counter = 0;
+
+  //checked all if max item is checked
+  function checkAllchecked()
+  {
+    let checked = 0;
+    let unchecked = 0;
+
+    if(counter)
+    {
+      counter = Number(qcount.innerHTML);
+    }
+
+    let allQ = document.querySelectorAll('.check');
+    allQ.forEach(e => {
+      if(e.checked == true)
+      {
+        checked ++;
+      }
+      else
+      {
+        unchecked ++;
+      }
+    });
+
+    let checkAll = document.getElementById('checkAll');
+    if(Number(qcount.innerHTML) >= Number(maxq.innerHTML) || checked > unchecked)
+    {
+      checkAll.checked = true;
+    }
+    else
+    {
+      checkAll.checked = false;
+    }
+  }
+
   function getDepartments(e)
   {
-      let ids = Array.from(e.selectedOptions).map(({value}) => value);
+    let ids = Array.from(e.selectedOptions).map(({value}) => value);
 
-      $.ajax({
-          type: 'GET', //THIS NEEDS TO BE GET
-          url: '/get_departments/' + ids,
-          success: function (data) {
+    $.ajax({
+        type: 'GET', //THIS NEEDS TO BE GET
+        url: '/get_departments/' + ids,
+        success: function (data) {
 
-              var obj = JSON.parse(JSON.stringify(data));
-              var options = '<option value="">Select One</option>';
+          var obj = JSON.parse(JSON.stringify(data));
+          var options = '<option value="">Select One</option>';
 
-              $.each(obj['data'], function (key, val) {
-                  options += '<option value="'+val.id+'">'+val.name+'</option>';
-              });
+          $.each(obj['data'], function (key, val) {
+            options += '<option value="'+val.id+'">'+val.name+'</option>';
+          });
 
-              if(options != ""){
-                  $("#department_id").html(options)
-              }else{
-                  $("#department_id").html('')
-                  $("#semester_id").html('')
-                  $("#subject_id").html('')
-                  $("#chapter_id").html('')
-              }
-          },
-          error: function(data) { 
-                  console.log('data error');
+          if(options != ""){
+            $("#department_id").html(options)
+          }else{
+            $("#department_id").html('')
+            $("#semester_id").html('')
+            $("#subject_id").html('')
+            $("#chapter_id").html('')
           }
-      });
+        },
+        error: function(data) {
+          console.log('data error');
+        }
+    });
   }
 
   function getSemesters(e)
@@ -446,9 +488,6 @@ $url = route('paper.addtopaper');
   //globaly declare the filter form
   const form = document.getElementById('filter_form');
 
-  // assign loading variable for every where use
-  const loading = document.getElementById('loading');
-
   //assign sub-filters for every where use
   let filters = document.getElementsByName('sub_filter');
 
@@ -480,6 +519,7 @@ $url = route('paper.addtopaper');
         question_area.innerHTML = data;
         loading.classList.add('hide');
         prevNext();
+        checkAllchecked();
       },
       error:function(data)
       {
@@ -531,6 +571,10 @@ $url = route('paper.addtopaper');
   function count(e)
   {
     let maxq = document.getElementById('maxq');
+
+    //question id/ids
+    let ids = e.value;
+
     if(maxq)
     {
       if(e.checked == true)
@@ -542,23 +586,79 @@ $url = route('paper.addtopaper');
         }
         else
         {
-          qcount.innerHTML = Number(qcount.innerHTML) + 1;
-          addToPaper(e, 'add');
+          // qcount.innerHTML = Number(qcount.innerHTML) + 1;
+          counter ++;
+          qcount.innerHTML = counter;
+          addToPaper(ids, 'add');
         }
       }
       else
       {
-        qcount.innerHTML = Number(qcount.innerHTML) - 1;
-        addToPaper(e, 'remove');
+        // qcount.innerHTML = Number(qcount.innerHTML) - 1;
+        counter --;
+        qcount.innerHTML = counter;
+        addToPaper(ids, 'remove');
       }
     }
   }
 
-  // add question to paper
-  function addToPaper(e, action)
+  // check all add to the question paper
+  function checkAll(elm)
   {
-    let ids = e.value;
+    if(elm.checked == true)
+    {
+      let ids = [];
+      let allQ = document.querySelectorAll('.check');
+      for (let i = 0; i < allQ.length; i++)
+      {
+        let e = allQ[i];
 
+        if (!e.checked) {
+            e.checked = true;
+            ids.push(e.value);
+            counter++;
+        }
+
+        if (counter >= Number(maxq.innerHTML))
+        {
+          qcount.innerHTML = counter;
+          break;
+        }
+      }
+
+      //call to the function for add to the paper.
+      if(ids.length > 0)
+      {
+        addToPaper(ids, 'add');
+      }
+      // console.log(ids);
+    }
+    else if(elm.checked == false)
+    {
+      let ids = [];
+      let allQ = document.querySelectorAll('.check');
+      allQ.forEach(e => {
+        if(e.checked == true)
+        {
+          e.checked = false;
+          ids.push(e.value);
+          counter--;
+          qcount.innerHTML = counter;
+        }
+      });
+
+      //call to the function for add to the paper
+      if(ids.length > 0)
+      {
+        addToPaper(ids, 'remove')
+      }
+      // console.log(ids);
+    }
+  }
+
+  // add questions to paper post
+  function addToPaper(ids, action)
+  {
     let formData = new FormData();
     formData.append('question', ids);
     formData.append('action', action);
@@ -673,20 +773,5 @@ $url = route('paper.addtopaper');
 
     prevNext();
 
-  // check all add to the question paper
-  function checkAll()
-  {
-    let checkAll = document.getElementById('checkAll');
-    let allQ = document.getElementsByClassName('check');
-    // let ids = Array.from(allQ).map(({value}) => value);
-    // let ids = [];
-    // allQ.forEach(e => {
-    //   if(e.checked == true)
-    //   {
-    //     ids.push(e.value);
-    //   }
-    // });
-    console.log(checkAll.checked);
-  }
 </script>
 @endsection
