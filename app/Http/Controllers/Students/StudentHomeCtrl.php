@@ -20,9 +20,9 @@ use App\Models\Complain;
 use Auth;
 use Session;
 use Mail;
-// use \Mpdf\Mpdf as PDF; 
-// use Illuminate\Support\Facades\Storage;
-use PDF;
+use DB;
+use \Mpdf\Mpdf;
+use Spatie\Browsershot\Browsershot;
 
 class StudentHomeCtrl extends Controller
 {
@@ -467,48 +467,185 @@ class StudentHomeCtrl extends Controller
 
   public function syllabus($id)
   {
+    // $syllabus = Syllabus::with([
+    //   'batch.departments.subjects.questions.mcqitems',
+    //   'batch.departments.subjects.chapters.questions.mcqitems'
+    //   ])->find($id);
+    // dd($syllabus);
     $syllabus = Syllabus::find($id);
-    return view('student-panel.syllabus', compact('syllabus'));
+
+    $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
+    
+    ->join('syllabi', 'syllabus_id', 'syllabi.id')
+
+    ->leftJoin('question_subject', 'question_subject.question_id', 'questions.id')
+    ->leftJoin('subjects', 'question_subject.subject_id', 'subjects.id')
+
+    ->leftJoin('department_question', 'department_question.question_id', 'questions.id')
+    ->leftJoin('departments', 'department_question.department_id', 'departments.id')
+
+    ->leftJoin('chapter_question', 'chapter_question.question_id', 'questions.id')
+    ->leftJoin('chapters', 'chapter_question.chapter_id', 'chapters.id')
+    ->leftJoin('mcq_items', 'mcq_items.question_id', 'questions.id')
+    ->where('syllabi.id', $id)
+    ->select(
+      'departments.name as department_name',
+      'subjects.name as subject_name',
+      'chapters.name as chapter_name',
+      'questions.id',
+      'questions.title as question_title',
+      'questions.explanation'
+      )
+    ->orderBy('departments.name')
+    ->orderBy('subjects.name')
+    ->orderBy('chapters.name')
+    ->get();
+
+    //groupby
+    $groupedData = [];
+    foreach($questions as $key => $data)
+    {
+      $department = $data->department_name;
+      $subject = $data->subject_name;
+      $chapter = $data->chapter_name;
+      $question_id = $data->id;
+      $question_title = $data->question_title;
+      $question_explain = $data->explanation;
+
+      $mcq = $data->mcqitems;
+
+      if(!isset($groupedData[$department]))
+      {
+        $groupedData[$department] = [];
+      }
+
+      if(!isset($groupedData[$department][$subject]))
+      {
+        $groupedData[$department][$subject] = [];
+      }
+
+      if(!isset($groupedData[$department][$subject][$chapter]))
+      {
+        $groupedData[$department][$subject][$chapter] = [];
+      }
+
+      if(!isset($groupedData[$department][$subject][$chapter][$question_id]))
+      {
+        $groupedData[$department][$subject][$chapter][$question_id] = [
+          'question' => $question_title,
+          'explain' => $question_title,
+          'mcqs' => []
+        ];
+      }
+
+      $groupedData[$department][$subject][$chapter][$question_id]['mcqs'] = $mcq;
+    }
+
+    // dd($groupedData);
+    return view('student-panel.syllabus', compact('syllabus', 'groupedData'));
   }
 
   public function generatePDF($id)
   {
     $syllabus = Syllabus::find($id);
 
-    // Setup a filename 
-    // $documentFileName = "fun.pdf";
+    $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
+    
+    ->join('syllabi', 'syllabus_id', 'syllabi.id')
 
-    // Create the mPDF document
-    // $document = new PDF( [
-    //   'mode' => 'utf-8',
-    //   'format' => 'A4',
-    //   'margin_header' => '3',
-    //   'margin_top' => '20',
-    //   'margin_bottom' => '20',
-    //   'margin_footer' => '2',
-    // ]); 
-    // Set some header informations for output
-  //   $header = [
-  //     'Content-Type' => 'application/pdf',
-  //     'Content-Disposition' => 'inline; filename="'.$documentFileName.'"'
-  // ];
+    ->leftJoin('question_subject', 'question_subject.question_id', 'questions.id')
+    ->leftJoin('subjects', 'question_subject.subject_id', 'subjects.id')
 
-  // Write some simple Content
-  // $document->WriteHTML('<h1 style="color:blue">TheCodingJack</h1>');
-  // $document->WriteHTML('<p>Write something, just for fun!</p>');
-   
-  // Save PDF on your public storage 
-  // Storage::disk('public')->put($documentFileName, $document->Output($documentFileName, "S"));
-   
-  // Get file back from storage with the give header informations
-  // return Storage::disk('public')->download($documentFileName, 'Request', $header); //
+    ->leftJoin('department_question', 'department_question.question_id', 'questions.id')
+    ->leftJoin('departments', 'department_question.department_id', 'departments.id')
 
-    $pdf = PDF::loadView('student-panel.syllabus-pdf', compact('syllabus'));
+    ->leftJoin('chapter_question', 'chapter_question.question_id', 'questions.id')
+    ->leftJoin('chapters', 'chapter_question.chapter_id', 'chapters.id')
+    ->leftJoin('mcq_items', 'mcq_items.question_id', 'questions.id')
+    ->where('syllabi.id', $id)
+    ->select(
+      'departments.name as department_name',
+      'subjects.name as subject_name',
+      'chapters.name as chapter_name',
+      'questions.id',
+      'questions.title as question_title',
+      'questions.explanation'
+      )
+    ->orderBy('departments.name')
+    ->orderBy('subjects.name')
+    ->orderBy('chapters.name')
+    ->get();
 
-    return $pdf->download('Syllabus PDF.pdf');
-    // return $pdf->stream('document.pdf');
+    //groupby
+    $groupedData = [];
+    foreach($questions as $key => $data)
+    {
+      $department = $data->department_name;
+      $subject = $data->subject_name;
+      $chapter = $data->chapter_name;
+      $question_id = $data->id;
+      $question_title = $data->question_title;
+      $question_explain = $data->explanation;
 
-    // return view('student-panel.syllabus-pdf', compact('syllabus'));
+      $mcq = $data->mcqitems;
+
+      if(!isset($groupedData[$department]))
+      {
+        $groupedData[$department] = [];
+      }
+
+      if(!isset($groupedData[$department][$subject]))
+      {
+        $groupedData[$department][$subject] = [];
+      }
+
+      if(!isset($groupedData[$department][$subject][$chapter]))
+      {
+        $groupedData[$department][$subject][$chapter] = [];
+      }
+
+      if(!isset($groupedData[$department][$subject][$chapter][$question_id]))
+      {
+        $groupedData[$department][$subject][$chapter][$question_id] = [
+          'question' => $question_title,
+          'explain' => $question_explain,
+          'mcqs' => []
+        ];
+      }
+
+      $groupedData[$department][$subject][$chapter][$question_id]['mcqs'] = $mcq;
+    }
+
+    $pdf = new Mpdf([
+      'mode' => 'utf-8',
+      'format' => 'A4',
+      'default_font_size' => 14,
+      // 'default_font' => 'nikosh',
+      'fontDir' => storage_path('fonts'),
+      'fontdata' => [
+          'nikosh' => [
+              'R' => 'Nikosh.ttf',
+              'B' => 'Nikosh.ttf',
+              'I' => 'Nikosh.ttf',
+              'BI' => 'Nikosh.ttf',
+              'useOTL' => 0xFF,
+              'useKashida' => 75,
+          ],
+      ],
+      'tempDir' => storage_path('app/mpdf'),
+    ]);
+
+    $html = view('student-panel.syllabus-pdf', compact('syllabus', 'groupedData'))->render();
+
+    $pdf->WriteHTML($html);
+
+    $pdf->Output($syllabus?$syllabus->name:'----Syllabus', 'D');
+
+    // $pdf->stream('document.pdf');
+
+    // return $pdf->download('Syllabus PDF.pdf');
+
+    // return view('student-panel.syllabus-pdf', compact('syllabus', 'groupedData'));
   }
 
   public function complain()
@@ -574,10 +711,4 @@ class StudentHomeCtrl extends Controller
     ], 401);
   }
 
-  // public function checkout(Request $request)
-  // {
-  //   $this->validate($request, [
-  //     //
-  //   ]);
-  // }
 }

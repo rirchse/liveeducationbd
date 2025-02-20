@@ -221,11 +221,19 @@ $value = $batch;
                 </div>
                 <div id="dept{{$key}}" class="panel-collapse collapse">
                   <div class="box-body">
+                    @php
+                    $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->first();
+                    @endphp
+                    @if($routine)
+                    <p>রুটিনঃ {{$routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$routine->pdf}}"><i class="fa fa-download"></i></a> </p>
+                    @endif
                     @if($department->syllabus)
                     <table class="table table-bordered">
                       <tr>
                         <td><b><a href="{{route('student.syllabus', $department->syllabus->id)}}">{{$department->syllabus->name}}</a></b></td>
-                        <td>রুটিন ডাউনলোড করুন <a href="{{$department->syllabus->routine}}" class="btn btn-warning"><i class="fa fa-download"></i></a></td>
+                        <td>
+                          {{-- রুটিন ডাউনলোড করুন <a href="{{$department->syllabus->routine}}" class="btn btn-warning"><i class="fa fa-download"></i></a> --}}
+                        </td>
                         <td>
                           @if(!empty($student))
                           

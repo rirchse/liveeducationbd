@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    protected $fillable = ['name'];
+
     public function filters()
     {
         return $this->belongsToMany(Filter::class);
@@ -13,7 +15,7 @@ class Course extends Model
 
     public function departments()
     {
-        return $this->belongsToMany(Department::class);
+        return $this->belongsToMany(Department::class, 'course_department', 'course_id', 'department_id');
     }
 
     public function semesters()

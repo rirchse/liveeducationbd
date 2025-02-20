@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    //
+    protected $fillable = ['name'];
+
     public function courses()
     {
         return $this->belongsToMany(Course::class);
@@ -24,11 +25,11 @@ class Subject extends Model
 
     public function chapters()
     {
-        return $this->belongsToMany(Chapter::class);
+        return $this->belongsToMany(Chapter::class, 'chapter_subject', 'subject_id', 'chapter_id');
     }
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class);
+        return $this->belongsToMany(Question::class, 'question_subject', 'subject_id', 'question_id');
     }
 }

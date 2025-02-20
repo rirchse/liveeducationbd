@@ -60,12 +60,16 @@ $source = New SourceCtrl;
                   <td>{{$value->phone}}</td>
                   <td>{{$source->dtformat($value->created_at)}}</td>
                   <td>
-                    @if($value->status == 'Paid')
+                    @if($value->status == 'Complete')
                     <span class="label label-success">{{$value->status}}</span>
                     @elseif($value->status == 'Pending')
                     <span class="label label-warning">{{$value->status}}</span>
                     @elseif($value->status == 'Processing')
                     <span class="label label-primary">{{$value->status}}</span>
+                    @elseif($value->status == 'Failed')
+                    <span class="label label-default">{{$value->status}}</span>
+                    @else
+                    <span class="label label-danger">{{$value->status}}</span>
                     @endif
                   </td>
                   <td>

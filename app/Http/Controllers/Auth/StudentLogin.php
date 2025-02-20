@@ -44,6 +44,11 @@ class StudentLogin extends Controller
 
     public function login()
     {
+        if(Auth::guard('student')->check())
+        {
+            return redirect()->intended(route('students.my-course'));
+        }
+
         return view('auth.student-login');
     }
 

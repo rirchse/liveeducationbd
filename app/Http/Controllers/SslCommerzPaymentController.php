@@ -27,6 +27,7 @@ class SslCommerzPaymentController extends Controller
 
     public function index(Request $request)
     {
+        $redirect_url = route('students.my-course');
         $data = $request->all();
 
         # Here you have to receive all the order data to initate the payment.
@@ -174,7 +175,9 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        // dd($request->all());
+        $redirect_url = route('students.my-course');
+        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
+
         $studentctrl = new StudentHomeCtrl;
         echo "Transaction is Successful";
 
@@ -209,19 +212,22 @@ class SslCommerzPaymentController extends Controller
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
 
-                $redirect_url = route('students.my-course');
-
                 echo "<br >Transaction is successfully Completed. Back to the homepage or <p>It will automatic redirect to you ... ";
-                echo "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
+                //redirect to homepage
+                echo $redirect_script;
             }
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
             echo "Transaction is successfully Completed";
+            //redirect to homepage
+            echo $redirect_script;
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
             echo "Invalid Transaction";
+            //redirect to homepage
+            echo $redirect_script;
         }
 
 
@@ -229,6 +235,9 @@ class SslCommerzPaymentController extends Controller
 
     public function fail(Request $request)
     {
+        $redirect_url = route('students.my-course');
+        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
+        
         $tran_id = $request->input('tran_id');
 
         $order_details = DB::table('orders')
@@ -239,12 +248,20 @@ class SslCommerzPaymentController extends Controller
             $update_product = DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Failed']);
-            echo "Transaction is Falied";
+
+            echo "Transaction is Failed";
+
             //redirect to homepage
+            echo $redirect_script;
+
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             echo "Transaction is already Successful";
+            //redirect to homepage
+            echo $redirect_script;
         } else {
             echo "Transaction is Invalid";
+            //redirect to homepage
+            echo $redirect_script;
         }
         
         //session forget
@@ -260,6 +277,9 @@ class SslCommerzPaymentController extends Controller
 
     public function cancel(Request $request)
     {
+        $redirect_url = route('students.my-course');
+        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
+
         $tran_id = $request->input('tran_id');
 
         $order_details = DB::table('orders')
@@ -270,11 +290,26 @@ class SslCommerzPaymentController extends Controller
             $update_product = DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Canceled']);
+
             echo "Transaction is Cancel";
+
+            //redirect to homepage
+            echo $redirect_script;
+
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
+
             echo "Transaction is already Successful";
+
+            //redirect to homepage
+            echo $redirect_script;
+
         } else {
+
             echo "Transaction is Invalid";
+
+            //redirect to homepage
+            echo $redirect_script;
+
         }
         
         //session forget
@@ -289,6 +324,9 @@ class SslCommerzPaymentController extends Controller
 
     public function ipn(Request $request)
     {
+        $redirect_url = route('students.my-course');
+        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
+
         #Received all the payement information from the gateway
         if ($request->input('tran_id')) #Check transation id is posted or not.
         {
@@ -314,19 +352,27 @@ class SslCommerzPaymentController extends Controller
                         ->update(['status' => 'Processing']);
 
                     echo "Transaction is successfully Completed";
+                    //redirect to homepage
+                    echo $redirect_script;
                 }
             } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
 
                 #That means Order status already updated. No need to udate database.
 
                 echo "Transaction is already successfully Completed";
+                //redirect to homepage
+                echo $redirect_script;
             } else {
                 #That means something wrong happened. You can redirect customer to your product page.
 
                 echo "Invalid Transaction";
+                //redirect to homepage
+                echo $redirect_script;
             }
         } else {
             echo "Invalid Data";
+            //redirect to homepage
+            echo $redirect_script;
         }
     }
 

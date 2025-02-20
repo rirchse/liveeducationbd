@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
+    protected $fillable = ['name'];
+
     public function courses()
     {
         return $this->belongsToMany(Course::class);
@@ -18,9 +20,10 @@ class Department extends Model
 
     public function subjects()
     {
-        return $this->belongsToMany(Subject::class);
+        return $this->belongsToMany(Subject::class, 'department_subject', 'department_id', 'subject_id');
     }
 
+    // need to check the relation
     public function chapters()
     {
         return $this->belongsToMany(Chapter::class);
@@ -54,5 +57,10 @@ class Department extends Model
     public function complain()
     {
         return $this->hasOne(Complain::class, 'department_id');
+    }
+
+    public function routine()
+    {
+        return $this->hasMany(Routine::class, 'department_id');
     }
 }

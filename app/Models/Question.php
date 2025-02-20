@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    protected $fillable = ['name'];
+    
     public function mcqitems()
     {
         return $this->hasMany(McqItem::class, 'question_id');

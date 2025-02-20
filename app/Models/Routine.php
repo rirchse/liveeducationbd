@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Syllabus extends Model
+class Routine extends Model
 {
     protected $fillable = ['name', 'course_id', 'department_id'];
     
@@ -21,15 +21,5 @@ class Syllabus extends Model
     public function batch()
     {
         return $this->belongsTo(Batch::class);
-    }
-
-    public function subjects()
-    {
-        return $this->belongsToMany(Subject::class, 'department_subject', 'department_id', 'subject_id');
-    }
-    
-    public function questions()
-    {
-        return $this->belongsToMany(Question::class);
     }
 }
