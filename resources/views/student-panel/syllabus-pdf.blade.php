@@ -20,7 +20,7 @@ $qcount = 0;
       font-style: normal;
     }
     body {
-      font-family: 'nikosh', Georgia;
+      font-family: 'nikosh', georgia;
       font-size: 14px;
     }
 
@@ -30,11 +30,11 @@ $qcount = 0;
     .banner img{width:100%}
 
     .department{border: 1px solid #888; font-size:14px; margin: 0 auto; padding-bottom:30px}
-    .dept_title{border:1px solid #000}
-    .sub_title{border-bottom:1px solid #000}
-    .chap_title{border-bottom:1px dashed #000}
+    .dept_title{border:1px solid}
+    .sub_title{border-bottom:1px solid}
+    .chap_title{border-bottom:1px dashed}
     .q_number{font-size:14px; padding-right:10px; text-align:justify}
-    .q-title{background-color: #ddd; font-size:14px}
+    .q-title{font-size:14px}
     .mcqitems{width:380px; column-width:170px;list-style: none}
     .exp-title{font-weight: bold}
     .explain{border:1px dotted #ddd}
@@ -64,16 +64,16 @@ $qcount = 0;
             {!! $syllabus->header !!} 
           </div>
           <hr>
-            <columns column-count="2" vAlign="J" column-gap="7" column-rule="1">
+            <columns column-count="2" vAlign="J" column-gap="7" column-rule="1 solid #333">
               @foreach($groupedData as $department => $subjects)
-              <h3 class="dept_title">{{ $department }}</h3> <!-- Department Name -->
+              <h3 class="dept_title">ডিপার্টমেন্টঃ {{ $department }}</h3> <!-- Department Name -->
 
               @foreach($subjects as $subject => $chapters)
-                <h4 class="sub_title"><i class="fa fa-book"></i> {{ $subject }}</h4> <!-- Subject Name -->
+                <h4 class="sub_title">সাবজেক্টঃ {{ $subject }}</h4> <!-- Subject Name -->
 
                 @foreach($chapters as $chapter => $questions)
                  @if($chapter)
-                  <h5 class="chap_title"><i class="fa fa-file"></i> {{ $chapter }}</h5> <!-- Chapter Name -->
+                  <h5 class="chap_title">চ্যাপ্টারঃ {{ $chapter }}</h5> <!-- Chapter Name -->
                   @endif
 
                     @foreach($questions as $questionId => $questionData)
@@ -102,7 +102,10 @@ $qcount = 0;
                       </ul>
                       <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
                       @if(isset($questionData['explain']))
-                      <div class="explain"><span class="exp-title">ব্যাখ্যা-</span>{!! $questionData['explain'] !!}</div>
+                      <div class="explain">
+                        <span class="exp-title">ব্যাখাঃ </span>
+                        {!! Str::substr($questionData['explain'], 3, -4) !!}</div>
+                        <br>
                       @endif
                     </div>
                     @endforeach

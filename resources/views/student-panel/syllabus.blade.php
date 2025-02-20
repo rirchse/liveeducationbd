@@ -71,20 +71,24 @@ $qcount = 0;
           </div>
           <div class="header" style="text-align:center">
             <h2>LIVE EDUCATION BD</h2>
-            <b>ব্যাচ এর নামঃ </b> {{$syllabus->batch->name}}
+            <b>ব্যাচঃ  </b> {{$syllabus->batch->name}}
             {!! $syllabus->header !!} </div>
-          <p style="text-align: center">Course Name: <b>{{$syllabus->course?$syllabus->course->name:''}}</b></p>
+          <p style="text-align: center"><b>কোর্সঃ  </b>{{$syllabus->course?$syllabus->course->name:''}}</p>
           <hr>
 
             <div class="department">
               @foreach($groupedData as $department => $subjects)
-              <h3 class="dept_title">{{ $department }}</h3> <!-- Department Name -->
+                @if($department)
+                <h3 class="dept_title">{{ $department }}</h3> <!-- Department Name -->
+                @endif
 
               @foreach($subjects as $subject => $chapters)
+                @if($subject)
                 <h4 class="sub_title"><i class="fa fa-book"></i> {{ $subject }}</h4> <!-- Subject Name -->
+                @endif
 
                 @foreach($chapters as $chapter => $questions)
-                 @if($chapter)
+                  @if($chapter)
                   <h5 class="chap_title"><i class="fa fa-file"></i> {{ $chapter }}</h5> <!-- Chapter Name -->
                   @endif
 
@@ -110,7 +114,8 @@ $qcount = 0;
                       </ul>
                       <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
                       @if(isset($questionData['explain']))
-                      <div class="explain"><span class="exp-title">ব্যাখ্যা-</span>{!! $questionData['explain'] !!}</div>
+                      <div class="explain"><span class="exp-title">ব্যাখাঃ </span>{!! substr($questionData['explain'], 3, -4) !!}</div>
+                      <br>
                       @endif
                     </div>
                     @endforeach

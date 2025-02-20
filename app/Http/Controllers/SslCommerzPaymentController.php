@@ -6,6 +6,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Http\Controllers\Students\StudentHomeCtrl;
+use App\Models\Student;
 use Session;
 
 class SslCommerzPaymentController extends Controller
@@ -192,11 +193,23 @@ class SslCommerzPaymentController extends Controller
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
         //add student to the batch and department
-        $result = $studentctrl->courseApplied(Session::get('_confirm'));
+        // $result = $studentctrl->courseApplied(Session::get('_confirm'));
 
-        if($result = true)
+        if(Session::get('_confirm'))
         {
-            Session::forget('_confirm');
+            $data = Session::get('_confirm');
+            try {
+                $student = Student::find($data['student_id']);
+                $student->batches()->sync($data['batch_id']);
+                $student->departments()->sync($data['department_id']);
+              
+                Session::forget('_confirm');
+              }
+              catch(\Exception $e)
+              {
+                echo "The system could not assign you to the batch. Please contact with our support team.";
+                return $e->getMessage();
+              }
         }
 
         if ($order_details->status == 'Pending') {
@@ -229,8 +242,6 @@ class SslCommerzPaymentController extends Controller
             //redirect to homepage
             echo $redirect_script;
         }
-
-
     }
 
     public function fail(Request $request)

@@ -8,10 +8,21 @@ if($user)
   $student = \App\Models\Student::find($user->id);
 }
 $value = $batch;
-// dd(Session::get('_order'));
+
 @endphp
 @extends('student')
 @section('title', 'Course')
+@section('stylesheets')
+<meta property="og:title" content="{{$batch->name}}" />
+<meta property="og:description" content="{{$batch->short}}" />
+<meta property="og:image" content="{{$batch->banner}}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="{{route('home.course.show', $batch->course->id)}}" />
+<meta property="og:type" content="Online Education" />
+<meta property="og:site_name" content="Live Education BD" />
+
+@endsection
 @section('content')
 {{-- <script src='https://www.google.com/recaptcha/api.js' async defer></script> --}}
 <style>

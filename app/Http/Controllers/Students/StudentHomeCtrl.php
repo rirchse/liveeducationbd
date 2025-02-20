@@ -132,9 +132,6 @@ class StudentHomeCtrl extends Controller
     }
 
     return false;
-
-    // Session::flash('success', 'You have successfully applied to the course.');
-    // return redirect()->route('students.my-course');
   }
 
   public function myCourse()
@@ -467,11 +464,6 @@ class StudentHomeCtrl extends Controller
 
   public function syllabus($id)
   {
-    // $syllabus = Syllabus::with([
-    //   'batch.departments.subjects.questions.mcqitems',
-    //   'batch.departments.subjects.chapters.questions.mcqitems'
-    //   ])->find($id);
-    // dd($syllabus);
     $syllabus = Syllabus::find($id);
 
     $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
@@ -533,7 +525,7 @@ class StudentHomeCtrl extends Controller
       {
         $groupedData[$department][$subject][$chapter][$question_id] = [
           'question' => $question_title,
-          'explain' => $question_title,
+          'explain' => $question_explain,
           'mcqs' => []
         ];
       }
@@ -619,8 +611,9 @@ class StudentHomeCtrl extends Controller
     $pdf = new Mpdf([
       'mode' => 'utf-8',
       'format' => 'A4',
+      'dpi' => 100, 
       'default_font_size' => 14,
-      // 'default_font' => 'nikosh',
+      'default_font' => 'nikosh',
       'fontDir' => storage_path('fonts'),
       'fontdata' => [
           'nikosh' => [
@@ -633,11 +626,19 @@ class StudentHomeCtrl extends Controller
           ],
       ],
       'tempDir' => storage_path('app/mpdf'),
+      'setAutoTopMargin' => 'stretch',
+      'setAutoBottomMargin' => 'stretch',
     ]);
 
     $html = view('student-panel.syllabus-pdf', compact('syllabus', 'groupedData'))->render();
 
+    $pdf->useDictionaryLBR = false;
+    
+    ob_start();
+
     $pdf->WriteHTML($html);
+
+    ob_end_clean();
 
     $pdf->Output($syllabus?$syllabus->name:'----Syllabus', 'D');
 
