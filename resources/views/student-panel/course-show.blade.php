@@ -176,7 +176,7 @@ $value = $batch;
           $course_syllabuses = [];
           if($value->syllabus)
           {
-            $course_syllabuses = $value->syllabus->where('department_id', NULL)->get();
+            $course_syllabuses = $value->syllabus->where('department_id', NULL)->where('batch_id', $value->id)->where('course_id', $value->course->id)->get();
           }
           @endphp
 
@@ -230,16 +230,15 @@ $value = $batch;
                     @if($department->syllabus)
                     <table class="table table-bordered">
                       <tr>
-                        <td><b><a href="{{route('student.syllabus', $department->syllabus->id)}}">{{$department->syllabus->name}}</a></b></td>
                         <td>
-                          {{-- রুটিন ডাউনলোড করুন <a href="{{$department->syllabus->routine}}" class="btn btn-warning"><i class="fa fa-download"></i></a> --}}
+                          <b>
+                            <a href="{{route('student.syllabus', $department->syllabus->id)}}">{{$department->syllabus->name}}</a>
+                          </b>
                         </td>
                         <td>
                           @if(!empty($student))
-                          
-                            @if($department->syllabus->pdf)
-                            সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
-                            @endif
+
+                            সিলেবাস ডাউনলোড করুন <a href="{{route('students.syllabus.pdf', $department->syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i></a>
 
                           @else
 
