@@ -176,10 +176,11 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        $redirect_url = route('students.my-course');
+        $redirect_url = route('homepage');
         $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
 
         $studentctrl = new StudentHomeCtrl;
+
         echo "Transaction is Successful";
 
         $tran_id = $request->input('tran_id');
@@ -192,25 +193,23 @@ class SslCommerzPaymentController extends Controller
         $order_details = DB::table('orders')
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
-        //add student to the batch and department
-        // $result = $studentctrl->courseApplied(Session::get('_confirm'));
 
-        if(Session::get('_confirm'))
+        //add student to the batch and department
+
+        if(!is_null(Session::get('_confirm')))
         {
             $data = Session::get('_confirm');
-            try {
-                $student = Student::find($data['student_id']);
-                $student->batches()->sync($data['batch_id']);
-                $student->departments()->sync($data['department_id']);
-              
-                Session::forget('_confirm');
-              }
-              catch(\Exception $e)
-              {
-                echo "The system could not assign you to the batch. Please contact with our support team.";
-                return $e->getMessage();
-              }
+            
+            $student = Student::find($data['student_id']);
+            // dd($student);
+            $student->batches()->attach([$data['batch_id']]);
+            $student->departments()->attach([$data['department_id']]);
+            // dd($data['student_id']);
+            
+            // Session::forget('_confirm');
         }
+
+        // dd(Session::get('_confirm'));
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -225,7 +224,8 @@ class SslCommerzPaymentController extends Controller
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
 
-                echo "<br >Transaction is successfully Completed. Back to the homepage or <p>It will automatic redirect to you ... ";
+                echo "<br> Transaction is successfully Completed. It will automatic redirect to you ... ";
+
                 //redirect to homepage
                 echo $redirect_script;
             }
