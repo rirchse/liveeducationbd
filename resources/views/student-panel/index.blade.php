@@ -15,7 +15,8 @@ if($user)
   .box-header{margin-bottom:15px}
   .box-header .box-title{text-align: center; display: block}
   .course-image{width:100%}
-  .hover:hover{border:2px solid #080}
+  .hover{border:2px solid #ddd}
+  .hover:hover{border-color: #080}
 </style>
 
     <!-- Main content -->
