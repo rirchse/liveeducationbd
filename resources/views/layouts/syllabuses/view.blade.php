@@ -51,9 +51,9 @@ $source = New SourceCtrl;
           <p style="text-align: center">Course Name: <b>{{$syllabus->course?$syllabus->course->name:''}}</b></p>
           <hr>
             <div class="row">
-              @foreach($syllabus->questions as $key => $value)
+              @foreach($questions as $key => $value)
               <div class="panel col-md-6">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px; text-align:justify">প্রশ্ন {{$key + $questions->firstItem()}}.</div>
                 <div style="display: inline">{!! $value->title !!}</div>
                 @foreach($value->getlabels as $val)
                 <label style="border:1px solid #aaa; padding:0 5px; color:brown">{{$val->label}}</label>
@@ -81,6 +81,11 @@ $source = New SourceCtrl;
             </div>
           </div>
           <div class="clearfix"></div>
+          <div class="box-footer clearfix">
+            <div class="pagination-sm no-margin pull-right">
+              {{$questions->links()}}
+            </div>
+          </div>
         </div><!--/.col -->
       </div><!-- /.col -->
     </div><!-- /.row -->

@@ -39,7 +39,10 @@ class SyllabusCtrl extends Controller
             Session::forget('_paper');
         }
         $syllabus = Syllabus::find($id);
-        return view('layouts.syllabuses.view', compact('syllabus'));
+        $questions = $syllabus->questions()->paginate(10);
+        // dd($questions);
+
+        return view('layouts.syllabuses.view', compact('syllabus', 'questions'));
     }
 
     /**

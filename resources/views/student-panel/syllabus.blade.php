@@ -71,9 +71,9 @@ $qcount = 0;
           </div>
           <div class="header" style="text-align:center">
             <h2>LIVE EDUCATION BD</h2>
+            <p style="text-align: center"><b>কোর্সঃ  </b>{{$syllabus->course?$syllabus->course->name:''}}</p>
             <b>ব্যাচঃ  </b> {{$syllabus->batch->name}}
             {!! $syllabus->header !!} </div>
-          <p style="text-align: center"><b>কোর্সঃ  </b>{{$syllabus->course?$syllabus->course->name:''}}</p>
           <hr>
 
             <div class="department">

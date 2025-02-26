@@ -147,6 +147,7 @@ class PaperCtrl extends Controller
         $departments = Department::where('status', 'Active')->get();
         $groups = Group::where('status', 'Active')->get();
         $paper = Paper::find($id);
+
         return view('layouts.papers.edit', compact('paper', 'courses', 'batches', 'departments', 'groups'));
     }
 
@@ -286,7 +287,9 @@ class PaperCtrl extends Controller
     public function solution($id)
     {
         $paper = Paper::find($id);
-        return view('layouts.papers.solution', compact('paper'));
+        $questions = $paper->questions()->paginate(20);
+
+        return view('layouts.papers.solution', compact('paper', 'questions'));
     }
 
     public function result($id)

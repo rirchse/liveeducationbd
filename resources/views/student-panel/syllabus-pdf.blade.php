@@ -86,7 +86,7 @@ $qcount = 0;
                       $correct_ans = '';
                       $qcount++;
                       @endphp
-                      <ul class="mcqitems">
+                      <ul class="mcqitems" column-count="2" vAlign="J">
                         @foreach($questionData['mcqs'] as $k => $mcq)
                         @php
                         if($mcq['correct_answer'])

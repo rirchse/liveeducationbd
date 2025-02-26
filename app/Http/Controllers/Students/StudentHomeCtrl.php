@@ -462,7 +462,7 @@ class StudentHomeCtrl extends Controller
     });
   }
 
-  public function syllabus($id)
+  public function syllabusQuestions($id)
   {
     $syllabus = Syllabus::find($id);
 
@@ -532,8 +532,35 @@ class StudentHomeCtrl extends Controller
 
       $groupedData[$department][$subject][$chapter][$question_id]['mcqs'] = $mcq;
     }
+    
+    return [
+      'syllabus' => $syllabus,
+      'questions' => $groupedData
+    ];
+
+    // return response()->json(
+    //   [
+    //     'success' => true,
+    //     'syllabus' => $syllabus,
+    //     'questions' => $groupedData
+    //   ],
+    //   200
+    // );
+  }
+
+  public function syllabus($id)
+  {
+    $data = $this->syllabusQuestions($id);
+    // dd($data);
+    // $data = json_decode(json_encode($data), true);
+    // $data = $data['original'];
+
+    // dd($data['questions']);
+    $syllabus = $data['syllabus'];
+    $groupedData = $data['questions'];
 
     // dd($groupedData);
+    
     return view('student-panel.syllabus', compact('syllabus', 'groupedData'));
   }
 
@@ -640,7 +667,9 @@ class StudentHomeCtrl extends Controller
 
     ob_end_clean();
 
-    $pdf->Output($syllabus?$syllabus->name:'----Syllabus', 'D');
+    // $pdf->Output(storage_path('app/mpdf/syllabus.pdf'), 'F');
+
+    $pdf->Output($syllabus ? $syllabus->name : '----Syllabus', 'D');
 
     // $pdf->stream('document.pdf');
 

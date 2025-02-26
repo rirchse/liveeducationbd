@@ -57,7 +57,7 @@ $source = New SourceCtrl;
                   <td>{{$key+1}}</td>
                   <td>{{$value->student->name}}</td>
                   <td>{{str_pad($value->student->id, 6, '0', STR_PAD_LEFT)}}</td>
-                  <td>{{$value->paper->department ? $value->paper->department->name : ''}}</td>
+                  <td>{{!empty($value->paper->department) ?$value->paper->department->name : ''}}</td>
                   <td>{{$source->tformat($value->start_at).' - '.$source->tformat($value->end_at)}}</td>
                   <td>
                     @if($value->status == 'Live')

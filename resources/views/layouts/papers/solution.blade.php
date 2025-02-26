@@ -56,13 +56,13 @@ $source = New SourceCtrl;
             Solution Paper
           </h3>
             <div class="questions" style="width:750px; columns:300px 2; column-gap:30px; column-rule: 1px solid #888; font-size:12px">
-              @foreach($paper->questions as $key => $value)
+              @foreach($questions as $key => $value)
               @php
               $correct_ans = '';
               @endphp
               
               <div class="question">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:10px;">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px;">প্রশ্ন {{$key + $questions->firstItem()}}.</div>
                 <div style="display: inline; text-align:justify">{!! $value->title !!}</div>
 
                 <div class="mcqitems" style="list-style: none; width:360px; column-width:140px">
@@ -90,7 +90,11 @@ $source = New SourceCtrl;
               @endforeach
             </div>
           </div>
-          <div class="clearfix"></div>
+          <div class="clearfix"></div><div class="box-footer clearfix">
+            <div class="pagination-sm no-margin pull-right">
+              {{$questions->links()}}
+            </div>
+          </div>
         </div><!--/.col -->
       </div><!-- /.col -->
     </div><!-- /.row -->

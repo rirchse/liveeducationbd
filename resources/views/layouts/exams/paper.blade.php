@@ -28,7 +28,7 @@ $source = New SourceCtrl;
       <div class="col-md-12"><!-- general form elements -->
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h4 class="box-title" style="display: inline">Exam Paper (<b>{{count($paper->questions)}}</b>)</h4>
+            <h4 class="box-title" style="display: inline">Exam Paper (<b>{{$questions->total()}}</b>)</h4>
             <div class="text-right toolbar-icon pull-right" style="display: inline">
               <a href="{{route('exam.index')}}" title="View" class="label label-success"><i class="fa fa-list"></i></a>
               {{-- <a href="{{route('paper.show', $paper->id)}}" class="label label-primary" title="Details"><i class="fa fa-file-text"></i></a> --}}
@@ -42,12 +42,18 @@ $source = New SourceCtrl;
       <div class="col-md-12">
       <div class="box">
         <div class="col-md-12">
-          <div class="banner"><img src="{{$paper->banner}}" alt=""></div>
+          @if(!empty($paper->banner))
+          <div class="banner">
+            <img src="{{$paper->banner}}" alt="">
+          </div>
+          @endif
+          @if(!empty($paper->header))
           <div class="header" style="text-align:center">{!! $paper->header !!} </div>
+          @endif
             <div class="col-md-12">
-              @foreach($paper->questions as $key => $value)
+              @foreach($questions as $key => $value)
               <div class="panel">
-                <div style="display: inline; font-weight:bold;float:left; padding-right:10px">প্রশ্ন {{$key+1}}.</div>
+                <div style="display: inline; font-weight:bold;float:left; padding-right:10px">প্রশ্ন {{$key + $questions->firstItem()}}.</div>
                 <div style="display: inline">{!! $value->title !!}</div>
                 <ul class="mcqitems">
                   @foreach($value->mcqitems as $k => $val)
@@ -67,6 +73,11 @@ $source = New SourceCtrl;
             </div>
           </div>
           <div class="clearfix"></div>
+          <div class="box-footer clearfix">
+            <div class="pagination-sm no-margin pull-right">
+              {{$questions->links()}}
+            </div>
+          </div>
         </div><!--/.col -->
       </div><!-- /.col -->
     </div><!-- /.row -->
