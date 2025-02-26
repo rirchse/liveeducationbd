@@ -194,8 +194,5 @@ return [
     |
     */
 
-    'same_site' => 'lax',
-    'secure' => env('SESSION_SECURE_COOKIE', true),  // Must be true in production
-    'http_only' => true,  // Recommended for security
-
+    'same_site' => 'none',
 ];
