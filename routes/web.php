@@ -75,6 +75,24 @@ Route::controller(ForgotPasswordController::class)->group(function()
 	Route::post('password.update', 'updatePassword')->name('password.update');
 });
 
+Route::controller(SslCommerzPaymentController::class)->group(function()
+{
+	// SSLCOMMERZ Start
+	Route::get('/example1', 'exampleEasyCheckout');
+	// Route::get('/example2', 'exampleHostedCheckout');
+	Route::get('/payment-proceed', 'exampleHostedCheckout');
+
+	Route::post('/students/pay', 'index')->name('payment.proceed');
+	Route::post('/pay-via-ajax', 'payViaAjax');
+
+	Route::post('/students/success', 'success');
+	Route::post('/students/fail', 'fail');
+	Route::post('/students/cancel', 'cancel');
+
+	Route::post('/students/ipn', 'ipn');
+	//SSLCOMMERZ END
+});
+
 Route::middleware('auth:student')->group(function()
 {
 	Route::controller(StudentHomeCtrl::class)->group(function()
@@ -101,24 +119,6 @@ Route::middleware('auth:student')->group(function()
 		Route::post('students/complain', 'complainStore')->name('students.complain.store');
 		Route::get('students/update-paper/{id}', 'updatePaperAjax')->name('paper.update.ajax');
 		Route::get('students/profile', 'profile')->name('students.profile');
-	});
-
-	Route::controller(SslCommerzPaymentController::class)->group(function()
-	{
-		// SSLCOMMERZ Start
-		Route::get('/example1', 'exampleEasyCheckout');
-		// Route::get('/example2', 'exampleHostedCheckout');
-		Route::get('/payment-proceed', 'exampleHostedCheckout');
-	
-		Route::post('/students/pay', 'index')->name('payment.proceed');
-		Route::post('/pay-via-ajax', 'payViaAjax');
-	
-		Route::post('/students/success', 'success');
-		Route::post('/students/fail', 'fail');
-		Route::post('/students/cancel', 'cancel');
-	
-		Route::post('/students/ipn', 'ipn');
-		//SSLCOMMERZ END
 	});
 });
 

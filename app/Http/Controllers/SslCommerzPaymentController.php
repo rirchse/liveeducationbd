@@ -209,7 +209,7 @@ class SslCommerzPaymentController extends Controller
             // Session::forget('_confirm');
         }
 
-        // dd(Session::get('_confirm'));
+        dd(Session::get('_confirm'));
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
