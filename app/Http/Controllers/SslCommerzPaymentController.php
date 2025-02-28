@@ -206,10 +206,10 @@ class SslCommerzPaymentController extends Controller
             $student->departments()->attach([$data['department_id']]);
             // dd($data['student_id']);
             
-            // Session::forget('_confirm');
+            Session::forget('_confirm');
         }
 
-        dd(Session::get('_confirm'));
+        // dd(Session::get('_confirm'));
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);

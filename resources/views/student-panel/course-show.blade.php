@@ -176,6 +176,7 @@ $value = $batch;
             <div class="panel-body">{!! $value->learn !!}</div>
           </div>
           @endif
+          
           @if($value->routine)
           <div class="panel panel-default">
             <div class="panel-heading"><h4>ক্লাস রুটিন</h4></div>
