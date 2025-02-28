@@ -53,7 +53,10 @@ Route::controller(RegisterController::class)->group(function()
 });
 Route::get('students', function()
 {
-	return '<p style="text-align:center;margin-top:20%">Welcome to Student Panel</p>';
+	echo '<p style="text-align:center;margin-top:20%">Welcome to Student Panel</p>';
+
+	return redirect()->route('students.my-course');
+
 })->name('students');
 Route::controller(StudentLogin::class)->group(function()
 {
