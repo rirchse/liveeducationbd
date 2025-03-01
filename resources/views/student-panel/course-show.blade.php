@@ -15,7 +15,7 @@ $value = $batch;
 @section('stylesheets')
 <meta property="og:title" content="{{$batch->name}}" />
 <meta property="og:description" content="{{$batch->short}}" />
-<meta property="og:image" content="{{$batch->banner}}" />
+<meta property="og:image" content="{{route('homepage').$batch->banner}}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:url" content="{{route('home.course.show', $batch->course->id)}}" />

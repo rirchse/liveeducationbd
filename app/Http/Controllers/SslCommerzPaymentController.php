@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Http\Controllers\Students\StudentHomeCtrl;
 use App\Models\Student;
+use App\Models\Batch;
+use App\Models\Department;
+use App\Models\Order;
 use Session;
 
 class SslCommerzPaymentController extends Controller
@@ -30,6 +33,13 @@ class SslCommerzPaymentController extends Controller
     {
         $redirect_url = route('students.my-course');
         $data = $request->all();
+
+        //find batch
+        $batch = Batch::find($request->batch_id);
+
+        //find department
+        $department = Department::find($request->department_id);
+
 
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
@@ -70,12 +80,6 @@ class SslCommerzPaymentController extends Controller
         $post_data['product_category'] = "Goods";
         $post_data['product_profile'] = "physical-goods";
 
-        # OPTIONAL PARAMETERS
-        $post_data['value_a'] = "ref001";
-        $post_data['value_b'] = "ref002";
-        $post_data['value_c'] = "ref003";
-        $post_data['value_d'] = "ref004";
-
         #Before  going to initiate the payment order status need to insert or update as Pending.
         $update_product = DB::table('orders')
             ->where('transaction_id', $post_data['tran_id'])
@@ -92,6 +96,19 @@ class SslCommerzPaymentController extends Controller
                 'transaction_id' => $post_data['tran_id'],
                 'currency' => $post_data['currency']
             ]);
+        $order_latest = DB::table('orders')
+        ->where('student_id', $request->student_id)
+        ->where('batch_id', $request->batch_id)
+        ->where('department_id', $request->department_id)
+        ->first();
+        
+        # OPTIONAL PARAMETERS
+        $post_data['value_a'] = $order_latest->id;
+        $post_data['value_b'] = $batch->name;
+        $post_data['value_c'] = $department->name;
+        $post_data['value_d'] = "";
+
+        // dd($post_data);
 
         $sslc = new SslCommerzNotification();
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
@@ -176,12 +193,14 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+        // dd($request->all());
+        $order = Order::find($request->value_a);
         $redirect_url = route('homepage');
-        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
+        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
         $studentctrl = new StudentHomeCtrl;
 
-        echo "Transaction is Successful";
+        // echo "Transaction is Successful";
 
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
@@ -196,18 +215,25 @@ class SslCommerzPaymentController extends Controller
 
         //add student to the batch and department
 
-        if(!is_null(Session::get('_confirm')))
+        if($order)
         {
-            $data = Session::get('_confirm');
-            
-            $student = Student::find($data['student_id']);
-            // dd($student);
-            $student->batches()->attach([$data['batch_id']]);
-            $student->departments()->attach([$data['department_id']]);
-            // dd($data['student_id']);
-            
-            Session::forget('_confirm');
+            $student = Student::find($order->student_id);
+            $student->batches()->attach([$order->batch_id]);
+            $student->departments()->attach([$order->department_id]);
         }
+
+        // if(!is_null(Session::get('_confirm')))
+        // {
+        //     $data = Session::get('_confirm');
+            
+        //     $student = Student::find($data['student_id']);
+        //     // dd($student);
+        //     $student->batches()->attach([$data['batch_id']]);
+        //     $student->departments()->attach([$data['department_id']]);
+        //     // dd($data['student_id']);
+            
+        //     Session::forget('_confirm');
+        // }
 
         // dd(Session::get('_confirm'));
 
