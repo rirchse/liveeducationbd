@@ -222,21 +222,6 @@ class SslCommerzPaymentController extends Controller
             $student->departments()->attach([$order->department_id]);
         }
 
-        // if(!is_null(Session::get('_confirm')))
-        // {
-        //     $data = Session::get('_confirm');
-            
-        //     $student = Student::find($data['student_id']);
-        //     // dd($student);
-        //     $student->batches()->attach([$data['batch_id']]);
-        //     $student->departments()->attach([$data['department_id']]);
-        //     // dd($data['student_id']);
-            
-        //     Session::forget('_confirm');
-        // }
-
-        // dd(Session::get('_confirm'));
-
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
@@ -300,12 +285,6 @@ class SslCommerzPaymentController extends Controller
             //redirect to homepage
             echo $redirect_script;
         }
-        
-        //session forget
-        if(Session::get('_confirm'))
-        {
-            Session::forget('_confirm');
-        }
 
         //redirect to
         $this->redirectTo();
@@ -347,12 +326,6 @@ class SslCommerzPaymentController extends Controller
             //redirect to homepage
             echo $redirect_script;
 
-        }
-        
-        //session forget
-        if(Session::get('_confirm'))
-        {
-            Session::forget('_confirm');
         }
 
         //redirect to
@@ -411,14 +384,6 @@ class SslCommerzPaymentController extends Controller
             //redirect to homepage
             echo $redirect_script;
         }
-    }
-
-    //customized redirect to
-    public function redirectTo()
-    {
-        $redirect_url = route('home.course');
-
-        return "<br ><p>It will automatic redirect to you ... </p>"."<script> setTimeout('window.location.href=\"".$redirect_url."\"', 5000);</script>";
     }
 
 }
