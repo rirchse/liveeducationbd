@@ -14,6 +14,8 @@ use Session;
 
 class SslCommerzPaymentController extends Controller
 {
+    protected $redirect_url; 
+    protected $batch_id; 
     // public function __construct()
     // {
     //   $this->middleware('auth:student');
@@ -193,11 +195,6 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        // dd($request->all());
-        // $order = Order::find($request->value_a);
-        $redirect_url = route('homepage');
-        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
-
         $studentctrl = new StudentHomeCtrl;
 
         // echo "Transaction is Successful";
@@ -211,7 +208,7 @@ class SslCommerzPaymentController extends Controller
         #Check order status in order tabel against the transaction id or order id.
         $order_details = DB::table('orders')
             ->where('transaction_id', $tran_id)
-            ->select('transaction_id', 'status', 'currency', 'amount')->first();
+            ->select('transaction_id', 'status', 'currency', 'amount', 'student_id', 'batch_id', 'department_id')->first();
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -233,6 +230,10 @@ class SslCommerzPaymentController extends Controller
                     ->update(['status' => 'Processing']);
 
                 echo "<br> Transaction is successfully Completed. It will automatic redirect to you ... ";
+
+                // $order = Order::find($request->value_a);
+                $redirect_url = route('students.course.show', $order_details->batch_id);
+                $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
                 //redirect to homepage
                 echo $redirect_script;
