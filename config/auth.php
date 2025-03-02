@@ -77,9 +77,9 @@ return [
         ],
 
         'students' => [
-            'driver' => 'database',
-            // 'model' => App\Models\Student::class,
-            'table' => 'students',
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
+            // 'table' => 'students',
         ],
     ],
 

@@ -19,6 +19,17 @@
           <p class="login-box-msg">
           <img src="/img/logo.png?v=3008" alt=""><br><br>Student Login</p>
 
+          <div style="text-align:center">
+            <h4>Login by Google</h4>
+            <a class="btn btn-default" href="/auth/google">
+              <img style="max-width: 150px" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="">
+            </a>
+          </div>
+
+          <hr>
+
+          <h3 style="text-align: center">or</h3>
+
           <form action="{{ route('students.login.post') }}" method="POST" style="margin-bottom:15px">
             @csrf
             <div class="form-group">

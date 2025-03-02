@@ -11,6 +11,9 @@ use App\Http\Controllers\Students\StudentHomeCtrl;
 use App\Http\Controllers\HomePageCtrl;
 use App;
 use URL;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\Student;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +25,14 @@ use URL;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/auth/github', function () {
+	return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/google', function () {
+	return Socialite::driver('google')->redirect();
+});
 
 // force https on production server
 if (App::environment('production'))
@@ -63,6 +74,8 @@ Route::controller(StudentLogin::class)->group(function()
 	Route::get('students/login', 'login')->name('students.login');
 	Route::post('students/login', 'loginPost')->name('students.login.post');
 	Route::post('students/logout', 'logout')->name('students.logout');
+	Route::get('/auth/github/callback', 'oAuthGithub');
+	Route::get('/auth/google/callback', 'oAuthGoogle');
 });
 
 Route::controller(ForgotPasswordController::class)->group(function()

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Student;
 use Session;
+use Laravel\Socialite\Facades\Socialite;
 
 class StudentLogin extends Controller
 {
@@ -54,18 +56,10 @@ class StudentLogin extends Controller
 
     public function loginPost(Request $request)
     {
-        // dd($request->all());
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|max:32'
         ]);
-
-        // $user = Student::where('email', $request->email)->first();
-        // if($user->status != 'Active')
-        // {
-        //     Session::flash('error', 'Please check your email and verify the account.');
-        //     return back();
-        // }
 
         $email    = $request->email;
         $password = $request->password;
@@ -78,11 +72,7 @@ class StudentLogin extends Controller
         {
             return redirect()->intended(route('students.my-course'));
         }
-        // else
-        // {
-        //     Session::flash('error', 'Invalid Credentials!');
-        // }
-        // return redirect()->route('students.login');
+        
         return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
@@ -95,5 +85,50 @@ class StudentLogin extends Controller
         $request->session()->regenerateToken();
     
         return redirect()->route('students.login');
+    }
+
+    /** --------------------- O Auth logins -------------------- */
+    public function oAuthGithub()
+    {
+        $socialUser = Socialite::driver('github')->user();
+    
+        // Find or create user
+        $user = Student::updateOrCreate(
+            [
+                'email' => $socialUser->getEmail(),
+            ],
+            [
+                'name' => $socialUser->getName(),
+                'contact' => null,
+                'password' => bcrypt(str()->random(16)), // Random password
+                'image' => $socialUser->getAvatar(),
+                'github_id' => $socialUser->getId(),
+            ]);
+    
+        Auth::guard('student')->loginUsingId($user->id);
+    
+        return redirect()->route('students.my-course');
+    }
+
+    public function oAuthGoogle()
+    {
+        $socialUser = Socialite::driver('google')->user();
+    
+        // Find or create user
+        $user = Student::updateOrCreate(
+            [
+                'email' => $socialUser->getEmail(),
+            ],
+            [
+                'name' => $socialUser->getName(),
+                'contact' => null,
+                'password' => bcrypt(str()->random(16)), // Random password
+                'image' => $socialUser->getAvatar(),
+                'google_id' => $socialUser->getId(),
+            ]);
+    
+        Auth::guard('student')->loginUsingId($user->id);
+    
+        return redirect()->route('students.my-course');
     }
 }

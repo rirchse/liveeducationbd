@@ -15,9 +15,21 @@
           <h2 style="color:#fff">{{config('app.name', 'App Name')}} Register</h2>
         </div>
         <!-- /.login-logo -->
+        
         <div class="login-box-body">
           {{-- <p class="login-box-msg">
             <img src="/img/logo.png?v=3008" alt=""><br><br>Login to start your session</p> --}}
+
+            <div style="text-align:center">
+              <h4>Sign up by Google</h4>
+              <a class="btn btn-default" href="/auth/google">
+                <img style="max-width: 150px" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="">
+              </a>
+            </div>
+  
+            <hr>
+  
+            <h3 style="text-align: center">or</h3>
 
           <form action="{{ route('register.post') }}" method="POST" style="margin-bottom:15px">
             @csrf
