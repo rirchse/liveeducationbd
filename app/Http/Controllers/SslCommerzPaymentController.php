@@ -209,6 +209,10 @@ class SslCommerzPaymentController extends Controller
         $order_details = DB::table('orders')
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount', 'student_id', 'batch_id', 'department_id')->first();
+        
+        // $order = Order::find($request->value_a);
+        $redirect_url = route('students.course.show', $order_details->batch_id);
+        $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
         if($order_details)
         {
@@ -233,10 +237,6 @@ class SslCommerzPaymentController extends Controller
                     ->update(['status' => 'Processing']);
 
                 echo "<br> Transaction is successfully Completed. It will automatic redirect to you ... ";
-
-                // $order = Order::find($request->value_a);
-                $redirect_url = route('students.course.show', $order_details->batch_id);
-                $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
                 //redirect to homepage
                 echo $redirect_script;
