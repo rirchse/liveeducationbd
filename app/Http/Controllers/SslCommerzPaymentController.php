@@ -210,15 +210,18 @@ class SslCommerzPaymentController extends Controller
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount', 'student_id', 'batch_id', 'department_id')->first();
 
+        if($order_details)
+        {
+            /** add student to the batch and department */
+            $student = Student::find($order_details->student_id);
+            $student->batches()->attach([$order_details->batch_id]);
+            $student->departments()->attach([$order_details->department_id]);
+        }
+
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
             if ($validation) {
-
-                /** add student to the batch and department */
-                $student = Student::find($order_details->student_id);
-                $student->batches()->attach([$order_details->batch_id]);
-                $student->departments()->attach([$order_details->department_id]);
 
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
