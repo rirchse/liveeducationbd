@@ -137,64 +137,6 @@ $value = $batch;
             </div>
           </div>
           
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <h4>কোর্সটির মেয়াদ ও অন্যান্য</h4>
-            </div>
-            <div class="panel-body table-responsive">
-              <table class="table table-bordered">
-                @if($value->end_at)
-                <tr>
-                  <td>কোর্সটি চলবে</td>
-                  <th>{!! $source->reminder($value->end_at) !!}</th>
-                </tr>
-                @endif
-                @if($value->reg_end_at && $value->reg_end_at > date('Y-m-d H:i:s'))
-                <tr>
-                  <td>রেজিস্ট্রেশনের মেয়াদ শেষ হবে</td>
-                  <th>{{$source->dtformat($value->reg_end_at)}}</th>
-                </tr>
-                @endif
-                @if( $value->offer_end_at && $value->offer_end_at > date('Y-m-d H:i:s') )
-                <tr>
-                  <td>বর্তমান অফারের মেয়াদ</td>
-                  <th>{{$source->dtformat($value->offer_end_at)}}</th>
-                </tr>
-                @endif
-              </table>
-            </div>
-          </div>
-          
-          @if($value->teachers)
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4>কোর্স ইন্সট্রাক্টর</h4>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                  @foreach($value->teachers as $val)
-                  <div class="col-md-6">
-                    <div class="image">
-                      <img src="{{$val->image? $val->image:'/img/teacher.png'}}" alt="" style="max-width: 80px; padding:5px; float:left; padding-right: 15px">
-                    </div>
-                    <div class="teacher-title">
-                      <b style="font-size:16px">{{$val->name}}</b>
-                      {!! $val->designation !!}
-                    </div>
-                    <div class="clearfix"></div>
-                  </div>
-                  @endforeach
-              </div>
-            </div>
-          </div>
-          @endif
-          @if($value->learn)
-          <div class="panel panel-default">
-            <div class="panel-heading"><h4>কোর্সটি করে যা শিখবেন</h4></div>
-            <div class="panel-body">{!! $value->learn !!}</div>
-          </div>
-          @endif
-          
           @if($value->routine)
           <div class="panel panel-default">
             <div class="panel-heading"><h4>ক্লাস রুটিন</h4></div>
@@ -288,6 +230,64 @@ $value = $batch;
               </div>
               @endforeach
             </div>
+          </div>
+          @endif
+          
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h4>কোর্সটির মেয়াদ ও অন্যান্য</h4>
+            </div>
+            <div class="panel-body table-responsive">
+              <table class="table table-bordered">
+                @if($value->end_at)
+                <tr>
+                  <td>কোর্সটি চলবে</td>
+                  <th>{!! $source->reminder($value->end_at) !!}</th>
+                </tr>
+                @endif
+                @if($value->reg_end_at && $value->reg_end_at > date('Y-m-d H:i:s'))
+                <tr>
+                  <td>রেজিস্ট্রেশনের মেয়াদ শেষ হবে</td>
+                  <th>{{$source->dtformat($value->reg_end_at)}}</th>
+                </tr>
+                @endif
+                @if( $value->offer_end_at && $value->offer_end_at > date('Y-m-d H:i:s') )
+                <tr>
+                  <td>বর্তমান অফারের মেয়াদ</td>
+                  <th>{{$source->dtformat($value->offer_end_at)}}</th>
+                </tr>
+                @endif
+              </table>
+            </div>
+          </div>
+          
+          @if($value->teachers)
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4>কোর্স ইন্সট্রাক্টর</h4>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                  @foreach($value->teachers as $val)
+                  <div class="col-md-6">
+                    <div class="image">
+                      <img src="{{$val->image? $val->image:'/img/teacher.png'}}" alt="" style="max-width: 80px; padding:5px; float:left; padding-right: 15px">
+                    </div>
+                    <div class="teacher-title">
+                      <b style="font-size:16px">{{$val->name}}</b>
+                      {!! $val->designation !!}
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  @endforeach
+              </div>
+            </div>
+          </div>
+          @endif
+          @if($value->learn)
+          <div class="panel panel-default">
+            <div class="panel-heading"><h4>কোর্সটি করে যা শিখবেন</h4></div>
+            <div class="panel-body">{!! $value->learn !!}</div>
           </div>
           @endif
 

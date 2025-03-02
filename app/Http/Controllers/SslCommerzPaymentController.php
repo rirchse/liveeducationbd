@@ -194,7 +194,7 @@ class SslCommerzPaymentController extends Controller
     public function success(Request $request)
     {
         // dd($request->all());
-        $order = Order::find($request->value_a);
+        // $order = Order::find($request->value_a);
         $redirect_url = route('homepage');
         $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
@@ -213,19 +213,16 @@ class SslCommerzPaymentController extends Controller
             ->where('transaction_id', $tran_id)
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-        //add student to the batch and department
-
-        if($order)
-        {
-            $student = Student::find($order->student_id);
-            $student->batches()->attach([$order->batch_id]);
-            $student->departments()->attach([$order->department_id]);
-        }
-
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
             if ($validation) {
+
+                /** add student to the batch and department */
+                $student = Student::find($order_details->student_id);
+                $student->batches()->attach([$order_details->batch_id]);
+                $student->departments()->attach([$order_details->department_id]);
+
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
                 in order table as Processing or Complete.
@@ -285,10 +282,6 @@ class SslCommerzPaymentController extends Controller
             //redirect to homepage
             echo $redirect_script;
         }
-
-        //redirect to
-        $this->redirectTo();
-
     }
 
     public function cancel(Request $request)
@@ -327,9 +320,6 @@ class SslCommerzPaymentController extends Controller
             echo $redirect_script;
 
         }
-
-        //redirect to
-        $this->redirectTo();
     }
 
     public function ipn(Request $request)
