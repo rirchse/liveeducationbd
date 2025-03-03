@@ -102,6 +102,7 @@ class StudentLogin extends Controller
                 'contact' => null,
                 'password' => bcrypt(str()->random(16)), // Random password
                 'image' => $socialUser->getAvatar(),
+                'status' => 'Active',
                 'github_id' => $socialUser->getId(),
             ]);
     
@@ -124,6 +125,7 @@ class StudentLogin extends Controller
                 'contact' => null,
                 'password' => bcrypt(str()->random(16)), // Random password
                 'image' => $socialUser->getAvatar(),
+                'status' => 'Active',
                 'google_id' => $socialUser->getId(),
             ]);
     
