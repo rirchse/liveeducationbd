@@ -57,7 +57,7 @@ function active($name)
           <li class="{{active('complain')}}"><a href="{{route('students.complain')}}">অভিযোগ দিন</a></li>
           @if(empty($user))
           <li><a href="/signup">সাইন আপ</a></li>
-          <li><a href="/students/login">লগিন</a></li>
+          <li><a href="/students/login">লগইন</a></li>
           @endif
         </ul>
         {{-- <form class="navbar-form navbar-left" role="search">
