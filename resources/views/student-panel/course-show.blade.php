@@ -22,7 +22,7 @@ $value = $batch;
 <meta property="og:url" content="{{route('home.course.show', $batch->id)}}" />
 <meta property="og:title" content="{{$batch->name}}" />
 <meta property="og:description" content="{{$batch->short}}" />
-<meta property="og:logo" content="/img/logo.png" />
+<meta property="og:logo" content="{{route('homepage').$batch->banner}}" />
 <meta property="og:image" content="{{route('homepage').$batch->banner}}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -40,6 +40,8 @@ $value = $batch;
 <meta name="twitter:image:width" content="1200"/>
 <meta name="twitter:image:height" content="630"/>
 <meta name="twitter:image:alt" content="{{$batch->name}}"/>
+
+<title>{{$batch->name}}</title>
 
 @endsection
 @section('content')
