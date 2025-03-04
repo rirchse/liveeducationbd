@@ -194,11 +194,16 @@ class ExamCtrl extends Controller
     {
         $exam = Exam::find($exam_id);
         $paper = Paper::find($exam->paper_id);
-        $questions = $paper->questions()->leftJoin('choices', 'choices.question_id', 'questions.id')
-        ->where('choices.exam_id', $exam_id)
-        ->select('choices.*', 'questions.title')
+        $questions = $paper->questions()
+        // ->leftJoin('choices', 'choices.question_id', 'questions.id')
+        // ->where('choices.exam_id', $exam_id)
+        // ->select('choices.*', 'questions.title')
+        ->select('questions.title')
         ->paginate(20);
-        $choices = Choice::where('exam_id', $exam_id)->pluck('question_id', 'mcq_id')->toArray();
+
+        $choices = Choice::where('exam_id', $exam_id)
+        ->pluck('question_id', 'mcq_id')
+        ->toArray();
         // dd($questions);
 
         return view('layouts.exams.paper', compact('exam', 'questions', 'paper', 'choices'));
