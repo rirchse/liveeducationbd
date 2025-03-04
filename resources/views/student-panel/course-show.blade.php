@@ -230,7 +230,11 @@ $value = $batch;
                         <td>
                           @if(!empty($student))
 
-                          {{$department->syllabus->name}} <a href="{{route('students.syllabus.pdf', $department->syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
+                          {{$department->syllabus->name}}
+
+                          <a class="btn btn-info" href="{{route('student.syllabus', $department->syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                          
+                          <a href="{{route('students.syllabus.pdf', $department->syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
 
                           @else
 

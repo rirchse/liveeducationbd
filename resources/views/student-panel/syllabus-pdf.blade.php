@@ -86,7 +86,7 @@ $qcount = 0;
                       $correct_ans = '';
                       $qcount++;
                       @endphp
-                      <ul class="mcqitems" column-count="2" vAlign="J">
+                      <div class="mcqitems">
                         @foreach($questionData['mcqs'] as $k => $mcq)
                         @php
                         if($mcq['correct_answer'])
@@ -94,12 +94,12 @@ $qcount = 0;
                           $correct_ans = $source->mcqlist()[$syllabus->format][$k].' '.$mcq['item'];
                         }
                         @endphp
-                        <li>
+                        <div>
                           <span> {{$source->mcqlist()[$syllabus->format][$k]}} </span>{{$mcq['item']}}
-                        </li>
+                        </div>
                         @endforeach
                         <div class="clearfix"></div>
-                      </ul>
+                      </div>
                       <div style="color:green; clear:top; padding:10px 0;">সঠিক উত্তরঃ <b>{{$correct_ans}}</b></div>
                       @if(isset($questionData['explain']))
                       <div class="explain">

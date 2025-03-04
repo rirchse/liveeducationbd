@@ -18,6 +18,7 @@
         <div class="login-box-body">
           <p class="login-box-msg">
           <img src="/img/logo.png?v=3008" alt=""><br><br>Student Login</p>
+          {{bcrypt('11223344')}}
 
           <div style="text-align:center">
             <a class="btn-block" href="/auth/google">
