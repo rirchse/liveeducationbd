@@ -58,6 +58,8 @@ $value = $batch;
     .pricing{}
     .info{}
   }
+  .list{list-style: none}
+  .list li{padding: 10px 0}
 </style>
 
 {{-- <div class="content-wrapper">
@@ -191,7 +193,7 @@ $value = $batch;
                       <tr>
                         <th>সিলেবাস</th>
                         <td>
-                          <ul style="list-style: none">
+                          <ul class="list">
                           @foreach($course_syllabuses as $key => $syllabus)
                           <li>
                             {{$syllabus->name}}
@@ -243,7 +245,9 @@ $value = $batch;
                       <tr>
                         <th>সিলেবাস</th>
                         <td>
+                          <ul class="list">
                           @foreach($syllabuses as $syllabus)
+                          <li>
                           @if(!empty($student))
 
                           {{$syllabus->name}}
@@ -259,7 +263,9 @@ $value = $batch;
                             @endif
 
                           @endif
+                          </li>
                           @endforeach
+                          </ul>
                         </td>
                       </tr>
                     </table>
