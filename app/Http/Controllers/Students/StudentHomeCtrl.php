@@ -466,74 +466,76 @@ class StudentHomeCtrl extends Controller
   {
     $syllabus = Syllabus::find($id);
 
-    // $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
-    
-    // ->join('syllabi', 'syllabus_id', 'syllabi.id')
-
-    // ->leftJoin('question_subject', 'question_subject.question_id', 'questions.id')
-    // ->leftJoin('subjects', 'question_subject.subject_id', 'subjects.id')
-
-    // ->leftJoin('department_question', 'department_question.question_id', 'questions.id')
-    // ->leftJoin('departments', 'department_question.department_id', 'departments.id')
-
-    // ->leftJoin('chapter_question', 'chapter_question.question_id', 'questions.id')
-    // ->leftJoin('chapters', 'chapter_question.chapter_id', 'chapters.id')
-    // ->leftJoin('mcq_items', 'mcq_items.question_id', 'questions.id')
-    // ->where('syllabi.id', $id)
-    // ->select(
-    //   'departments.name as department_name',
-    //   'subjects.name as subject_name',
-    //   'chapters.name as chapter_name',
-    //   'questions.id',
-    //   'questions.title as question_title',
-    //   'questions.explanation'
-    //   )
-    // ->orderBy('departments.name')
-    // ->orderBy('subjects.name')
-    // ->orderBy('chapters.name')
-    // ->get();
-
-    // //groupby
-    // $groupedData = [];
-    // foreach($questions as $key => $data)
-    // {
-    //   $department = $data->department_name;
-    //   $subject = $data->subject_name;
-    //   $chapter = $data->chapter_name;
-    //   $question_id = $data->id;
-    //   $question_title = $data->question_title;
-    //   $question_explain = $data->explanation;
-
-    //   $mcq = $data->mcqitems;
-
-    //   if(!isset($groupedData[$department]))
-    //   {
-    //     $groupedData[$department] = [];
-    //   }
-
-    //   if(!isset($groupedData[$department][$subject]))
-    //   {
-    //     $groupedData[$department][$subject] = [];
-    //   }
-
-    //   if(!isset($groupedData[$department][$subject][$chapter]))
-    //   {
-    //     $groupedData[$department][$subject][$chapter] = [];
-    //   }
-
-    //   if(!isset($groupedData[$department][$subject][$chapter][$question_id]))
-    //   {
-    //     $groupedData[$department][$subject][$chapter][$question_id] = [
-    //       'question' => $question_title,
-    //       'explain' => $question_explain,
-    //       'mcqs' => []
-    //     ];
-    //   }
-
-    //   $groupedData[$department][$subject][$chapter][$question_id]['mcqs'] = $mcq;
-    // }
-
     /** ------------------- optimized codes ------------- */
+//     $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
+//     ->join('syllabi', 'question_syllabus.syllabus_id', 'syllabi.id')
+//     ->leftJoin('question_subject', 'question_subject.question_id', 'questions.id')
+//     ->leftJoin('subjects', 'question_subject.subject_id', 'subjects.id')
+//     ->leftJoin('department_question', 'department_question.question_id', 'questions.id')
+//     ->leftJoin('departments', 'department_question.department_id', 'departments.id')
+//     ->leftJoin('chapter_question', 'chapter_question.question_id', 'questions.id')
+//     ->leftJoin('chapters', 'chapter_question.chapter_id', 'chapters.id')
+//     ->where('syllabi.id', $id)
+//     ->select([
+//         'departments.name as department_name',
+//         'subjects.name as subject_name',
+//         'chapters.name as chapter_name',
+//         'questions.id as question_id',
+//         'questions.title as question_title',
+//         'questions.explanation',
+//     ])
+//     ->orderBy('departments.name')
+//     ->orderBy('subjects.name')
+//     ->orderBy('chapters.name')
+//     ->groupBy([
+//         'departments.name',
+//         'subjects.name',
+//         'chapters.name',
+//         'questions.id',
+//         'questions.title',
+//         'questions.explanation',
+//     ])
+//     ->get();
+
+// // Fetch all MCQs separately
+// $mcqItems = McqItem::whereIn('question_id', $questions->pluck('question_id'))
+//     ->select('question_id', 'id', 'item', 'correct_answer') // Select only necessary fields
+//     ->get()
+//     ->groupBy('question_id');
+
+// // Process grouped data
+// $groupedData = [];
+// foreach ($questions as $data) {
+//     $department = $data->department_name;
+//     $subject = $data->subject_name;
+//     $chapter = $data->chapter_name;
+//     $question_id = $data->question_id;
+//     $question_title = $data->question_title;
+//     $question_explain = $data->explanation;
+
+//     if (!isset($groupedData[$department])) {
+//         $groupedData[$department] = [];
+//     }
+
+//     if (!isset($groupedData[$department][$subject])) {
+//         $groupedData[$department][$subject] = [];
+//     }
+
+//     if (!isset($groupedData[$department][$subject][$chapter])) {
+//         $groupedData[$department][$subject][$chapter] = [];
+//     }
+
+//     $groupedData[$department][$subject][$chapter][$question_id] = [
+//         'question' => $question_title,
+//         'explain' => $question_explain,
+//         'mcqs' => $mcqItems[$question_id] ?? []
+//     ];
+// }
+
+    /** ------------ more fast optimization for large data -------- */
+    $groupedData = [];
+
+    // Step 1: Fetch Unique Questions
     $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
     ->join('syllabi', 'question_syllabus.syllabus_id', 'syllabi.id')
     ->leftJoin('question_subject', 'question_subject.question_id', 'questions.id')
@@ -544,60 +546,56 @@ class StudentHomeCtrl extends Controller
     ->leftJoin('chapters', 'chapter_question.chapter_id', 'chapters.id')
     ->where('syllabi.id', $id)
     ->select([
-        'departments.name as department_name',
-        'subjects.name as subject_name',
-        'chapters.name as chapter_name',
         'questions.id as question_id',
         'questions.title as question_title',
         'questions.explanation',
+        \DB::raw('GROUP_CONCAT(DISTINCT departments.name ORDER BY departments.name ASC) as department_names'),
+        \DB::raw('GROUP_CONCAT(DISTINCT subjects.name ORDER BY subjects.name ASC) as subject_names'),
+        \DB::raw('GROUP_CONCAT(DISTINCT chapters.name ORDER BY chapters.name ASC) as chapter_names')
     ])
-    ->orderBy('departments.name')
-    ->orderBy('subjects.name')
-    ->orderBy('chapters.name')
-    ->groupBy([
-        'departments.name',
-        'subjects.name',
-        'chapters.name',
-        'questions.id',
-        'questions.title',
-        'questions.explanation',
-    ])
-    ->get();
+    ->groupBy('questions.id', 'questions.title', 'questions.explanation')
+    ->chunk(500, function ($questions) use (&$groupedData) {
+      
+      // Step 2: Fetch MCQs separately for all questions in this batch
+      $mcqItems = McqItem::whereIn('question_id', $questions->pluck('question_id'))
+        ->select('question_id', 'id', 'item', 'correct_answer')
+        ->get()
+        ->groupBy('question_id');
 
-// Fetch all MCQs separately
-$mcqItems = McqItem::whereIn('question_id', $questions->pluck('question_id'))
-    ->select('question_id', 'id', 'item', 'correct_answer') // Select only necessary fields
-    ->get()
-    ->groupBy('question_id');
+        foreach ($questions as $data) {
+          $departments = explode(',', $data->department_names);
+          $subjects = explode(',', $data->subject_names);
+          $chapters = explode(',', $data->chapter_names);
 
-// Process grouped data
-$groupedData = [];
-foreach ($questions as $data) {
-    $department = $data->department_name;
-    $subject = $data->subject_name;
-    $chapter = $data->chapter_name;
-    $question_id = $data->question_id;
-    $question_title = $data->question_title;
-    $question_explain = $data->explanation;
+          foreach ($departments as $department) {
+            if (!isset($groupedData[$department])) {
+              $groupedData[$department] = [];
+            }
 
-    if (!isset($groupedData[$department])) {
-        $groupedData[$department] = [];
-    }
+            foreach ($subjects as $subject) {
+              if (!isset($groupedData[$department][$subject])) {
+                $groupedData[$department][$subject] = [];
+              }
 
-    if (!isset($groupedData[$department][$subject])) {
-        $groupedData[$department][$subject] = [];
-    }
+              foreach ($chapters as $chapter) {
+                if (!isset($groupedData[$department][$subject][$chapter])) {
+                  $groupedData[$department][$subject][$chapter] = [];
+                }
 
-    if (!isset($groupedData[$department][$subject][$chapter])) {
-        $groupedData[$department][$subject][$chapter] = [];
-    }
+                $groupedData[$department][$subject][$chapter][$data->question_id] = [
+                  'question' => $data->question_title,
+                  'explain' => $data->explanation,
+                  'mcqs' => $mcqItems[$data->question_id] ?? []
+                ];
+              }
+            }
+          }
+        }
 
-    $groupedData[$department][$subject][$chapter][$question_id] = [
-        'question' => $question_title,
-        'explain' => $question_explain,
-        'mcqs' => $mcqItems[$question_id] ?? []
-    ];
-}
+        // Sleep for a short time to reduce CPU spike
+        usleep(100000); // 100 milliseconds
+    });
+
 
     
     return [

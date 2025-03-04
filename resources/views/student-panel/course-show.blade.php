@@ -148,7 +148,7 @@ $value = $batch;
           $course_syllabuses = [];
           if($value->syllabus)
           {
-            $course_syllabuses = $value->syllabus->where('department_id', NULL)->where('batch_id', $value->id)->where('course_id', $value->course->id)->get();
+            $course_syllabuses = $value->syllabus->where('department_id', NULL)->where('course_id', $value->course->id)->get();
           }
           @endphp
 
@@ -214,7 +214,7 @@ $value = $batch;
                   $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->first();
                   @endphp
                   @if($routine)
-                  <table class="table table-bordered">
+                  <table class="table">
                     <tr>
                       <th>রুটিনঃ </th>
                       <td>{{$routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a></td>
@@ -222,27 +222,33 @@ $value = $batch;
                   </table>
                   @endif
                 <div id="dept{{$key}}" class="panel-collapse collapse">
-                  <div class="box-body">
-                    @if($department->syllabus)
+                  <div class="bo/x-body">
+                    @php
+                    $syllabuses = $department->syllabus()->where('batch_id', $value->id)->get();
+                    @endphp
+
+                    @if($syllabuses)
                     <table class="table table-bordered">
                       <tr>
                         <th>সিলেবাস</th>
                         <td>
+                          @foreach($syllabuses as $syllabus)
                           @if(!empty($student))
 
-                          {{$department->syllabus->name}}
+                          {{$syllabus->name}}
 
-                          <a class="btn btn-info" href="{{route('student.syllabus', $department->syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                          <a class="btn btn-info" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
                           
-                          <a href="{{route('students.syllabus.pdf', $department->syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
+                          <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
 
                           @else
 
-                            @if($department->syllabus->sample_pdf)
-                            {{$department->syllabus->name}} <a href="{{$department->syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i> স্যাম্পল ডাউনলোড</a>
+                            @if($syllabus->sample_pdf)
+                            {{$syllabus->name}} <a href="{{$syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i> স্যাম্পল ডাউনলোড</a>
                             @endif
 
                           @endif
+                          @endforeach
                         </td>
                       </tr>
                     </table>
