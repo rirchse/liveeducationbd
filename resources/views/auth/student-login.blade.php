@@ -20,17 +20,19 @@
           <img src="/img/logo.png?v=3008" alt=""><br><br>Student Login</p>
 
           <div style="text-align:center">
-            <h4>Login by Google</h4>
-            <a class="btn btn-default" href="/auth/google">
-              <img style="max-width: 150px" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="">
+            <a class="btn-block" href="/auth/google">
+              <img style="max-width: 100%" src="/img/sign-with-google.jpg" alt="">
             </a>
+
+            {{-- <hr> --}}
+  
+            <h3 style="text-align: center">or</h3>
+
+            <button class="btn btn-primary btn-block" onclick="showLoginForm()">Continue with Email Address</button>
+            <br>
           </div>
 
-          <hr>
-
-          <h3 style="text-align: center">or</h3>
-
-          <form action="{{ route('students.login.post') }}" method="POST" style="margin-bottom:15px">
+          <form id="form" style="display: none" action="{{ route('students.login.post') }}" method="POST" style="margin-bottom:15px">
             @csrf
             <div class="form-group">
               <label for="email">Email Address</label>
@@ -65,6 +67,8 @@
               </div>
               <!-- /.col -->
             </div>
+            <br>
+            <p><a href="{{route('password.request')}}" class="text-primary">I forgot my password</a></p>
           </form>
 
           <!-- <div class="social-auth-links text-center">
@@ -75,7 +79,6 @@
               Google+</a>
           </div> -->
           <!-- /.social-auth-links -->
-          <p><a href="{{route('password.request')}}" class="text-primary">I forgot my password</a></p>
           <p><a href="{{route('register')}}" class="text-success">Create New Account</a></p>
         </div><!-- /.login-box-body -->
       </div><!-- /.login-box -->
@@ -86,6 +89,10 @@
 </div>
 
 <script>
+  function showLoginForm()
+  {
+    document.getElementById('form').style.display = 'block';
+  }
   function showPassword(e)
   {
     let elm = e.previousElementSibling;

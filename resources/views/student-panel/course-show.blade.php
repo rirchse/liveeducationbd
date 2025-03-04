@@ -139,7 +139,7 @@ $value = $batch;
           
           @if($value->routine)
           <div class="panel panel-default">
-            <div class="panel-heading"><h4>ক্লাস রুটিন</h4></div>
+            <div class="panel-heading"><h4>কোর্স রুটিন</h4></div>
             <div class="panel-body">{!! $value->routine !!}</div>
           </div>
           @endif
@@ -154,7 +154,7 @@ $value = $batch;
 
           @if($value->departments || $course_syllabuses)
           <div class="panel panel-default">
-            <div class="panel-heading"><h4>কোর্স সিলেবাস</h4></div>
+            <div class="panel-heading"><h4>কোর্স রুটিন ও সিলেবাস সমূহ</h4></div>
             <div class="box-group" id="accordion">
 
               @if($course_syllabuses)
@@ -169,13 +169,32 @@ $value = $batch;
                     </a>
                   </div>
                 </div>
-                <div id="batch_syllabus" class="panel-collapse collapse">
-                  <div class="box-body">
-                    @foreach($course_syllabuses as $key => $syllabus)
-                    <p><b><a href="{{route('student.syllabus', $syllabus->id)}}">{{$syllabus->name}}</a></b></p>
-                    @endforeach
-                  </div>
-                </div>
+
+                @php
+                  $batch_routine = $value->routines()->where('department_id', null)->first();
+                @endphp
+
+                @if($batch_routine)
+                <table class="table">
+                  <tr>
+                    <th>রুটিনঃ </th>
+                    <td>{{$batch_routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$batch_routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a></td>
+                  </tr>
+                @endif
+                <tr>
+                  <th>সিলেবাস</th>
+                  <td>
+                    <div id="batch_syllabus" class="panel-collapse collapse">
+                      <div class="box-body">
+                        @foreach($course_syllabuses as $key => $syllabus)
+                        <p><b><a href="{{route('student.syllabus', $syllabus->id)}}">{{$syllabus->name}}</a></b></p>
+                        @endforeach
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                
+              </table>
               </div>
               @endif
 
@@ -190,32 +209,33 @@ $value = $batch;
                       </span>
                     </a>
                   </div>
-                </div>
+                  
+                  @php
+                  $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->first();
+                  @endphp
+                  @if($routine)
+                  <table class="table table-bordered">
+                    <tr>
+                      <th>রুটিনঃ </th>
+                      <td>{{$routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a></td>
+                    </tr>
+                  </table>
+                  @endif
                 <div id="dept{{$key}}" class="panel-collapse collapse">
                   <div class="box-body">
-                    @php
-                    $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->first();
-                    @endphp
-                    @if($routine)
-                    <p>রুটিনঃ {{$routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$routine->pdf}}"><i class="fa fa-download"></i></a> </p>
-                    @endif
                     @if($department->syllabus)
                     <table class="table table-bordered">
                       <tr>
-                        <td>
-                          <b>
-                            <a href="{{route('student.syllabus', $department->syllabus->id)}}">{{$department->syllabus->name}}</a>
-                          </b>
-                        </td>
+                        <th>সিলেবাস</th>
                         <td>
                           @if(!empty($student))
 
-                            সিলেবাস ডাউনলোড করুন <a href="{{route('students.syllabus.pdf', $department->syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                          {{$department->syllabus->name}} <a href="{{route('students.syllabus.pdf', $department->syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
 
                           @else
 
                             @if($department->syllabus->sample_pdf)
-                            স্যাম্পল সিলেবাস ডাউনলোড করুন <a href="{{$department->syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                            {{$department->syllabus->name}} <a href="{{$department->syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i> স্যাম্পল ডাউনলোড</a>
                             @endif
 
                           @endif
@@ -227,6 +247,8 @@ $value = $batch;
                     @endif
                   </div>
                 </div>
+                
+              </div>
               </div>
               @endforeach
             </div>

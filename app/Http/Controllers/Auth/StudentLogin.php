@@ -108,7 +108,7 @@ class StudentLogin extends Controller
     
         Auth::guard('student')->loginUsingId($user->id);
     
-        return redirect()->route('students.my-course');
+        return redirect()->intended(route('students.my-course'));
     }
 
     public function oAuthGoogle()
@@ -131,6 +131,6 @@ class StudentLogin extends Controller
     
         Auth::guard('student')->loginUsingId($user->id);
     
-        return redirect()->route('students.my-course');
+        return redirect()->intended(route('students.my-course'));
     }
 }

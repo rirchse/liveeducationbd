@@ -50,4 +50,9 @@ class Batch extends Model
     {
         return $this->hasOne(Complain::class, 'batch_id');
     }
+
+    public function routines()
+    {
+        return $this->hasMany(Routine::class, 'batch_id');
+    }
 }

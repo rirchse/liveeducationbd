@@ -72,5 +72,10 @@ class Course extends Model
     {
         return $this->hasMany(Batch::class, 'course_id');
     }
+
+    public function routines()
+    {
+        return $this->hasMany(Batch::class, 'course_id');
+    }
     
 }
