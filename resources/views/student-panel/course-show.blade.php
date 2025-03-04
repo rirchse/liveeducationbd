@@ -144,7 +144,7 @@ $value = $batch;
           
           @if($value->routine)
           <div class="panel panel-default">
-            <div class="panel-heading"><h4>কোর্স রুটিন</h4></div>
+            <div class="panel-heading"><h4>কোর্স সিলেবাস</h4></div>
             <div class="panel-body">{!! $value->routine !!}</div>
           </div>
           @endif
@@ -159,7 +159,7 @@ $value = $batch;
 
           @if($value->departments || $course_syllabuses)
           <div class="panel panel-default">
-            <div class="panel-heading"><h4>কোর্স রুটিন ও সিলেবাস সমূহ</h4></div>
+            <div class="panel-heading"><h4>বিস্তারিত এক্সাম/ক্লাস রুটিন ও এক্সাম PDF</h4></div>
             <div class="box-group" id="accordion">
 
               {{-- {{$course_syllabuses[0]->name}} --}}
