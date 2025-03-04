@@ -21,6 +21,7 @@ $value = $batch;
 
 <meta property="og:title" content="{{$batch->name}}" />
 <meta property="og:description" content="{{$batch->short}}" />
+<meta property="og:logo" content="/img/logo.png" />
 <meta property="og:image" content="{{route('homepage').$batch->banner}}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />

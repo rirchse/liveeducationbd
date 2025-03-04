@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\Chapter;
 use App\Models\Question;
 use App\Models\Filter;
+use App\Models\Order;
 
 class HomeCtrl extends Controller
 {
@@ -33,6 +34,8 @@ class HomeCtrl extends Controller
     {
         Auth::user()->authorizeRoles(['SuperAdmin', 'Admin', 'Editor', 'Sales']);
         $data = [
+          'success_orders' => Order::whereIn('status', ['Processing', 'Complete'])->count(),
+          'orders' => Order::count(),
           'courses' => Course::count(),
           'departments' => Department::count(),
           'semesters' => Semester::count(),

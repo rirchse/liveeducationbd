@@ -38,6 +38,16 @@ $new = $confirmed = $completed = $cancelled = 0;
       <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cart-outline"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Total Orders</span>
+              <span class="info-box-number color-green">{{$data['orders']}}</span>
+              <span class="info-box-number text-green">{{$data['success_orders']}}</span>
+            </div> <!-- /.info-box-content -->
+          </div> <!-- /.info-box -->
+        </div> <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
             <span class="info-box-icon bg-orange"><i class="ion ion-ios-list-outline"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">Total Questions</span>
