@@ -19,6 +19,7 @@ $value = $batch;
 <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"/>
 <meta name="category" content="education"/>
 <meta property="fb:app_id" content="1360109555168118" />
+<meta property="og:url" content="{{route('home.course.show', $batch->id)}}" />
 <meta property="og:title" content="{{$batch->name}}" />
 <meta property="og:description" content="{{$batch->short}}" />
 <meta property="og:logo" content="/img/logo.png" />
@@ -27,7 +28,6 @@ $value = $batch;
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="{{$batch->name}}"/>
 <meta property="og:type" content="video.other"/>
-<meta property="og:url" content="{{route('home.course.show', $batch->course->id)}}" />
 <meta property="og:type" content="Online Education" />
 <meta property="og:site_name" content="Live Education BD" />
 
