@@ -18,7 +18,7 @@ $value = $batch;
 <meta name="robots" content="index, follow, nocache"/>
 <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"/>
 <meta name="category" content="education"/>
-
+<meta property="fb:app_id" content="1360109555168118" />
 <meta property="og:title" content="{{$batch->name}}" />
 <meta property="og:description" content="{{$batch->short}}" />
 <meta property="og:logo" content="/img/logo.png" />
