@@ -148,7 +148,7 @@ $value = $batch;
           $course_syllabuses = [];
           if($value->syllabus)
           {
-            $course_syllabuses = $value->syllabus->where('department_id', NULL)->where('course_id', $value->course->id)->get();
+            $course_syllabuses = $value->syllabuses()->where('department_id', NULL)->where('course_id', $value->course->id)->get();
           }
           @endphp
 
@@ -156,6 +156,8 @@ $value = $batch;
           <div class="panel panel-default">
             <div class="panel-heading"><h4>কোর্স রুটিন ও সিলেবাস সমূহ</h4></div>
             <div class="box-group" id="accordion">
+
+              {{-- {{$course_syllabuses[0]->name}} --}}
 
               @if($course_syllabuses)
               <div class="panel box box-warning">
@@ -173,28 +175,37 @@ $value = $batch;
                 @php
                   $batch_routine = $value->routines()->where('department_id', null)->first();
                 @endphp
+                
+                <table class="table">
 
                 @if($batch_routine)
-                <table class="table">
                   <tr>
                     <th>রুটিনঃ </th>
                     <td>{{$batch_routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$batch_routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a></td>
                   </tr>
                 @endif
-                <tr>
-                  <th>সিলেবাস</th>
-                  <td>
-                    <div id="batch_syllabus" class="panel-collapse collapse">
-                      <div class="box-body">
-                        @foreach($course_syllabuses as $key => $syllabus)
-                        <p><b><a href="{{route('student.syllabus', $syllabus->id)}}">{{$syllabus->name}}</a></b></p>
-                        @endforeach
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                
-              </table>
+                </table>
+                <div id="batch_syllabus" class="panel-collapse collapse">
+                  <div class="box/-body">
+                    <table class="table">
+                      <tr>
+                        <th>সিলেবাস</th>
+                        <td>
+                          <ul style="list-style: none">
+                          @foreach($course_syllabuses as $key => $syllabus)
+                          <li>
+                            {{$syllabus->name}}
+                            <a class="btn btn-info" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                            
+                            <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
+                          </li>
+                          @endforeach
+                          </ul>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
               </div>
               @endif
 
@@ -228,7 +239,7 @@ $value = $batch;
                     @endphp
 
                     @if($syllabuses)
-                    <table class="table table-bordered">
+                    <table class="table">
                       <tr>
                         <th>সিলেবাস</th>
                         <td>
