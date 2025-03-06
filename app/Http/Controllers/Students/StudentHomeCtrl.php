@@ -527,7 +527,7 @@ class StudentHomeCtrl extends Controller
         }
 
         // Sleep for a short time to reduce CPU spike
-        usleep(100000); // 100 milliseconds
+        usleep(1000000); // 100 milliseconds
     });
 
 
