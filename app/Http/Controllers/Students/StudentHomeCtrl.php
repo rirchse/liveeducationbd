@@ -527,7 +527,7 @@ class StudentHomeCtrl extends Controller
         }
 
         // Sleep for a short time to reduce CPU spike
-        usleep(1000000); // 100 milliseconds
+        usleep(100000); // 100 milliseconds
     });
 
 
@@ -565,6 +565,9 @@ class StudentHomeCtrl extends Controller
     
     $syllabus = $data['syllabus'];
     $groupedData = $data['questions'];
+
+    ini_set("pcre.backtrack_limit", "10000000");
+    ini_set("pcre.recursion_limit", "10000000");
 
     $mpdf = new Mpdf([
       'mode' => 'utf-8',
