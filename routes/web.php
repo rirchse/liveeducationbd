@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\StudentLogin;
 use App\Http\Controllers\Students\StudentHomeCtrl;
 use App\Http\Controllers\HomePageCtrl;
@@ -135,6 +136,12 @@ Route::middleware('auth:student')->group(function()
 		Route::post('students/complain', 'complainStore')->name('students.complain.store');
 		Route::get('students/update-paper/{id}', 'updatePaperAjax')->name('paper.update.ajax');
 		Route::get('students/profile', 'profile')->name('students.profile');
+	});
+
+	Route::controller(VerificationController::class)->group(function()
+	{
+		Route::post('contact-check', 'contactCheck')->name('contact-check');
+		Route::post('otp-check', 'otpCheck')->name('otp-check');
 	});
 });
 
