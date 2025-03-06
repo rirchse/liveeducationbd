@@ -51,7 +51,9 @@ class HomePageCtrl extends Controller
 
   public function course()
   {
-    $courses = Batch::orderBy('id', 'DESC')->where('status', 'Active')->get();
+    $courses = Batch::orderBy('id', 'DESC')
+    ->whereRaw('DATE(reg_end_at) >= ?', [date('Y-m-d H:i:s')])
+    ->where('status', 'Active')->get();
     return view('student-panel.course', compact('courses'));
   }
 
