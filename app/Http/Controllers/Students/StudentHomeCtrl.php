@@ -466,72 +466,6 @@ class StudentHomeCtrl extends Controller
   {
     $syllabus = Syllabus::find($id);
 
-    /** ------------------- optimized codes ------------- */
-//     $questions = Question::join('question_syllabus', 'question_syllabus.question_id', 'questions.id')
-//     ->join('syllabi', 'question_syllabus.syllabus_id', 'syllabi.id')
-//     ->leftJoin('question_subject', 'question_subject.question_id', 'questions.id')
-//     ->leftJoin('subjects', 'question_subject.subject_id', 'subjects.id')
-//     ->leftJoin('department_question', 'department_question.question_id', 'questions.id')
-//     ->leftJoin('departments', 'department_question.department_id', 'departments.id')
-//     ->leftJoin('chapter_question', 'chapter_question.question_id', 'questions.id')
-//     ->leftJoin('chapters', 'chapter_question.chapter_id', 'chapters.id')
-//     ->where('syllabi.id', $id)
-//     ->select([
-//         'departments.name as department_name',
-//         'subjects.name as subject_name',
-//         'chapters.name as chapter_name',
-//         'questions.id as question_id',
-//         'questions.title as question_title',
-//         'questions.explanation',
-//     ])
-//     ->orderBy('departments.name')
-//     ->orderBy('subjects.name')
-//     ->orderBy('chapters.name')
-//     ->groupBy([
-//         'departments.name',
-//         'subjects.name',
-//         'chapters.name',
-//         'questions.id',
-//         'questions.title',
-//         'questions.explanation',
-//     ])
-//     ->get();
-
-// // Fetch all MCQs separately
-// $mcqItems = McqItem::whereIn('question_id', $questions->pluck('question_id'))
-//     ->select('question_id', 'id', 'item', 'correct_answer') // Select only necessary fields
-//     ->get()
-//     ->groupBy('question_id');
-
-// // Process grouped data
-// $groupedData = [];
-// foreach ($questions as $data) {
-//     $department = $data->department_name;
-//     $subject = $data->subject_name;
-//     $chapter = $data->chapter_name;
-//     $question_id = $data->question_id;
-//     $question_title = $data->question_title;
-//     $question_explain = $data->explanation;
-
-//     if (!isset($groupedData[$department])) {
-//         $groupedData[$department] = [];
-//     }
-
-//     if (!isset($groupedData[$department][$subject])) {
-//         $groupedData[$department][$subject] = [];
-//     }
-
-//     if (!isset($groupedData[$department][$subject][$chapter])) {
-//         $groupedData[$department][$subject][$chapter] = [];
-//     }
-
-//     $groupedData[$department][$subject][$chapter][$question_id] = [
-//         'question' => $question_title,
-//         'explain' => $question_explain,
-//         'mcqs' => $mcqItems[$question_id] ?? []
-//     ];
-// }
-
     /** ------------ more fast optimization for large data -------- */
     $groupedData = [];
 
@@ -554,7 +488,7 @@ class StudentHomeCtrl extends Controller
         \DB::raw('GROUP_CONCAT(DISTINCT chapters.name ORDER BY chapters.name ASC) as chapter_names')
     ])
     ->groupBy('questions.id', 'questions.title', 'questions.explanation')
-    ->chunk(500, function ($questions) use (&$groupedData) {
+    ->chunk(100, function ($questions) use (&$groupedData) {
       
       // Step 2: Fetch MCQs separately for all questions in this batch
       $mcqItems = McqItem::whereIn('question_id', $questions->pluck('question_id'))
@@ -632,7 +566,7 @@ class StudentHomeCtrl extends Controller
     $syllabus = $data['syllabus'];
     $groupedData = $data['questions'];
 
-    $pdf = new Mpdf([
+    $mpdf = new Mpdf([
       'mode' => 'utf-8',
       'format' => 'A4',
       'dpi' => 100, 
@@ -656,21 +590,25 @@ class StudentHomeCtrl extends Controller
 
     $html = view('student-panel.syllabus-pdf', compact('syllabus', 'groupedData'))->render();
 
-    $pdf->useDictionaryLBR = false;
+    $mpdf->useDictionaryLBR = false;
+    $mpdf->SetWatermarkText('LiveEducationBD.com', 0.1);
+    // $mpdf->watermark_font = 'Arial';
+    // $mpdf->watermarkTextAlpha = 0.2; // More transparency
+    $mpdf->showWatermarkText = true;
     
     ob_start();
 
-    $pdf->WriteHTML($html);
+    $mpdf->WriteHTML($html);
 
     ob_end_clean();
 
-    // $pdf->Output(storage_path('app/mpdf/syllabus.pdf'), 'F');
+    // $mpdf->Output(storage_path('app/mpdf/syllabus.pdf'), 'F');
 
-    $pdf->Output($syllabus ? $syllabus->name : '----Syllabus', 'D');
+    $mpdf->Output($syllabus ? $syllabus->name : '----Syllabus', 'D');
 
-    // $pdf->stream('document.pdf');
+    // $mpdf->stream('document.pdf');
 
-    // return $pdf->download('Syllabus PDF.pdf');
+    // return $mpdf->download('Syllabus PDF.pdf');
 
     // return view('student-panel.syllabus-pdf', compact('syllabus', 'groupedData'));
   }

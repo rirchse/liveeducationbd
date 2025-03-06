@@ -26,6 +26,7 @@ $user = Auth::guard('student')->user();
     <section class="content">
       <div class="row">
         @if(count($courses))
+        {{-- {{dd($courses)}} --}}
         @foreach($courses as $value)
         <div class="col-md-3">
           <a href="{{route('home.course.show', $value->id)}}">

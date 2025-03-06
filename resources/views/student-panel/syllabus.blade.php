@@ -85,6 +85,7 @@ $qcount = 0;
               @foreach($subjects as $subject => $chapters)
                 @if($subject)
                 <h4 class="sub_title"><i class="fa fa-book"></i> {{ $subject }}</h4> <!-- Subject Name -->
+                <p style="position: absolute; margin-top:150px; margin-left: 120px; transform:rotate(-30deg); opacity: 0.2 ; font-size:25px">LiveEducationBD.com</p>
                 @endif
 
                 @foreach($chapters as $chapter => $questions)

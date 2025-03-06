@@ -127,13 +127,24 @@ foreach($batch->teachers as $val)
                         <label><input type="checkbox" name="status" id="status" value="{{$batch->status}}" style="width: 15px; height:15px" {{$batch->status == 'Active' ?'checked':''}}> <span style="margin-top:-10px">Active</span></label>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="subtitle">Youtube Video URL</label>
+                        <input type="url" class="form-control" name="video" id="video" value=""/>
+                    </div>
+                    @if($batch->video)
+                    <p><iframe class="responsive-iframe" style="max-width: 200px; border:5px solid #fff" src="https://www.youtube.com/embed/{{$batch->video}}" allowfullscreen></iframe></p>
+                    @endif
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="banner">Banner</label>
                         <input type="file" class="form-control" name="banner" id="banner" onchange="showImg(this)" />
                         <p style="color:red;padding:5px 0">Image size: 4:6 / 400px X 600px</p>
                     </div>
-                    <img src="{{$batch->banner}}" alt="" style="max-width:300px">
+                    <a target="_blank" href="{{$batch->banner}}">
+                        <img src="{{$batch->banner}}" alt="" style="max-width:200px">
+                    </a>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">

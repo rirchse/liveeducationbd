@@ -69,11 +69,11 @@ $qcount = 0;
               <h3 class="dept_title">ডিপার্টমেন্টঃ {{ $department }}</h3> <!-- Department Name -->
 
               @foreach($subjects as $subject => $chapters)
-                <h4 class="sub_title">সাবজেক্টঃ {{ $subject }}</h4> <!-- Subject Name -->
+                <h4 class="sub_title">বিষয়ঃ {{ $subject }}</h4> <!-- Subject Name -->
 
                 @foreach($chapters as $chapter => $questions)
                  @if($chapter)
-                  <h5 class="chap_title">চ্যাপ্টারঃ {{ $chapter }}</h5> <!-- Chapter Name -->
+                  <h5 class="chap_title">আধায়ঃ {{ $chapter }}</h5> <!-- Chapter Name -->
                   @endif
 
                     @foreach($questions as $questionId => $questionData)

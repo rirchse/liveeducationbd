@@ -84,6 +84,18 @@ $source = new SourceCtrl;
                   <td></td>
                 </tr>
                 <tr>
+                  <th>Video:</th>
+                  <td>
+                    @if($batch->video)
+                    <p><iframe class="responsive-iframe" style="max-width: 300px; border:5px solid #fff" src="https://www.youtube.com/embed/{{$batch->video}}" allowfullscreen></iframe></p>
+                    @endif
+                  </td>
+                </tr>
+                <tr>
+                  <th>Banner:</th>
+                  <td><img src="{{$batch->banner}}" alt="" style="max-width:300px"></td>
+                </tr>
+                <tr>
                   <th>Details:</th>
                   <td>{!!$batch->details!!}</td>
                 </tr>

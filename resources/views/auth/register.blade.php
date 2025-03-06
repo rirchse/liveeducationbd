@@ -25,9 +25,9 @@
                 <img style="max-width: 100%" src="/img/signup-with-google.jpg" alt="">
               </a>
     
-              <h3 style="text-align: center">or</h3>
+              {{-- <h3 style="text-align: center">or</h3>
   
-              <button class="btn btn-primary btn-block" onclick="showLoginForm()">Continue with Email Address</button>
+              <button class="btn btn-primary btn-block" onclick="showLoginForm()">Continue with Email Address</button> --}}
               <br>
             </div>
 

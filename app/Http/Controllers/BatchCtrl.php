@@ -130,11 +130,13 @@ class BatchCtrl extends Controller
             'discount'     => 'nullable|numeric',
             'net_price'    => 'nullable|numeric',
             'teacher_id'   => 'nullable|array',
+            'video'        => 'nullable|url',
             'status'       => 'nullable|string',
             'details'      => 'nullable|string',
         ]);
         
         $data = $request->all();
+        // dd($data);
         $batch = Batch::find($id);
         $xbanner = public_path($batch->banner);
         $departments = $teachers = [];
@@ -176,13 +178,24 @@ class BatchCtrl extends Controller
 
         if(isset($data['banner']))
         {
-            $data['banner'] = $source->uploadImage($data['banner'], 'batches/');
+            $data['banner'] = $source->uploadImage($request->banner, 'batches/');
         }
+
+        if(isset($data['video']))
+        {
+            $data['video'] = substr($request->video, 32, 20);
+        }
+        else
+        {
+            unset($data['video']);
+        }
+
+        // dd($data);
 
         try{
             Batch::where('id', $id)->update($data);
 
-            if(File::exists($xbanner))
+            if(isset($data['banner']) && File::exists($xbanner))
             {
                 File::delete($xbanner);
             }

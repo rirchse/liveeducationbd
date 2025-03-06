@@ -63,6 +63,21 @@ $value = $batch;
   }
   .list{list-style: none}
   .list li{padding: 10px 0}
+  .videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+  }
+
+  .videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>
 
 {{-- <div class="content-wrapper">
@@ -85,8 +100,14 @@ $value = $batch;
             @csrf
             <input type="hidden" name="batch_id" value="{{$value->id}}">
             <div class="panel panel-default">
-              <div class="penel-heading no-padding" style="text-align: center;padding:15px">
+              <div class="penel-heading no-padding" style="text-align: center;">
+                @if($value->video)
+                <div class="videoWrapper">
+                  <iframe class="responsive-iframe" style="width: 100%; height:100%; border:5px solid #fff" src="https://www.youtube.com/embed/{{$value->video}}" allowfullscreen></iframe>
+                </div>
+                @else
                 <img class="course-image" src="{{ $value->banner? $value->banner : '/img/course.png'}}" alt="" />
+                @endif
               </div>
               <div class="panel-heading">
                 <h3>
@@ -133,7 +154,7 @@ $value = $batch;
             <div class="panel-heading">
               <h3>{{$value->name}} <br><small>Course: <b>{{$value->course ? $value->course->name:''}}</b></small></h3>
               @if($value->reg_end_at && $value->reg_end_at > date('Y-m-d H:i:s'))
-              <p style="text-align: center; color:red">রেজিস্ট্রেশনের মেয়াদ  আছে: <b><span id="timer"></span></b>
+              <p style="text-align: center; color:red">রেজিস্ট্রেশনের মেয়াদ আছে: <b><span id="timer"></span></b>
               </p>
               @endif
             </div>
@@ -148,28 +169,26 @@ $value = $batch;
             <div class="panel-body">{!! $value->routine !!}</div>
           </div>
           @endif
-          
+
           @php
-          $course_syllabuses = [];
+          $course_routines = [];
           if($value->syllabus)
           {
-            $course_syllabuses = $value->syllabuses()->where('department_id', NULL)->where('course_id', $value->course->id)->get();
+            $course_routines = $value->routines()->where('department_id', NULL)->where('course_id', $value->course->id)->get();
           }
           @endphp
 
-          @if($value->departments || $course_syllabuses)
+          @if($value->departments || $course_routines)
           <div class="panel panel-default">
-            <div class="panel-heading"><h4>বিস্তারিত এক্সাম/ক্লাস রুটিন ও এক্সাম PDF</h4></div>
+            <div class="panel-heading"><h4>এক্সাম/ক্লাস রুটিন</h4></div>
             <div class="box-group" id="accordion">
 
-              {{-- {{$course_syllabuses[0]->name}} --}}
-
-              @if($course_syllabuses)
+              @if($course_routines)
               <div class="panel box box-warning">
                 <div class="box-header with-border">
                   <div class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#batch_syllabus">
-                      ব্যাচ এর সিলেবাস সমূহ
+                    <a data-toggle="collapse" data-parent="#accordion" href="#batch_routine">
+                      ব্যাচ এর রুটিন
                       <span class="pull-right-container">
                         <i class="fa fa-chevron-down pull-right"></i>
                       </span>
@@ -190,27 +209,6 @@ $value = $batch;
                   </tr>
                 @endif
                 </table>
-                <div id="batch_syllabus" class="panel-collapse collapse">
-                  <div class="box/-body">
-                    <table class="table">
-                      <tr>
-                        <th>সিলেবাস</th>
-                        <td>
-                          <ul class="list">
-                          @foreach($course_syllabuses as $key => $syllabus)
-                          <li>
-                            {{$syllabus->name}}
-                            <a class="btn btn-info" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
-                            
-                            <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
-                          </li>
-                          @endforeach
-                          </ul>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
               </div>
               @endif
 
@@ -237,7 +235,70 @@ $value = $batch;
                     </tr>
                   </table>
                   @endif
-                <div id="dept{{$key}}" class="panel-collapse collapse">
+                
+              </div>
+              </div>
+              @endforeach
+            </div>
+          </div>
+          @endif
+          
+          @php
+          $course_syllabuses = [];
+          if($value->syllabus)
+          {
+            $course_syllabuses = $value->syllabuses()->where('department_id', NULL)->where('course_id', $value->course->id)->get();
+          }
+          @endphp
+
+          @if($value->departments || $course_syllabuses)
+          <div class="panel panel-default">
+            <div class="panel-heading"><h4>বিস্তারিত এক্সাম/ক্লাস PDF</h4></div>
+            <div class="box-group" id="accordion">
+
+              @if($course_syllabuses)
+              <div class="panel box box-warning">
+                <div class="box-header with-border">
+                  <div class="box-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#batch_syllabus">
+                      ব্যাচ এর সিলেবাস সমূহ
+                      <span class="pull-right-container">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <div id="batch_syllabus" class="panel-collapse collapse in">
+                  <div class="box/-body">
+                    <table class="table">
+                      @foreach($course_syllabuses as $key => $syllabus)
+                      <tr>
+                        <th>{{$syllabus->name}}</th>
+                        <td>
+                          <a class="btn btn-default" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                            
+                          <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i> ডাউনলোড</a>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </table>
+                  </div>
+                </div>
+              </div>
+              @endif
+
+              @foreach($value->departments as $key => $department)
+              <div class="panel box box-primary">
+                <div class="box-header with-border">
+                  <div class="box-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#dept{{$key}}">
+                      {{$department->name}}
+                      <span class="pull-right-container">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                      </span>
+                    </a>
+                  </div>
+                <div id="dept{{$key}}" class="panel-collapse collapse in">
                   <div class="bo/x-body">
                     @php
                     $syllabuses = $department->syllabus()->where('batch_id', $value->id)->get();
@@ -245,32 +306,27 @@ $value = $batch;
 
                     @if($syllabuses)
                     <table class="table">
+                      @foreach($syllabuses as $syllabus)
                       <tr>
-                        <th>সিলেবাস</th>
+                        <th>{{$syllabus->name}}</th>
                         <td>
-                          <ul class="list">
-                          @foreach($syllabuses as $syllabus)
-                          <li>
-                          @if(!empty($student))
-
-                          {{$syllabus->name}}
-
-                          <a class="btn btn-info" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
-                          
-                          <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i>ডাউনলোড</a>
+                          @if(!empty($student) && $syllabus->batch->students()->where('student_id', $user->id)->first())
+                            <a class="btn btn-default" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                            
+                            <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i> ডাউনলোড</a>
 
                           @else
-
-                            @if($syllabus->sample_pdf)
-                            {{$syllabus->name}} <a href="{{$syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i> স্যাম্পল ডাউনলোড</a>
-                            @endif
+                          <button class="btn btn-warning" onclick="alert('This is premium version. Buy a course first.')">ডাউনলোড Full PDF</button>
 
                           @endif
-                          </li>
-                          @endforeach
-                          </ul>
+                        </td>
+                        <td>
+                          @if($syllabus->sample_pdf)
+                          <a href="{{$syllabus->sample_pdf}}" class="btn btn-info"><i class="fa fa-download"></i> স্যাম্পল PDF</a>
+                          @endif
                         </td>
                       </tr>
+                      @endforeach
                     </table>
                     @else
                     <p>এই ডিপার্টমেন্টের জন্যে এখনো কোন সিলেবাস প্রকাশিত হয় নি</p>
@@ -457,20 +513,6 @@ $value = $batch;
 @endsection
 @section('scripts')
 <script>
-  // function check(e)
-  // {
-  //   let agree = document.getElementById('agree');
-
-  //   if(agree.checked == false)
-  //   {
-  //     alert('Please confirm as per our agreement.');
-  //     // window.location.href = '{{route("students.course.show", "")}}'+$value->id;
-  //     // e.preventDefault();
-      
-  //     return false;
-  //   }
-
-  // }
   //eheck login
   function checkLogin()
   {
@@ -486,90 +528,78 @@ $value = $batch;
     {
       window.location.href = '{{route("students.course.checkout", "$value->id")}}';
     }
-
-    // if(login)
-    // {
-    //   $(document).ready(function()
-    //   {
-    //     // $("#myBtn").click(function(){
-    //       $("#paymentConfirm").modal();
-    //     // });
-    //   });
-    // }
-    // else
-    // {
-    //   window.location.href = '/students/login';
-    // }
   }
   // Set the date we're counting down to
   // var countDownDate = new Date("Oct 27, 2024 12:47:25").getTime();
   var countDownDate = new Date("{{$source->dtcformat($value->reg_end_at)}}").getTime();
   // var countDownDate = new Date().getTime();
   
-  // Update the count down every 1 second
-  var x = setInterval(function()
-  {
-    let timer = document.getElementById("timer");
+  let timer = document.getElementById("timer");
   
-    // Get today's date and time
-    var now = new Date().getTime();
-    // var now = new Date("{{$source->dtcformat($value->end_time)}}").getTime();
-      
-    // Find the distance between now and the count down date
-    var distance = countDownDate - now;
-      
-    // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
-    // Output the result in an element with id="demo"
-    let d = h = m = s = 0;
-    if(days != 0)
+  if(timer && countDownDate)
+  {
+    // Update the count down every 1 second
+    var x = setInterval(function()
     {
-      d = days+" ";
-    }
-    if(hours != 0)
-    {
-      h = hours+" ";
-    }
-    if(minutes != 0)
-    {
-      m = minutes+" ";
-    }
-    if(seconds != 0)
-    {
-      s = seconds+" ";
-    }
-    // timer.innerHTML = hours + "h "
-    // + minutes + "m " + seconds + "s ";
-    if(m != null || s != null)
-    {
-    timer.innerHTML = d + "দিন " + h + "ঘণ্টা "
-    + m + "মিনিট " + s + "সেকেন্ড ";
-    }
-    else
-    {
-      timer.innerHTML = '00:00:00';
-    }
+        // Get today's date and time
+      var now = new Date().getTime();
+      // var now = new Date("{{$source->dtcformat($value->end_time)}}").getTime();
+        
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+        
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+      // Output the result in an element with id="demo"
+      let d = h = m = s = 0;
+      if(days != 0)
+      {
+        d = days+" ";
+      }
+      if(hours != 0)
+      {
+        h = hours+" ";
+      }
+      if(minutes != 0)
+      {
+        m = minutes+" ";
+      }
+      if(seconds != 0)
+      {
+        s = seconds+" ";
+      }
+      // timer.innerHTML = hours + "h "
+      // + minutes + "m " + seconds + "s ";
+      if(m != null || s != null)
+      {
+      timer.innerHTML = d + "দিন " + h + "ঘণ্টা "
+      + m + "মিনিট " + s + "সেকেন্ড ";
+      }
+      else
+      {
+        timer.innerHTML = '00:00:00';
+      }
 
-    // console.log(distance);
+      // console.log(distance);
+        
+      // If the count down is over, write some text 
+      if (distance < 60000 && distance > 59000)
+      {
+        timer.style.color='red';
+
+      }
+
+      if (distance < 0) {
+        clearInterval(x);
+        timer.innerHTML = '<span style="color:#d00">সময় শেষ</span>';
+      }
+    
       
-    // If the count down is over, write some text 
-    if (distance < 60000 && distance > 59000)
-    {
-      timer.style.color='red';
-
-    }
-
-    if (distance < 0) {
-      clearInterval(x);
-      timer.innerHTML = '<span style="color:#d00">সময় শেষ</span>';
-      // document.getElementById('questions_panel').innerHTML = '<div class="box box-warning"><a class="btn btn-warning" href="{{route("students.exam")}}">Back</div>';
-      // submit the form automatically
-      // submitExam();
-    }
-  }, 1000);
+    }, 1000);
+  }
 </script>
 @endsection
