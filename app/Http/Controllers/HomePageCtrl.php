@@ -32,12 +32,19 @@ class HomePageCtrl extends Controller
       $mybatches = $student->batches()->orderBy('id', 'DESC')->get();
     }
     // active courses
-    $courses = Course::orderBy('id', 'DESC')->where('status', 'Active')->get();
+    $courses = Course::orderBy('id', 'DESC')
+    ->where('status', 'Active')
+    ->get();
 
     // Active batches
-    $batches = Batch::where('status', 'Active')->get();
+    $batches = Batch::where('status', 'Active')
+    ->whereRaw('DATE(reg_end_at) >= ?', [date('Y-m-d H:i:s')])
+    ->orderBy('id', 'DESC')
+    ->get();
 
     $papers = Paper::orderBy('id', 'DESC')->whereIn('status', ['Published', 'Scheduled'])->where('permit', 'Every One')->get();
+
+    // dd($batches);
     
     return view('student-panel.index', compact('courses', 'mybatches', 'batches', 'papers'));
   }

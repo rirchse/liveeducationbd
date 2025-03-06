@@ -216,7 +216,7 @@ $value = $batch;
               <div class="panel box box-primary">
                 <div class="box-header with-border">
                   <div class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#dept{{$key}}">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#dept_routine{{$key}}">
                       {{$department->name}}
                       <span class="pull-right-container">
                         <i class="fa fa-chevron-down pull-right"></i>
@@ -316,7 +316,7 @@ $value = $batch;
                             <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i> ডাউনলোড</a>
 
                           @else
-                          <button class="btn btn-warning" onclick="alert('This is premium version. Buy a course first.')">ডাউনলোড Full PDF</button>
+                          <button class="btn btn-warning" onclick="alert('This is premium version. Buy the course first.')">ডাউনলোড Full PDF</button>
 
                           @endif
                         </td>
