@@ -13,7 +13,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="showModal()">
           <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Continue to add your contact number</h4>
       </div>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="modal-footer" id="contact-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" onclick="showModal()">Close</button>
         <button type="button" class="btn btn-info" onclick="submitForm()">Continue</button>
       </div>
     </div> <!-- /.modal-content -->
@@ -90,7 +90,15 @@
   function showModal()
   {
     let modalId = document.getElementById('modal-contact');
-    modalId.style.display = 'block';
+    if(modalId.style.display == 'block')
+    {
+      modalId.style.display = 'none';
+    }
+    else
+    {
+      modalId.style.display = 'block';
+    }
+    
   }
 
   @if(Auth::guard('student')->user() && Auth::guard('student')->user()->contact == null)
