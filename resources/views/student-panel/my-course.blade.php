@@ -77,7 +77,7 @@ if($user)
       @else
       <div class="panel panel-default">
         <div class="panel-body">
-          আপনি এখনো কোন কোর্স ক্রয় করেননি। কোর্স ক্রয় করার জন্যে <a href="{{route('students.course')}}">চলমান কোর্স সমূহ</a> পেজে যান।
+          আপনি এখনো কোন কোর্স ক্রয় করেননি। কোর্স ক্রয় করার জন্যে <a href="{{route('home.course')}}">চলমান কোর্স সমূহ</a> পেজে যান।
         </div>
       </div>
       @endif

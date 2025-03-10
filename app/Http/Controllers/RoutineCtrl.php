@@ -170,7 +170,7 @@ class RoutineCtrl extends Controller
 
             Routine::where('id', $id)->update($data);
 
-            if(File::exists($xpdf))
+            if($request->hasFile('pdf') && File::exists($xpdf))
             {
                 File::delete($xpdf);
             }

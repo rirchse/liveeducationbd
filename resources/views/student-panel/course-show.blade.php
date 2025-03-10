@@ -204,8 +204,12 @@ $value = $batch;
 
                 @if($batch_routine)
                   <tr>
-                    <th>রুটিনঃ </th>
-                    <td>{{$batch_routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$batch_routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a></td>
+                    <th>{{$batch_routine->name}}</th>
+                    <td> 
+                      @if($batch_routine->pdf)
+                      <a class="btn btn-warning btn-sm" target="_blank" href="{{$batch_routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a>
+                      @endif
+                    </td>
                   </tr>
                 @endif
                 </table>
@@ -230,8 +234,12 @@ $value = $batch;
                   @if($routine)
                   <table class="table">
                     <tr>
-                      <th>রুটিনঃ </th>
-                      <td>{{$routine->name}}  <a class="btn btn-warning btn-sm" target="_blank" href="{{$routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a></td>
+                      <th>{{$routine->name}} </th>
+                      <td> 
+                        @if($routine->pdf)
+                        <a class="btn btn-warning btn-sm" target="_blank" href="{{$routine->pdf}}"><i class="fa fa-download"></i> ডাউনলোড</a>
+                        @endif
+                      </td>
                     </tr>
                   </table>
                   @endif

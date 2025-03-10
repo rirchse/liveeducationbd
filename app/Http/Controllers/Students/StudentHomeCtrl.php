@@ -142,6 +142,14 @@ class StudentHomeCtrl extends Controller
     return view('student-panel.my-course', compact('courses'));
   }
 
+  public function mySyllabus()
+  {
+    $user = Auth::guard('student')->user();
+    $student = Student::find($user->id);
+    $batches = $student->batches()->orderBy('id', 'DESC')->where('status', 'Active')->get();
+    return view('student-panel.my-syllabus', compact('batches'));
+  }
+
   public function exam()
   {
     $user = Auth::guard('student')->user();
@@ -529,22 +537,11 @@ class StudentHomeCtrl extends Controller
         // Sleep for a short time to reduce CPU spike
         usleep(100000); // 100 milliseconds
     });
-
-
     
     return [
       'syllabus' => $syllabus,
       'questions' => $groupedData
     ];
-
-    // return response()->json(
-    //   [
-    //     'success' => true,
-    //     'syllabus' => $syllabus,
-    //     'questions' => $groupedData
-    //   ],
-    //   200
-    // );
   }
 
   public function syllabus($id)

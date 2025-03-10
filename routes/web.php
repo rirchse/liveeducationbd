@@ -129,6 +129,7 @@ Route::middleware('auth:student')->group(function()
 		Route::get('students/checkout/{id}', 'checkout')->name('students.course.checkout');
 		Route::get('students/confirm', 'confirm')->name('students.course.confirm');
 		Route::get('students/my-course', 'myCourse')->name('students.my-course');
+		Route::get('students/my-syllabus', 'mySyllabus')->name('students.my-syllabus');
 		Route::post('student/exam_add', 'examAdd')->name('student.exam.add');
 		Route::get('students/syllabus/{id}', 'syllabus')->name('student.syllabus');
 		Route::get('students/syllabus/{id}/pdf', 'generatePDF')->name('students.syllabus.pdf');
