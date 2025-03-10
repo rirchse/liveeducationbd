@@ -10,6 +10,7 @@ class SourceCtrl extends Controller
 {
   public function sms_send($number, $sms)
   {
+    //number/numbers like "01xxxxxx.., 01xxxxxx.."
     $url = "http://bulksmsbd.net/api/smsapi";
     $api_key = env('SMS_API_KEY');
     $senderid = env('SMS_ID');

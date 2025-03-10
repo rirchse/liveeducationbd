@@ -6,6 +6,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Http\Controllers\Students\StudentHomeCtrl;
+use App\Http\Controllers\SourceCtrl;
 use App\Models\Student;
 use App\Models\Batch;
 use App\Models\Department;
@@ -195,6 +196,7 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+        $source = new SourceCtrl;
         $studentctrl = new StudentHomeCtrl;
 
         // echo "Transaction is Successful";
@@ -214,13 +216,16 @@ class SslCommerzPaymentController extends Controller
         $redirect_url = route('students.course.show', $order_details->batch_id);
         $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
-        if($order_details)
-        {
-            /** add student to the batch and department */
-            $student = Student::find($order_details->student_id);
-            $student->batches()->attach([$order_details->batch_id]);
-            $student->departments()->attach([$order_details->department_id]);
-        }
+        // if($order_details)
+        // {
+        //     /** add student to the batch and department */
+        //     $student = Student::find($order_details->student_id);
+        //     $student->batches()->attach([$order_details->batch_id]);
+        //     $student->departments()->attach([$order_details->department_id]);
+
+        //     //send sms
+        //     $source->send_sms($student->contact, 'Your course has been successfully purchased. For more information, please visit liveeducationbd.com');
+        // }
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -235,6 +240,31 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
+
+                if($update_product)
+                {
+                    /** add student to the batch and department */
+                    $student = Student::find($order_details->student_id);
+                    $student->batches()->attach([$order_details->batch_id]);
+                    $student->departments()->attach([$order_details->department_id]);
+
+                    //send sms
+                    if($student->contact)
+                    {
+                        $source->sms_send('88'.$student->contact, 'Your course has been successfully purchased. For more information, please visit liveeducationbd.com');
+                    }
+
+                    //send email
+                    if($student->email)
+                    {
+                        $data = [
+                            'email_to' => $student->email,
+                            'subject' => 'New Course Purchase | Live Education BD',
+                            'comments' => 'Hello '.$student->name.'<br> Your course has been successfully purchased. For more information, visit <a href="'.route('home.course.show', $order_details->batch_id).'">liveeducationbd.com</a>'
+                        ];
+                        $source->sendMail($data);
+                    }
+                }
 
                 echo "<br> Transaction is successfully Completed. It will automatic redirect to you ... ";
 
