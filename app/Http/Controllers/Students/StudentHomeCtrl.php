@@ -150,6 +150,29 @@ class StudentHomeCtrl extends Controller
     return view('student-panel.my-syllabus', compact('batches'));
   }
 
+  public function mySyllabusPost(Request $request)
+  {
+    $student = Auth::guard('student')->user();
+    $this->Validate($request, [
+      'batch_id' => 'required|numeric'
+    ]);
+
+    $student = Student::find($student->id);
+    $batches = $student->batches()->orderBy('id', 'DESC')->where('status', 'Active')->get();
+
+    $batch = Batch::find($request->batch_id);
+
+    $syllabuses = $batch->syllabuses()
+    ->Join('departments', 'departments.id', 'syllabi.department_id')
+    ->LeftJoin('department_student', 'department_student.department_id', 'departments.id')
+    ->LeftJoin('students', 'students.id', 'department_student.student_id')
+    ->where('students.id', $student->id)
+    ->select('syllabi.id', 'syllabi.name', 'students.name as student_name')
+    ->get();
+    // dd($syllabuses);
+    return view('student-panel.my-syllabus', compact('syllabuses', 'batches'));
+  }
+
   public function exam()
   {
     $user = Auth::guard('student')->user();

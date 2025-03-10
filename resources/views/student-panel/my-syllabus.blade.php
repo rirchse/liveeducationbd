@@ -27,13 +27,14 @@ if($user)
 
     <!-- Main content -->
     <section class="content">
-        <div class="box col-md-12">
-          <form action="">
+      <div class="box col-md-12">
+          <form action="{{route('students.my-syllabus.post')}}" method="post">
+            @csrf
             <div class="row">
               <div class="col-md-8">
                 <div class="form-group">
                   <label for="">Select Batch</label>
-                  <select name="" id="" class="form-control">
+                  <select name="batch_id" id="batch_id" class="form-control">
                     <option value="">Select One</option>
                     @foreach($batches as $batch)
                       <option value="{{$batch->id}}">{{$batch->name}}</option>
@@ -48,77 +49,27 @@ if($user)
             </div>
           </form>
       </div>
-      <div class="row">
-        <div class="col-md-12 no-padding">
-          @if( $batch )
-            @foreach($batches as $batch)
-              @php
-              $batch_syllabus = $batch->syllabuses()->where('department_id', null)->get();
-              @endphp
-              @if($batch_syllabus)
-                @foreach($batch_syllabus as $syllabus)
-                //
-                @endforeach
-              @endif
-
-              @if($batch->department)
-            <div class="col-md-12 box box-info"><h4>{{$batch->name}}</h4></div>
-            @foreach($batch->department as $key => $paper)
-              @if( $paper->permit == 'Batch' && $student->batches->find($paper->batch_id) || $paper->permit == 'Department' && $student->departments->find($paper->department_id) || $paper->permit == 'Group' && $student->groups->find($paper->group_id))
-                <div class="col-md-3">
-                  <a href="{{route('students.check', $paper->id)}}">
-                  <div class="panel" style="min-height: 130px">
-                    <div class="panel-heading">Live Education BD</div>
-                    <div class="panel-body" style="padding-top:0;font-size:22px"><b>{{substr($paper->name, 0, 30)}}...</b>
-                    </div>
-                    <p style="padding:0 15px">Batch: <b>{{substr( $batch->name, 0, 20)}} ...</b></p>
-                    <div class="panel-footer no-padding">
-                        <div class="box-group" id="accordion{{$paper->id}}">
-                          <div class="p/anel bo/x box-primary">
-                            <div class="box-header with-border">
-                              <div class="box-t/itle">
-                                <a data-toggle="collapse" data-parent="#accordion{{$paper->id}}" href="#dept{{$paper->id}}">
-                                  বিস্তারিত দেখুন...
-                                  <span class="pull-right-container">
-                                    <i class="fa fa-chevron-down pull-right"></i>
-                                  </span>
-                                </a>
-                              </div>
-                            </div>
-                            <div id="dept{{$paper->id}}" class="panel-collapse collapse">
-                              <div class="box-body">
-                                @php
-                                $latest_exam = $paper->exams()->orderBy('id', 'DESC')->where('student_id', $user->id)->first();
-                                @endphp
-                                @if($latest_exam)
-                                <a href="{{route('students.exam.paper', $latest_exam->id)}}" class="btn btn-info btn-block"><i class="fa fa-file-o"></i> আপনার এক্সাম পেপার</a>
-                                <a href="{{route('students.solution', $paper->id)}}" class="btn btn-success btn-block"><i class="fa fa-check"></i> সলূশন পেপার</a>
-                                @endif
-                                @if($paper->exams->where('student_id', $user->id)->first() && $paper->result_at < date('Y-m-d'))
-                                <a href="{{route('students.result', $paper->id)}}" class="btn btn-warning cst-btn btn-block">ফলাফল দেখুন</a>
-                                @endif
-                                @if(!$paper->exams->where('student_id', $user->id)->first())
-                                <a class="btn btn-info cst-btn btn-block" href="{{route('students.instruction', $paper->id)}}">পরীক্ষা দিন</a>
-                                @endif
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              @else
-              {{-- <p style="color:white">Exams will publish soon!</p> --}}
-              @endif
-              @endforeach
-            @endif
+      <div class="ro/w">
+        <div class="box col-md-12 no-padding">
+          @if( !empty($syllabuses) )
+          <h4> &nbsp; সিলেবাস সমূহ</h4>
+          <table class="table">
+            @foreach($syllabuses as $syllabus)
+            <tr>
+              <th>{{$syllabus->name}}</th>
+              <td>
+                <a class="btn btn-default" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                  
+                <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i> ডাউনলোড</a>
+              </td>
+            </tr>
           @endforeach
+        </table>
         <div class="row"></div>
       @else
       <div class="panel panel-default">
         <div class="panel-body">
-          <label>আপনের কোন কোর্সে সিলেবাস প্রকাশ হয়নি।</label>
+          <label>আপনের কোন কোর্সে সিলেবাস প্রকাশিত হয়নি।</label>
           <p><a href="{{route('students.course')}}">চলমান কোর্স সমূহ</a></p>
         </div>
       </div>

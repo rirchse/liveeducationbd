@@ -53,7 +53,7 @@ function active($name)
           <li class="{{active('home').active('/')}}"><a href="{{route('homepage')}}">হোম <span class="sr-only">(current)</span></a></li>
           <li class="{{active('course')}}"><a href="{{route('home.course')}}">চলমান কোর্স সমূহ</a></li>
           <li class="{{active('my-course')}}"><a href="{{route('students.my-course')}}">আমার কোর্স সমূহ</a></li>
-          {{-- <li class="{{active('my-syllabus')}}"><a href="{{route('students.my-syllabus')}}">আমার সিলেবাস সমূহ</a></li> --}}
+          <li class="{{active('my-syllabus')}}"><a href="{{route('students.my-syllabus')}}">আমার সিলেবাস সমূহ</a></li>
           <li class="{{active('exam')}}"><a href="{{route('students.exam')}}">পরীক্ষা</a></li>
           <li class="{{active('complain')}}"><a href="{{route('students.complain')}}">অভিযোগ দিন</a></li>
           @if(empty($user))
