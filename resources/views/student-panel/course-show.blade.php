@@ -229,10 +229,11 @@ $value = $batch;
                   </div>
                   
                   @php
-                  $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->orderBy('id', 'DESC')->first();
+                  $routines = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->orderBy('id', 'DESC')->get();
                   @endphp
-                  @if($routine)
+                  @if($routines)
                   <table class="table">
+                    @foreach($routines as $routine)
                     <tr>
                       <th>{{$routine->name}} </th>
                       <td> 
@@ -241,6 +242,7 @@ $value = $batch;
                         @endif
                       </td>
                     </tr>
+                    @endforeach
                   </table>
                   @endif
                 
