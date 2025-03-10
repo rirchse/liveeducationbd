@@ -229,7 +229,7 @@ $value = $batch;
                   </div>
                   
                   @php
-                  $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->first();
+                  $routine = $department->routine()->where('course_id', $value->course->id)->where('batch_id', $batch->id)->orderBy('id', 'DESC')->first();
                   @endphp
                   @if($routine)
                   <table class="table">
