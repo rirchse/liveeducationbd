@@ -216,18 +216,30 @@ class SslCommerzPaymentController extends Controller
         $redirect_url = route('students.course.show', $order_details->batch_id);
         $redirect_script = "<script> setTimeout('window.location.href=\"".$redirect_url."\"', 100);</script>";
 
-        // if($order_details)
-        // {
-        //     /** add student to the batch and department */
-        //     $student = Student::find($order_details->student_id);
-        //     $student->batches()->attach([$order_details->batch_id]);
-        //     $student->departments()->attach([$order_details->department_id]);
+        if($order_details)
+        {
+            /** add student to the batch and department */
+            $student = Student::find($order_details->student_id);
+            $student->batches()->attach([$order_details->batch_id]);
+            $student->departments()->attach([$order_details->department_id]);
 
-        //     //send sms
-        //     $source->send_sms($student->contact, 'Your course has been successfully purchased. For more information, please visit liveeducationbd.com');
-        // }
+            //send sms
+            if($student->contact)
+            {
+                $source->sms_send('88'.$student->contact, 'Your course has been successfully purchased. For more information, please visit liveeducationbd.com');
+            }
 
-        $order = $order_details;
+            //send email
+            if($student->email)
+            {
+                $data = [
+                    'email_to' => $student->email,
+                    'subject' => 'New Course Purchase | Live Education BD',
+                    'comments' => 'Hello '.$student->name.'<br> Your course has been successfully purchased. For more information, visit <a href="'.route('home.course.show', $order_details->batch_id).'">liveeducationbd.com</a>'
+                ];
+                $source->sendMail($data);
+            }
+        }
 
         if ($order_details->status == 'Pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -242,38 +254,12 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
-                    
-                /** add student to the batch and department */
-                $student = Student::find($order->student_id);
-                $student->batches()->attach([$order->batch_id]);
-                $student->departments()->attach([$order->department_id]);
-
-                //send sms
-                if($student->contact)
-                {
-                    $source->sms_send('88'.$student->contact, 'Your course has been successfully purchased. For more information, please visit liveeducationbd.com');
-                }
-
-                //send email
-                if($student->email)
-                {
-                    $data = [
-                        'email_to' => $student->email,
-                        'subject' => 'New Course Purchase | Live Education BD',
-                        'comments' => 'Hello '.$student->name.'<br> Your course has been successfully purchased. For more information, visit <a href="'.route('home.course.show', $order->batch_id).'">liveeducationbd.com</a>'
-                    ];
-                    $source->sendMail($data);
-                }
 
                 echo "<br> Transaction is successfully Completed. It will automatic redirect to you ... ";
 
                 //redirect to homepage
                 echo $redirect_script;
-
-                print_r($order);
             }
-
-            dd($order);
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
