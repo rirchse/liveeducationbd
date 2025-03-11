@@ -220,8 +220,8 @@ class SslCommerzPaymentController extends Controller
         {
             /** add student to the batch and department */
             $student = Student::find($order_details->student_id);
-            $student->batches()->attach([$order_details->batch_id]);
-            $student->departments()->attach([$order_details->department_id]);
+            $student->batches()->sync([$order_details->batch_id]);
+            $student->departments()->sync([$order_details->department_id]);
 
             //send sms
             if($student->contact)

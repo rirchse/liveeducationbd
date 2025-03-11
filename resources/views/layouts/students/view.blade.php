@@ -90,7 +90,7 @@ $xids = $object->students()->pluck('id')->toArray();
                 <td>{{ $source->dtformat($value->created_at) }}</td> --}}
                 <td>
                   {{-- <a href="{{route('student.show', $value->id)}}" class="btn btn-info" title="User Details"><i class="fa fa-file-text"></i></a> --}}
-                  <a href="{{route('student.remove', [$value->id, $name, $object->id])}}" class="btn btn-danger" title="Remove"><i class="fa fa-times" onclick="return confirm('Are you sure you want to remove this student?')"></i></a>
+                  <a href="{{route('student.remove', [$value->id, $name, $object->id])}}" class="btn btn-danger" title="Remove" onclick="return confirm('Are you sure you want to remove this student?')"><i class="fa fa-times"></i></a>
                 </td>
               </tr>
 
