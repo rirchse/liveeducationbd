@@ -16,11 +16,7 @@ use Session;
 class SslCommerzPaymentController extends Controller
 {
     protected $redirect_url; 
-    protected $batch_id; 
-    // public function __construct()
-    // {
-    //   $this->middleware('auth:student');
-    // }
+    protected $batch_id;
 
     public function exampleEasyCheckout()
     {
@@ -40,11 +36,10 @@ class SslCommerzPaymentController extends Controller
         //find batch
         $batch = Batch::find($request->batch_id);
 
-        $course = $batch->course();
+        $course = $batch->course;
 
         //find department
         $department = Department::find($request->department_id);
-
 
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
