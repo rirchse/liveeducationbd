@@ -37,7 +37,7 @@ if($user)
                   <select name="batch_id" id="batch_id" class="form-control">
                     <option value="">Select One</option>
                     @foreach($batches as $value)
-                      <option value="{{$value->id}}" {{$batch->id == $value->id ? 'selected':''}}>{{$value->name}}</option>
+                      <option value="{{$value->id}}" {{!empty($batch) && $batch->id == $value->id ? 'selected':''}}>{{$value->name}}</option>
                     @endforeach
                   </select>
                 </div>
@@ -54,8 +54,12 @@ if($user)
           @if( !empty($syllabuses) )
           <h4> &nbsp; সিলেবাস সমূহ</h4>
           <table class="table">
-            @if($batch->syllabuses)
-            @foreach($batch->syllabuses()->where('department_id', null)->get() as $syllabus)
+            @php
+            $batch_syllabus = $batch->syllabuses()->where('department_id', null)->get();
+            @endphp
+
+            @if($batch_syllabus)
+            @foreach($batch_syllabus as $syllabus)
             <tr>
               <th>{{$syllabus->name}}</th>
               <td>
