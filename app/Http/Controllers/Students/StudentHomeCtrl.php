@@ -170,7 +170,7 @@ class StudentHomeCtrl extends Controller
     ->select('syllabi.id', 'syllabi.name', 'students.name as student_name')
     ->get();
     // dd($syllabuses);
-    return view('student-panel.my-syllabus', compact('syllabuses', 'batches'));
+    return view('student-panel.my-syllabus', compact('syllabuses', 'batches', 'batch'));
   }
 
   public function exam()

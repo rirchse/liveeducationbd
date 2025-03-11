@@ -36,8 +36,8 @@ if($user)
                   <label for="">Select Batch</label>
                   <select name="batch_id" id="batch_id" class="form-control">
                     <option value="">Select One</option>
-                    @foreach($batches as $batch)
-                      <option value="{{$batch->id}}">{{$batch->name}}</option>
+                    @foreach($batches as $value)
+                      <option value="{{$value->id}}" {{$batch->id == $value->id ? 'selected':''}}>{{$value->name}}</option>
                     @endforeach
                   </select>
                 </div>
@@ -54,6 +54,18 @@ if($user)
           @if( !empty($syllabuses) )
           <h4> &nbsp; সিলেবাস সমূহ</h4>
           <table class="table">
+            @if($batch->syllabuses)
+            @foreach($batch->syllabuses()->where('department_id', null)->get() as $syllabus)
+            <tr>
+              <th>{{$syllabus->name}}</th>
+              <td>
+                <a class="btn btn-default" href="{{route('student.syllabus', $syllabus->id)}}"><i class="fa fa-eye"></i> View</a>
+                  
+                <a href="{{route('students.syllabus.pdf', $syllabus->id)}}" class="btn btn-info"><i class="fa fa-download"></i> ডাউনলোড</a>
+              </td>
+            </tr>
+            @endforeach
+            @endif
             @foreach($syllabuses as $syllabus)
             <tr>
               <th>{{$syllabus->name}}</th>
