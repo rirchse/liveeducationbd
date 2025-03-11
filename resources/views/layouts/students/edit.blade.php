@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <label for="" >Contact</label>
-                    <input type="text" name="contact" class="form-control" required value="{{$user->contact}}" />
+                    <input type="text" name="contact" class="form-control" value="{{$user->contact}}" />
                 </div>
                 <div class="form-group">
                   <label for="image">Profile Image</label>

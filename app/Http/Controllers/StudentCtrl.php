@@ -149,16 +149,29 @@ class StudentCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        // dd($request->input('contact'));
         $this->validate($request, [
             'name'      => 'required|max:255',
-            'contact'   => 'required',
-            'email'     => 'required',
             'password'  => 'nullable|min:8|max:32',
             'status'    => 'max:30',
             'image'     => 'nullable|image|mimes:jpeg,jpg,png,gif|max:500'
         ]);
 
         $student = Student::find($id);
+        if($student->contact != $request->input('contact'))
+        {
+            $this->validate($request, [
+                'contact' => 'unique:students'
+            ]);
+        }
+        if($student->email != $request->input('email'))
+        {
+            $this->validate($request, [
+                'email' => 'required|unique:students'
+            ]);
+        }
+
         $student->name       = $request->input('name');
         $student->contact    = $request->input('contact');
         $student->email      = $request->input('email');
