@@ -40,6 +40,8 @@ class SslCommerzPaymentController extends Controller
         //find batch
         $batch = Batch::find($request->batch_id);
 
+        $course = $batch->course();
+
         //find department
         $department = Department::find($request->department_id);
 
@@ -79,9 +81,9 @@ class SslCommerzPaymentController extends Controller
         $post_data['ship_country'] = "Bangladesh";
 
         $post_data['shipping_method'] = "NO";
-        $post_data['product_name'] = "Computer";
-        $post_data['product_category'] = "Goods";
-        $post_data['product_profile'] = "physical-goods";
+        $post_data['product_name'] = $batch->name;
+        $post_data['product_category'] = $course->name;
+        $post_data['product_profile'] = $department->name;
 
         #Before  going to initiate the payment order status need to insert or update as Pending.
         $update_product = DB::table('orders')
