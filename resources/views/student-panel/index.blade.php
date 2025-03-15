@@ -17,6 +17,8 @@ if($user)
   .course-image{width:100%}
   .hover{border:2px solid #ddd}
   .hover:hover{border-color: #080}
+  .about{font-size: 15px}
+  .about p{text-align: justify}
 </style>
 
     <!-- Main content -->
@@ -27,14 +29,21 @@ if($user)
         </div>
         {{-- <img src="" alt="" style="width:100%"> --}}
         <br>
-        {{-- <div class="box box-info">
+        <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">আমাদের সম্পর্কে জানুন</h3>
+            <h3 class="box-title">About Us - Live Education BD</h3>
           </div>
-          <div class="box-body">
-            Coming Soon...
+          <div class="box-body about">
+            Welcome to <b>Live Education BD</b>, a leading online education platform designed to empower students and job seekers in Bangladesh. Our mission is to provide high-quality educational resources, structured learning paths, and effective exam preparation to help students achieve their academic and career goals.
+            <p>We specialize in <b>polytechnic education</b> and <b>job admission preparation</b>, offering a wide range of courses tailored to meet the needs of aspiring professionals. Our platform provides:</p>
+            <p><i class="fa fa-check"></i> <b>Course Sales</b> – Access premium courses curated by expert educators to enhance your knowledge and skills.</p>
+            <p><i class="fa fa-check"></i> <b>Online Study</b> – Learn at your own pace with interactive materials, video lectures, and structured syllabi.</p>
+            <p><i class="fa fa-check"></i> <b>Syllabus & Exam Preparation</b> – Get a well-organized syllabus and practice exams that align with your academic and competitive exam requirements.</p>
+            <p><i class="fa fa-check"></i> <b>Results & Performance Tracking</b> – Analyze your progress with real-time results and detailed performance reports.</p>
+            <p>At <b>Live Education BD</b>, we are committed to making education accessible, affordable, and effective for every learner. Whether you're a <b>polytechnic student</b> looking for advanced learning materials or a <b>job candidate</b> preparing for competitive exams, our platform is designed to support your journey to success.</p>
+            <p>Join us today and take a step closer to achieving your dreams!</p>
           </div>
-        </div> --}}
+        </div>
       </div>
       <div class="box box-info">
         <div class="box-header with-border">
